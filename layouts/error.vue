@@ -2,6 +2,9 @@
   <v-app dark>
     <v-row justify="center" align="start">
       <v-col cols="10" sm="8" md="4">
+        <pre>
+           {{ error }}
+        </pre>
         <h2 class="text-h3 text-center font-weight-bold">Oops...</h2>
         <svg-404 class="my-4" />
         <h2 class="text-h3 text-center">

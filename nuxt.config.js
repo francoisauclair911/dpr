@@ -33,14 +33,13 @@ export default defineNuxtConfig({
   },
   router: {
     routeNameSplitter: '/',
-    middleware: 'organization-switch',
   },
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - aws-frontend-donation-campaign-manager',
-    title: 'aws-frontend-donation-campaign-manager',
+    titleTemplate: '%s - aws-frontend-donation-campaign-receiver',
+    title: 'aws-frontend-donation-campaign-receiver',
     htmlAttrs: {
       lang: 'en',
     },
@@ -64,6 +63,7 @@ export default defineNuxtConfig({
     '~/plugins/adra',
     { src: '~/plugins/axios', ssr: true },
     '~/plugins/iso',
+    '~/plugins/api',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -78,7 +78,6 @@ export default defineNuxtConfig({
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/auth-next',
     '@nuxtjs/i18n',
     '@nuxtjs/axios',
     '@nuxtjs/sentry',
@@ -89,7 +88,7 @@ export default defineNuxtConfig({
     config: {
       environment: process.env.ENVIRONMENT_NAME || 'local',
       release:
-        'aws-frontend-donation-campaign-manager@' +
+        'aws-frontend-donation-campaign-receiver@' +
         process.env.CI_COMMIT_SHORT_SHA,
       // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
     },
@@ -120,41 +119,6 @@ export default defineNuxtConfig({
     // proxy: true,
   },
 
-  auth: {
-    plugins: [
-      { src: '~/plugins/axios', ssr: true },
-      { src: '~/plugins/api.js', ssr: true },
-      { src: '~/plugins/auth.js', ssr: true },
-    ],
-    strategies: {
-      awsCognito: {
-        scheme: 'oauth2',
-        endpoints: {
-          authorization: `${baseCognitoURL}/login`,
-          token: `${baseCognitoURL}/oauth2/token`,
-          userInfo: `${baseCognitoURL}/oauth2/userInfo`,
-          logout: `${baseCognitoURL}/logout`,
-        },
-        token: {
-          property: 'access_token',
-          type: 'Bearer',
-          maxAge: 3600,
-        },
-        refreshToken: {
-          property: 'refresh_token',
-          maxAge: 60 * 60 * 24 * 30,
-        },
-        responseType: 'code',
-        grantType: 'authorization_code',
-        redirectUri: httpProtocol + process.env.APP_URL + '/login/',
-        // This needs to be the exact same as the one setup in cognito console
-        logoutRedirectUri: httpProtocol + process.env.APP_URL + '/',
-        clientId: process.env.AWS_COGNITO_CLIENT_ID,
-        scope: ['email', 'openid', 'profile', 'phone'],
-        codeChallengeMethod: 'S256',
-      },
-    },
-  },
   adra: {
     fonts: {
       montserrat: true,
@@ -186,7 +150,6 @@ export default defineNuxtConfig({
     AWS_COGNITO_USER_POOL_ID: process.env.AWS_COGNITO_USER_POOL_ID,
     AWS_COGNITO_CLIENT_ID: process.env.AWS_COGNITO_CLIENT_ID,
     AWS_COGNITO_BASE_URL: process.env.AWS_COGNITO_BASE_URL,
-    USO_BASE_URL: process.env.USO_BASE_URL,
     COUNTRY_BASE_URL: process.env.COUNTRY_BASE_URL,
     CAMPAIGN_BASE_URL: process.env.CAMPAIGN_BASE_URL,
     SENTRY_SAMPLE_RATE:

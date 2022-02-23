@@ -1,5 +1,10 @@
 <template>
-  <viewer ref="toastuiViewer" :initial-value="formattedValue" height="500px" />
+  <viewer
+    ref="toastuiViewer"
+    class="adra-markdown-viewer"
+    :initial-value="formattedValue"
+    height="500px"
+  />
 </template>
 
 <script>
@@ -34,4 +39,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css">
+.adra-markdown-viewer .toastui-editor-contents {
+  font-size: 1rem;
+  color: black;
+}
+.adra-markdown-viewer.small .toastui-editor-contents {
+  font-size: 0.8rem;
+  color: black;
+}
+</style>

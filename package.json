@@ -20,6 +20,7 @@
     "@nuxtjs/sentry": "^5.1.7",
     "@toast-ui/vue-editor": "^3.1.2",
     "core-js": "^3.15.1",
+    "currency-symbol-map": "^5.0.1",
     "iso-639-1": "^2.1.13",
     "lodash": "^4.17.21",
     "nuxt-edge": "latest",
