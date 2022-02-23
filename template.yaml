@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Donation Receiver Frontend
+
+Parameters:
+  FrontendName:
+    Type: String
+    Default: donation-page-receiver
+  Stage:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - production
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      # Change bucket name to reflect your website
+      BucketName: !Sub '{{resolve:ssm:/${Stage}/frontend/${FrontendName}/base-url}}'
+      # AccessControl: PublicRead #this may be used instead of the block config
+      # PublicAccessBlockConfiguration:
+      #   BlockPublicAcls: false
+      #   BlockPublicPolicy: false
+      #   IgnorePublicAcls: false
+      #   RestrictPublicBuckets: false
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        # Restricting access to cloudfront only.
+        Statement:
+          - Effect: Allow
+            Action: 's3:GetObject'
+            Resource:
+              - !Sub 'arn:aws:s3:::${S3Bucket}/*'
+            Principal: '*'
+            #   AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}'
+
+  DonationPageManagerCloudfrontDNS:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: 'S3 Website DNS for Donation Receiver frontend SPA'
+      Name: !Sub '/${Stage}/frontend/${FrontendName}/s3-website-dns'
+      Type: 'String'
+      Value: !Sub '{{resolve:ssm:/${Stage}/frontend/${FrontendName}/base-url}}.s3-website-${AWS::Region}.amazonaws.com'
+  DonationPageManagerBucketName:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: 'S3 Bucket Name for Donation Receiver frontend SPA'
+      Name: !Sub '/${Stage}/frontend/${FrontendName}/bucket-name'
+      Type: 'String'
+      Value: !Sub '{{resolve:ssm:/${Stage}/frontend/${FrontendName}/base-url}}'

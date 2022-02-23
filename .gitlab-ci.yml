@@ -1,0 +1,81 @@
+include:
+  - project: 'adra-network/aws-core-deployment-roles'
+    file: '/gitlab-templates/trunk-based-pipeline.yml'
+stages:
+  - build
+  - test
+  - deploy
+  - release
+
+npm:
+  image: node:16-slim
+  environment:
+    name: $ENVIRONMENT_NAME
+  stage: build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-npm
+    paths:
+      - node_modules/
+  script:
+    - npm install
+  artifacts:
+    # expire_in: 1 month
+    paths:
+      - node_modules/
+
+.deployment_template: &deployment
+  image: adranetwork/gitlab-build
+  stage: deploy
+  environment:
+    name: $ENVIRONMENT_NAME
+  dependencies:
+    - npm
+  before_script:
+    - npm install -g cloudflare-cli
+  script:
+    - echo exporting the following as tag  ${CI_COMMIT_REF_SLUG} | sed 's/.*-//'
+    - export TAG="$(echo ${CI_COMMIT_REF_SLUG} | sed 's/.*-//')"
+    - . assume-role.sh ${PIPELINE_EXECUTION_ROLE} ${CI_ENVIRONMENT_NAME}-deployment
+    - sam deploy  --config-env ${CI_ENVIRONMENT_NAME} --force-upload --no-fail-on-empty-changeset --s3-bucket ${ARTIFACTS_BUCKET}  --role-arn ${CLOUDFORMATION_EXECUTION_ROLE}
+    - export S3_WEBSITE_DNS="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-manager/s3-website-dns --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
+    - export OM_PREFIX="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-manager/prefix --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
+    - export S3_BUCKET_NAME="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-manager/bucket-name --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
+    - echo "S3_WEBSITE_DNS ${S3_WEBSITE_DNS}"
+    - echo "OM_PREFIX ${OM_PREFIX}"
+    - echo "S3_BUCKET_NAME ${S3_BUCKET_NAME}"
+    - cfcli -a -t CNAME edit ${OM_PREFIX} ${S3_WEBSITE_DNS}
+    - npm run generate-env -- --ssm-path-prefix /${CI_ENVIRONMENT_NAME} --region ${AWS_DEFAULT_REGION}
+    # - npm run build
+    - npm run generate
+    - aws s3 sync --cache-control 'max-age=604800' --exclude index.html dist/ s3://${S3_BUCKET_NAME}/
+    - aws s3 sync --cache-control 'no-cache' dist/ s3://${S3_BUCKET_NAME}/
+
+deployment_job:
+  <<: *deployment
+
+deployment_production:
+  <<: *deployment
+  rules:
+    - if: $ENVIRONMENT_NAME == "staging"
+      variables:
+        ENVIRONMENT_NAME: production
+        PIPELINE_EXECUTION_ROLE: ${PRODUCTION_PIPELINE_EXECUTION_ROLE}
+        CLOUDFORMATION_EXECUTION_ROLE: ${PRODUCTION_CLOUDFORMATION_EXECUTION_ROLE}
+        ARTIFACTS_BUCKET: ${PRODUCTION_ARTIFACTS_BUCKET}
+      when: manual
+
+release_job:
+  rules:
+    - if: $ENVIRONMENT_NAME == "staging"
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+
+  script:
+    - echo exporting the following as tag  ${CI_COMMIT_REF_SLUG} | sed 's/.*-//'
+    - export TAG="$(echo ${CI_COMMIT_REF_SLUG} | sed 's/.*-//')"
+    - echo "running release_job for $TAG"
+  release:
+    name: 'Release $TAG'
+    description: 'Created using the release-cli'
+    tag_name: '$TAG' # variables must be defined elsewhere
+    ref: '$CI_COMMIT_SHA' # in the pipeline. For example, in the
