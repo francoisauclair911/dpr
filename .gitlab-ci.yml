@@ -37,13 +37,13 @@ npm:
     - export TAG="$(echo ${CI_COMMIT_REF_SLUG} | sed 's/.*-//')"
     - . assume-role.sh ${PIPELINE_EXECUTION_ROLE} ${CI_ENVIRONMENT_NAME}-deployment
     - sam deploy  --config-env ${CI_ENVIRONMENT_NAME} --force-upload --no-fail-on-empty-changeset --s3-bucket ${ARTIFACTS_BUCKET}  --role-arn ${CLOUDFORMATION_EXECUTION_ROLE}
-    - export S3_WEBSITE_DNS="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-manager/s3-website-dns --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
-    - export OM_PREFIX="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-manager/prefix --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
-    - export S3_BUCKET_NAME="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-manager/bucket-name --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
+    - export S3_WEBSITE_DNS="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-receiver/s3-website-dns --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
+    - export DOMAIN_PREFIX="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-receiver/prefix --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
+    - export S3_BUCKET_NAME="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-receiver/bucket-name --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
     - echo "S3_WEBSITE_DNS ${S3_WEBSITE_DNS}"
-    - echo "OM_PREFIX ${OM_PREFIX}"
+    - echo "DOMAIN_PREFIX ${DOMAIN_PREFIX}"
     - echo "S3_BUCKET_NAME ${S3_BUCKET_NAME}"
-    - cfcli -a -t CNAME edit ${OM_PREFIX} ${S3_WEBSITE_DNS}
+    - cfcli -a -t CNAME edit ${DOMAIN_PREFIX} ${S3_WEBSITE_DNS}
     - npm run generate-env -- --ssm-path-prefix /${CI_ENVIRONMENT_NAME} --region ${AWS_DEFAULT_REGION}
     # - npm run build
     - npm run generate
