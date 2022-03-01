@@ -1,9 +1,7 @@
 <template>
-  <v-row> </v-row>
+  <h4 class="primary--text my-2"><slot /></h4>
 </template>
 
 <script>
 export default {}
 </script>
-
-<style lang="scss" scoped></style>

@@ -2,6 +2,7 @@
   <v-text-field
     elevation="0"
     oulined
+    hide-details="auto"
     :value="displayedValue"
     :placeholder="$t('components.custom_amount.custom_amount_placeholder')"
     :prefix="currencySymbol"
@@ -12,8 +13,7 @@
 </template>
 
 <script>
-import getSymbolFromCurrency from 'currency-symbol-map'
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'CustomAmount',
   inject: ['page'],
@@ -24,11 +24,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('pages', ['currencySymbol']),
     displayedValue() {
       return this.value === 0 ? null : this.value
-    },
-    currencySymbol() {
-      return getSymbolFromCurrency(this.page.attributes.settings.currency) || ''
     },
   },
 }

@@ -83,7 +83,7 @@ export default defineNuxtConfig({
     '@nuxtjs/sentry',
   ],
   sentry: {
-    dsn: 'https://0cc2c7d4a878494d8b25ee46b7b12fe6@sentry.adra.cloud/19',
+    dsn: '',
     // https://sentry.nuxtjs.org/sentry/options
     config: {
       environment: process.env.ENVIRONMENT_NAME || 'local',
