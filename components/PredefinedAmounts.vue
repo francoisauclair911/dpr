@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col
-      v-for="(amount, index) in page.attributes.content.predefined_amounts"
+      v-for="(amount, index) in content.predefined_amounts"
       :key="index"
       cols="6"
       class="d-flex flex-column flex-md-row"
@@ -28,6 +28,6 @@
 <script>
 export default {
   name: 'PredefinedAmounts',
-  inject: ['page'],
+  inject: ['content'],
 }
 </script>

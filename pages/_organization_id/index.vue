@@ -34,14 +34,19 @@ export default {
 
   computed: {
     ...mapState('pages', ['list']),
-    // ...mapGetters('pages', [
-    //   'attributes',
-    //   'content',
-    //   'currencySymbol',
-    //   'form_alignment',
-    //   'predefined_amounts',
-    //   'settings',
-    // ]),
+  },
+  watch: {
+    /*
+    / This watches the route and if the languages changes,
+    / reloads the page content to get the translated content
+    */
+    $route: {
+      async handler(to, from) {
+        await this.$store.dispatch('pages/index', {
+          organizationId: to.params.organization_id,
+        })
+      },
+    },
   },
   methods: {},
 }

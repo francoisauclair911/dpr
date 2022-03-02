@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     fallback: true,
   },
   router: {
+    // middleware: ['url-parser'],
     routeNameSplitter: '/',
   },
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -60,6 +61,7 @@ export default defineNuxtConfig({
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/urlParser',
     '~/plugins/adra',
     { src: '~/plugins/axios', ssr: true },
     '~/plugins/iso',
@@ -108,6 +110,7 @@ export default defineNuxtConfig({
         file: 'fr-FR.js',
       },
     ],
+    strategy: 'no_prefix',
     lazy: true,
     langDir: 'lang/',
     defaultLocale: 'en',

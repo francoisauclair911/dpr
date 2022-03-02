@@ -1,5 +1,7 @@
 <template>
   <v-text-field
+    v-bind="$attrs"
+    type="number"
     elevation="0"
     oulined
     hide-details="auto"
@@ -7,6 +9,7 @@
     :placeholder="$t('components.custom_amount.custom_amount_placeholder')"
     :prefix="currencySymbol"
     clearable
+    @click:clear="$emit('clear')"
     @input="$emit('input', $event)"
   >
   </v-text-field>
@@ -16,7 +19,6 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'CustomAmount',
-  inject: ['page'],
   props: {
     value: {
       type: Number,

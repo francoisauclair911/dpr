@@ -23,8 +23,6 @@
               dense
               :items="field.options"
               :placeholder="field.placeholder"
-              item-text="label"
-              item-value="value"
               :label="field.label"
               outlined
             >
@@ -175,7 +173,7 @@
           </TranslationField>
         </v-col>
       </v-row>
-      <v-row v-if="page.attributes.content.gdpr_text">
+      <v-row v-if="content.gdpr_text" class="mt-0">
         <v-col cols="12">
           <TranslationField
             v-slot="{ field }"
@@ -183,13 +181,12 @@
           >
             <v-checkbox v-model="form.gdpr" hide-details="auto"
               ><template #label>
-                <AdraMarkdownViewer
-                  :value="page.attributes.content.gdpr_text" /></template
+                <AdraMarkdownViewer :value="content.gdpr_text" /></template
             ></v-checkbox>
           </TranslationField>
         </v-col>
       </v-row>
-      <v-row v-if="page.attributes.content.communication_text">
+      <v-row v-if="content.communication_text" class="mt-0">
         <v-col cols="12">
           <TranslationField
             v-slot="{ field }"
@@ -201,9 +198,7 @@
               class="mt-0"
               ><template #label>
                 <AdraMarkdownViewer
-                  :value="
-                    page.attributes.content.communication_text
-                  " /></template
+                  :value="content.communication_text" /></template
             ></v-checkbox>
           </TranslationField>
         </v-col>
@@ -220,11 +215,6 @@
           <PaymentProviderList />
         </v-col>
       </v-row>
-      <v-row justify="center">
-        <v-col cols="auto">
-          <ButtonDonate class="mx-auto" @click="$emit('submit')"></ButtonDonate>
-        </v-col>
-      </v-row>
     </v-form>
   </v-skeleton-loader>
 </template>
@@ -233,17 +223,17 @@
 import PaymentProviderList from './PaymentProvider/List.vue'
 export default {
   name: 'DonorInfoForm',
-  inject: ['page'],
+  components: { PaymentProviderList },
+  inject: ['content'],
+  props: {
+    donorInfo: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
-      form: {
-        title: '',
-        firstName: '',
-        lastName: '',
-        phone: '',
-        gdpr: false,
-        communication: false,
-      },
+      form: this.donorInfo,
       countryList: [],
     }
   },
@@ -256,6 +246,13 @@ export default {
       return this.countryList.length > 0
     },
   },
-  components: { PaymentProviderList },
+  watch: {
+    form: {
+      deep: true,
+      handler() {
+        this.$emit('input', this.form)
+      },
+    },
+  },
 }
 </script>

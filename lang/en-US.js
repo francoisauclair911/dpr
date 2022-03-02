@@ -49,19 +49,19 @@ export default async ({ $axios }, locale) => {
             // ).then((res) => res.data),
             options: [
               {
-                label: 'Mr',
+                text: 'Mr',
                 value: 'mr',
               },
               {
-                label: 'Mrs',
+                text: 'Mrs',
                 value: 'mrs',
               },
               {
-                label: 'Dr',
+                text: 'Dr',
                 value: 'dr',
               },
               {
-                label: 'Dre',
+                text: 'Dre',
                 value: 'dre',
               },
             ],

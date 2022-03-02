@@ -1,7 +1,9 @@
 <template>
   <v-app id="donation-receiver" class="primary">
     <MainAppBar color="white" flat app :clipped-left="primaryDrawer">
-      <LanguageSelector v-if="attributes" />
+      <!-- <template #extension> -->
+      <LanguageSelector />
+      <!-- </template> -->
     </MainAppBar>
     <v-main>
       <v-container class="h-full py-0 px-0 mx-0" fluid>

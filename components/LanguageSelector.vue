@@ -1,46 +1,41 @@
 <template>
   <div>
     <v-select
+      prepend-inner-icon="mdi-translate"
       :items="languages"
       hide-details
       item-value="code"
       item-text="nativeName"
       :placeholder="$t('components.language_selector.placeholder')"
-      :value="$i18n.locale"
+      :value="lang"
       @change="switchLanguage"
     ></v-select>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 export default {
   name: 'LanguageSelector',
-  data() {
-    return {
-      lang: this.$route.query.lang,
-    }
-  },
+
   computed: {
+    ...mapState('languages', {
+      lang: 'selected',
+    }),
+    ...mapGetters('languages', {
+      languages: 'languages',
+    }),
     ...mapGetters('pages', ['attributes']),
 
-    languages() {
-      const pageLanguages = this.attributes.available_languages
-      const i18nLanguages = this.$i18n.locales.map((l) => l.code)
-      const mergedAndUnique = [...new Set([...pageLanguages, ...i18nLanguages])]
-      return this.$iso.getLanguages(mergedAndUnique)
-    },
+    // languages() {
+    //   const pageLanguages = this.attributes.available_languages
+    //   const i18nLanguages = this.$i18n.locales.map((l) => l.code)
+    //   const mergedAndUnique = [...new Set([...pageLanguages, ...i18nLanguages])]
+    //   return this.$iso.getLanguages(mergedAndUnique)
+    // },
   },
   methods: {
-    async switchLanguage(languageCode) {
-      await this.$store.dispatch('pages/getPage', {
-        organizationId: this.attributes.internal_ids.organization_id,
-        pageSlug: this.attributes.slug,
-        languageCode,
-      })
-      this.$i18n.setLocale(languageCode)
-      this.lang = languageCode
-    },
+    ...mapActions('languages', ['switchLanguage']),
   },
 }
 </script>

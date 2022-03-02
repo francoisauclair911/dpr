@@ -58,12 +58,12 @@ export const mutations = {
   },
 }
 export const actions = {
-  async getPage({ commit, state }, params) {
-    const { organizationId, pageSlug, languageCode = null } = params
+  async getPage({ commit, state, rootState }, params) {
+    let page
+    const { organizationId, pageSlug, languageCode: lang = null } = params
+    const languageCode = lang || rootState.languages.selected
 
-    console.log('\x1b[32;1m%s\x1b[0m  ', '=> languageCode', languageCode)
-
-    const foundPage = state.list.find((p) => {
+    page = state.list.find((p) => {
       const isSlugMatch = p.attributes.slug === pageSlug
       const isLanguageMatch =
         // if no language set we just select the matching slug page
@@ -71,25 +71,24 @@ export const actions = {
         !languageCode || p.attributes.content.language_code === languageCode
       return isSlugMatch && isLanguageMatch
     })
-    if (foundPage) {
-      console.log('\x1b[32;1m%s\x1b[0m  ', '=> foundPage', foundPage)
-      commit('SET_PAGE', foundPage)
-      return foundPage
+
+    if (!page) {
+      const {
+        data: { data },
+      } = await this.$api.campaign.get(
+        `/organizations/${organizationId}/frontend-pages/${pageSlug}`,
+        {
+          params: {
+            language_code: languageCode,
+          },
+        }
+      )
+      page = data
     }
-    const {
-      data: { data: page },
-    } = await this.$api.campaign.get(
-      `/organizations/${organizationId}/frontend-pages/${pageSlug}`,
-      {
-        params: {
-          language_code: languageCode,
-        },
-      }
-    )
-    console.log(
-      '\x1b[32;1m%s\x1b[0m  ',
-      '=> page language',
-      page.attributes.content.language_code
+    commit(
+      'languages/SET_PAGE_LANGUAGES',
+      page.attributes.available_languages,
+      { root: true }
     )
     if (!state.page || page.attributes.id !== state.page.attributes.id) {
       commit('SET_PAGE', page)
@@ -98,13 +97,9 @@ export const actions = {
 
     commit('SET_PAGE_CONTENT', page.attributes.content)
   },
-  async index({ commit, state }, params) {
-    if (state.list.length > 0) {
-      return
-    }
-    console.log('\x1b[32;1m%s\x1b[0m  ', '=> pages/index')
-
-    const { organizationId, languageCode = null } = params
+  async index({ commit, state, rootState }, params) {
+    const { organizationId, languageCode: lang = null } = params
+    const languageCode = lang || rootState.languages.selected
 
     const {
       data: { data: pages },
@@ -112,13 +107,12 @@ export const actions = {
       `/organizations/${organizationId}/frontend-pages`,
       {
         params: {
-          languageCode,
+          language_code: languageCode,
         },
       }
     )
 
     commit('SET_LIST', pages)
-    // commit('SET_PAGE', null)
 
     return pages
   },

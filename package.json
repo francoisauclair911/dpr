@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "generate-env": "node node_modules/@adra-network/env-ssm-env/bin/env-ssm-env",
-    "dev": "nuxi dev",
+    "dev": "nuxi dev --port 3333",
     "build": "nuxi build",
     "start": "nuxi preview",
     "generate": "nuxi generate",
