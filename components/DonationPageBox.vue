@@ -4,8 +4,8 @@
     <v-img
       class="white--text align-end"
       :src="page.attributes.settings.background_src"
-      max-height="200"
-      height="200"
+      max-height="400"
+      height="300"
     >
       <template #placeholder>
         <v-row class="fill-height grey" justify="center">

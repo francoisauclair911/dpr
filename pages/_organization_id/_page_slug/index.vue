@@ -96,13 +96,28 @@ export default {
   },
   methods: {
     submitDonation() {
+      let visitorId = null
+      let confidenceScore = null
+      console.log('\x1b[32;1m%s\x1b[0m  ', '=> submitDonation')
+
+      this.$fingerprint
+        .then((fp) => fp.get())
+        .then((res) => {
+          visitorId = res?.visitorId || null
+          confidenceScore = res?.confidence?.score || null
+        })
+        .catch((e) => console.log('oops fingerprint crashed'))
+
+      this.requestState = 'pending'
       const payload = {
         ...this.formData.donorInfo,
+        fingerprint: {
+          visitorId,
+          confidenceScore,
+        },
         amount: this.formData.amount,
       }
       console.log('\x1b[32;1m%s\x1b[0m  ', '=> payload', payload)
-      console.log('\x1b[32;1m%s\x1b[0m  ', '=> submitDonation')
-      this.requestState = 'pending'
       setTimeout(() => {
         this.requestState = 'success'
         this.step = 3

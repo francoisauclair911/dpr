@@ -66,6 +66,7 @@ export default defineNuxtConfig({
     { src: '~/plugins/axios', ssr: true },
     '~/plugins/iso',
     '~/plugins/api',
+    '~/plugins/fingerprint',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -148,6 +149,7 @@ export default defineNuxtConfig({
   publicRuntimeConfig: {
     DONATION_PAGE_BASE_URL: 'https://donations.adra.cloud',
     STRIPE_PK_KEY: 'pk_live_kFHoGrq13mbo0CCf5nptfLZQ',
+    FINGERPRINT_JS_PK: process.env.FINGERPRINT_JS_PK || '9K5NUIVUhV28vIu1EN50',
     APP_VERSION_V2: process.env.CI_COMMIT_REF_NAME,
     GIT_COMMIT_SHA: process.env.CI_COMMIT_SHORT_SHA,
     AWS_COGNITO_USER_POOL_ID: process.env.AWS_COGNITO_USER_POOL_ID,
