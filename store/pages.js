@@ -1,11 +1,12 @@
-import getSymbolFromCurrency from 'currency-symbol-map'
-
 export const state = () => ({
   page: null,
   list: [],
 })
 
 export const getters = {
+  backgroundSrc(state, getters) {
+    return getters?.settings?.background_src || null
+  },
   settings(state, getters) {
     return getters?.attributes?.settings
   },
@@ -18,20 +19,27 @@ export const getters = {
   predefined_amounts(state, getters) {
     return getters?.content?.predefined_amounts
   },
+  numberFormat(state, getters) {
+    return new Intl.NumberFormat(getters?.content?.languageCode || 'en', {
+      style: 'currency',
+      currency: getters?.settings?.currency,
+    })
+  },
   currencySymbol(state, getters) {
-    return getSymbolFromCurrency(getters?.settings?.currency) || ''
+    return (
+      getters.numberFormat
+        .formatToParts()
+        .find((part) => part.type === 'currency').value || ''
+    )
   },
   form_alignment(state, getters) {
     switch (getters?.settings?.form_alignment) {
       case 'left':
         return 'start'
-        break
       case 'center':
         return 'center'
-        break
       case 'right':
         return 'end'
-        break
       default:
         return 'left'
     }
@@ -44,13 +52,16 @@ export const mutations = {
   SET_LIST(state, pages) {
     state.list = pages
   },
+  SET_PAGE_CONTENT(state, content) {
+    console.log('\x1b[32;1m%s\x1b[0m  ', '=> SET_PAGE_CONTENT')
+    state.page.attributes.content = content
+  },
 }
 export const actions = {
   async getPage({ commit, state }, params) {
-    console.log('\x1b[32;1m%s\x1b[0m  ', '=> getPage triggered')
-
     const { organizationId, pageSlug, languageCode = null } = params
-    console.log('\x1b[32;1m%s\x1b[0m  ', '=> getPage params', params)
+
+    console.log('\x1b[32;1m%s\x1b[0m  ', '=> languageCode', languageCode)
 
     const foundPage = state.list.find((p) => {
       const isSlugMatch = p.attributes.slug === pageSlug
@@ -71,17 +82,24 @@ export const actions = {
       `/organizations/${organizationId}/frontend-pages/${pageSlug}`,
       {
         params: {
-          languageCode,
+          language_code: languageCode,
         },
       }
     )
-    commit('SET_PAGE', page)
-    return page
+    console.log(
+      '\x1b[32;1m%s\x1b[0m  ',
+      '=> page language',
+      page.attributes.content.language_code
+    )
+    if (!state.page || page.attributes.id !== state.page.attributes.id) {
+      commit('SET_PAGE', page)
+      return page
+    }
+
+    commit('SET_PAGE_CONTENT', page.attributes.content)
   },
   async index({ commit, state }, params) {
     if (state.list.length > 0) {
-      commit('SET_PAGE', null)
-
       return
     }
     console.log('\x1b[32;1m%s\x1b[0m  ', '=> pages/index')

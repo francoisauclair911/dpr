@@ -23,6 +23,8 @@
               dense
               :items="field.options"
               :placeholder="field.placeholder"
+              item-text="label"
+              item-value="value"
               :label="field.label"
               outlined
             >

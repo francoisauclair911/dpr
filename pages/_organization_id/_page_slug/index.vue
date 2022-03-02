@@ -1,8 +1,8 @@
 <template>
-  <v-row>
-    <v-col cols="10" offset="1" class="pt-10">
-      <v-row :justify="form_alignment">
-        <v-col cols="10" sm="7" md="3">
+  <v-row class="my-10 px-1 px-md-10">
+    <v-col cols="12" md="10" offset-md="1">
+      <v-row :justify="$vuetify.breakpoint.mobile ? 'center' : form_alignment">
+        <v-col cols="12" sm="9" md="6" lg="3" class="px-10 px-md-0">
           <v-card elevation="10">
             <v-slide-x-transition hide-on-leave>
               <v-card
@@ -67,12 +67,22 @@
                     >
                   </v-btn>
                   <v-spacer />
-                  <span class="text-subtitle-1"
+                  <div class="text-subtitle-1">
+                    <span class=""
+                      >{{ $t('components.step_2.header.donation_amount') }}
+                      &#8226;
+                    </span>
+                    <b class="primary--text">
+                      {{ numberFormat.format(formData.amount) }}
+                    </b>
+                  </div>
+
+                  <!-- <span class="text-subtitle-1"
                     >{{ $t('components.step_2.header.donation_amount') }}
                     <b class="primary--text">{{
                       currencySymbol + formData.amount
                     }}</b></span
-                  >
+                  > -->
                 </v-card-title>
                 <v-card-text>
                   <v-divider />
@@ -153,10 +163,11 @@ export default {
       page: this.page,
     }
   },
-  async asyncData({ store, params }) {
+  async asyncData({ store, params, query }) {
     await store.dispatch('pages/getPage', {
       organizationId: params.organization_id,
       pageSlug: params.page_slug,
+      languageCode: query.lang,
     })
   },
 
@@ -189,6 +200,7 @@ export default {
   computed: {
     ...mapState('pages', ['page']),
     ...mapGetters('pages', [
+      'numberFormat',
       'attributes',
       'content',
       'currencySymbol',

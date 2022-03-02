@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar v-bind="$attrs">
+  <v-app-bar v-bind="$attrs" class="px-1 px-md-2">
     <v-btn class="text-subtitle-2" plain icon @click="$router.back()">
       <v-icon>mdi-chevron-left</v-icon>
       <span class="text-subtitle-2 black--text text-capitalize"> Back</span>

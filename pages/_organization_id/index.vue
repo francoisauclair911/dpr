@@ -1,6 +1,6 @@
 <template>
-  <v-row>
-    <v-col cols="10" offset="1" class="pt-10">
+  <v-row class="mt-10 px-1 px-md-10">
+    <v-col>
       <v-row>
         <v-col
           v-for="page in list"
@@ -21,7 +21,11 @@
 import { mapState } from 'vuex'
 export default {
   name: 'PageList',
-
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$store.commit('pages/SET_PAGE', null)
+    })
+  },
   async asyncData({ store, params }) {
     await store.dispatch('pages/index', {
       organizationId: params.organization_id,
