@@ -39,8 +39,8 @@ export default defineNuxtConfig({
   components: true,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - aws-frontend-donation-campaign-receiver',
-    title: 'aws-frontend-donation-campaign-receiver',
+    titleTemplate: '%s - ADRA Donations',
+    title: 'ADRA Donations',
     htmlAttrs: {
       lang: 'en',
     },
