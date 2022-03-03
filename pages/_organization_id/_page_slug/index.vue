@@ -2,14 +2,7 @@
   <v-row class="my-10 px-1 px-md-10">
     <v-col cols="12" md="10" offset-md="1">
       <v-row :justify="$vuetify.breakpoint.mobile ? 'center' : form_alignment">
-        <!-- <v-col cols="3">
-          <v-card
-            ><v-card-text>
-              {{ requestState }}
-            </v-card-text></v-card
-          >
-        </v-col> -->
-        <v-col cols="12" sm="9" md="6" lg="3" class="px-10 px-md-0">
+        <v-col cols="12" sm="9" md="6" lg="5" xl="3" class="">
           <v-card elevation="10" :loading="requestState === 'pending'">
             <v-overlay absolute :value="requestState === 'pending'" z-index="4">
               <v-progress-circular indeterminate size="50" color="white" />
@@ -63,6 +56,7 @@ export default {
       },
     }
   },
+
   head() {
     return {
       title: this?.content?.title || 'Donate',
@@ -80,6 +74,7 @@ export default {
     ...mapState('pages', ['page']),
     ...mapGetters('pages', ['content', 'form_alignment']),
   },
+
   watch: {
     /*
     / This watches the route and if the languages changes,
@@ -93,6 +88,11 @@ export default {
         })
       },
     },
+  },
+  mounted() {
+    if (this.$route.query.amount) {
+      this.formData.amount = Number(this.$route.query.amount)
+    }
   },
   methods: {
     submitDonation() {

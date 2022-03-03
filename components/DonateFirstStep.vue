@@ -25,6 +25,7 @@
       <v-row>
         <v-col>
           <CustomAmount
+            autofocus
             :error="missingAmount"
             :outlined="missingAmount"
             :value="amount"
@@ -68,6 +69,7 @@ export default {
       default: 0,
     },
   },
+
   data() {
     return {
       missingAmount: false,

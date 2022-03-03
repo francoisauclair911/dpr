@@ -1,9 +1,21 @@
 <template>
   <v-app id="donation-receiver" class="primary">
-    <MainAppBar color="white" flat app :clipped-left="primaryDrawer">
-      <!-- <template #extension> -->
-      <LanguageSelector />
-      <!-- </template> -->
+    <MainAppBar
+      class="px-1 px-md-2"
+      color="white"
+      flat
+      app
+      :clipped-left="primaryDrawer"
+    >
+      <template #prepend-title>
+        <ButtonBack v-show="!$vuetify.breakpoint.xsOnly" />
+      </template>
+      <v-row class="pl-4" justify="start" justify-sm="end">
+        <v-col cols="auto" sm="auto">
+          <LanguageSelector />
+        </v-col>
+      </v-row>
+      <!-- <LanguageSelector class="mx-4 flex-grow-1" /> -->
     </MainAppBar>
     <v-main>
       <v-container class="h-full py-0 px-0 mx-0" fluid>
@@ -14,7 +26,7 @@
           tile
           :style="cardStyle"
         >
-          <v-row class="fill-height my-0 mb-0">
+          <v-row class="fill-height ma-0">
             <v-col class="py-0">
               <Nuxt />
             </v-col>

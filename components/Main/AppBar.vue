@@ -1,15 +1,8 @@
 <template>
-  <v-app-bar
-    v-bind="$attrs"
-    class="px-1 px-md-2"
-    :extended="$vuetify.breakpoint.xsOnly"
-  >
-    <v-btn class="text-subtitle-2" plain icon @click="$router.back()">
-      <v-icon>mdi-chevron-left</v-icon>
-      <span class="text-subtitle-2 black--text text-capitalize"> Back</span>
-    </v-btn>
-    <v-toolbar-title class="primary--text text-h6"
-      >ADRA Donation Receiver
+  <v-app-bar v-bind="$attrs" :extended="$vuetify.breakpoint.xsOnly">
+    <slot name="prepend-title"></slot>
+    <v-toolbar-title class="primary--text text-h6 flex-shrink-0">
+      <slot name="title">ADRA Donation Receiver</slot>
     </v-toolbar-title>
     <v-spacer />
 

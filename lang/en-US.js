@@ -1,6 +1,9 @@
 export default async ({ $axios }, locale) => {
   return await Promise.resolve({
     components: {
+      buttons: {
+        back: 'Back',
+      },
       language_selector: {
         placeholder: 'Select your language',
       },
