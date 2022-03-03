@@ -24,13 +24,6 @@ export default {
       languages: 'languages',
     }),
     ...mapGetters('pages', ['attributes']),
-
-    // languages() {
-    //   const pageLanguages = this.attributes.available_languages
-    //   const i18nLanguages = this.$i18n.locales.map((l) => l.code)
-    //   const mergedAndUnique = [...new Set([...pageLanguages, ...i18nLanguages])]
-    //   return this.$iso.getLanguages(mergedAndUnique)
-    // },
   },
   methods: {
     ...mapActions('languages', ['switchLanguage']),

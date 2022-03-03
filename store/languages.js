@@ -23,7 +23,8 @@ export const getters = {
 
   languages(state, getters) {
     const mergedAndUnique = [
-      ...new Set([...state.pageLanguages, ...getters.i18nLanguagesCodes]),
+      // ...new Set([...state.pageLanguages, ...getters.i18nLanguagesCodes]),
+      ...new Set([...state.pageLanguages]),
     ]
     return iso.getLanguages(mergedAndUnique)
   },
