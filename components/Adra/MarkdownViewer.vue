@@ -44,6 +44,9 @@ export default {
   font-size: 1rem;
   color: black;
 }
+.adra-markdown-viewer .toastui-editor-contents p {
+  margin: 0;
+}
 .adra-markdown-viewer.small .toastui-editor-contents {
   font-size: 0.8rem;
   color: black;

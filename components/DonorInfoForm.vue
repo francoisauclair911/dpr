@@ -177,7 +177,7 @@
           v-slot="{ field }"
           :field="$t('components.donorInfoForm.fields.city')"
         >
-          <v-checkbox v-model="form.gdpr" hide-details="auto"
+          <v-checkbox v-model="form.gdpr" dense hide-details="auto"
             ><template #label>
               <AdraMarkdownViewer :value="content.gdpr_text" /></template
           ></v-checkbox>
@@ -193,6 +193,7 @@
           <v-checkbox
             v-model="form.communication"
             hide-details="auto"
+            dense
             class="mt-0"
             ><template #label>
               <AdraMarkdownViewer
@@ -254,8 +255,8 @@ export default {
   },
 }
 </script>
-<style>
-input:-webkit-autofill,
+<style scoped>
+/deep/ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
@@ -265,9 +266,16 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus,
 input:-internal-autofill-selected {
-  /* border: 1px solid green; */
-  /* -webkit-text-fill-color: green; */
   -webkit-box-shadow: 0 0 0px 1000px #fff inset;
   box-shadow: 0 0 0px 1000px #fff inset;
+}
+
+/deep/ .v-input--checkbox .v-input__slot {
+  align-items: start;
+}
+
+/* Reduce checkboxes font-size */
+/deep/ .v-input--checkbox .v-input__slot p {
+  font-size: 0.85rem;
 }
 </style>
