@@ -8,7 +8,10 @@
       :clipped-left="primaryDrawer"
     >
       <template #prepend-title>
-        <ButtonBack v-show="!$vuetify.breakpoint.xsOnly" />
+        <ButtonBack
+          v-show="!$vuetify.breakpoint.xsOnly"
+          @click="$router.back()"
+        />
       </template>
       <v-row class="pl-4" justify="start" justify-sm="end">
         <v-col cols="auto" sm="auto">

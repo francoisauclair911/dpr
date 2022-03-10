@@ -157,6 +157,7 @@ export default defineNuxtConfig({
     AWS_COGNITO_BASE_URL: process.env.AWS_COGNITO_BASE_URL,
     COUNTRY_BASE_URL: process.env.COUNTRY_BASE_URL,
     CAMPAIGN_BASE_URL: process.env.CAMPAIGN_BASE_URL,
+    PAYMENT_BASE_URL: process.env.PAYMENT_BASE_URL,
     SENTRY_SAMPLE_RATE:
       process.env.SENTRY_SAMPLE_RATE || isProduction ? 0.2 : 0,
     features: {

@@ -139,6 +139,7 @@
             :label="field.label"
             hide-details="auto"
             autocomplete="country-name"
+            cache-items
             outlined
             dense
             item-text="name"
@@ -202,18 +203,6 @@
         </TranslationField>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="12">
-        <Subheader>
-          {{ $t('components.donorInfoForm.subheaders.payment_information') }}
-        </Subheader>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <PaymentProviderList />
-      </v-col>
-    </v-row>
   </v-form>
 </template>
 
@@ -235,9 +224,12 @@ export default {
       countryList: [],
     }
   },
-  async fetch() {
-    const { data: countryList } = await this.$api.country('/')
-    this.countryList = countryList
+  // async fetch() {
+  fetch() {
+    // const { data: countryList } = await this.$api.country('/')
+    // this.countryList = countryList
+    this.countryList = []
+
     this.$emit('ready')
   },
   computed: {

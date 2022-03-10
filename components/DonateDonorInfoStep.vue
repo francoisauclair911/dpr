@@ -4,10 +4,11 @@
     </v-skeleton-loader>
     <v-card v-show="!loading" flat>
       <v-card-title class="black--text font-weight-bold">
-        <v-btn class="text-subtitle-2" plain icon @click="$emit('back')">
+        <ButtonBack @click="$emit('back')"></ButtonBack>
+        <!-- <v-btn class="text-subtitle-2" plain icon @click="$emit('back')">
           <v-icon>mdi-chevron-left</v-icon>
           <span class="text-subtitle-2 black--text text-capitalize"> Back</span>
-        </v-btn>
+        </v-btn> -->
         <v-spacer />
         <div class="text-subtitle-1">
           <span class=""
@@ -27,14 +28,8 @@
           @ready="loading = false"
           @input="$emit('input', { ...value, donorInfo: $event })"
         />
-        <v-row justify="center">
-          <v-col cols="auto">
-            <ButtonDonate
-              class="mx-auto"
-              @click="$emit('submit')"
-            ></ButtonDonate>
-          </v-col>
-        </v-row>
+
+        <ButtonPrimary @click="$emit('next')">Payment Details</ButtonPrimary>
       </v-card-text>
     </v-card>
   </div>
@@ -43,7 +38,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  name: 'DonateSecondStep',
+  name: 'DonateDonorInfoStep',
   props: {
     value: {
       type: Object,

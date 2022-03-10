@@ -14,6 +14,7 @@ export default function ({ $axios, $config, store }, inject) {
   const repositories = {
     country: createAxiosInstance($config.COUNTRY_BASE_URL),
     campaign: createAxiosInstance($config.CAMPAIGN_BASE_URL),
+    payment: createAxiosInstance($config.PAYMENT_BASE_URL),
   }
   inject('api', repositories)
 }

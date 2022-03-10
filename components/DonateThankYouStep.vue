@@ -9,7 +9,7 @@
         <v-icon size="32" color="primary"> mdi-heart </v-icon>
       </v-avatar>
       <span class="mt-2 text-subtitle-1"
-        >{{ $t('components.step_3.header.thank_you') }}
+        >{{ $t('components.thank_you_step.header.thank_you') }}
       </span>
     </v-card>
 
@@ -18,28 +18,28 @@
         <v-col>
           <Subheader>
             <div class="d-flex justify-space-between">
-              {{ $t('components.step_3.subheader.donation_detail') }}
+              {{ $t('components.thank_you_step.subheader.donation_detail') }}
               <SharerItem />
             </div>
           </Subheader>
         </v-col>
       </v-row>
       <DonationDetailRowItem
-        :dt="$t('components.step_3.fields.donation_amount')"
+        :dt="$t('components.thank_you_step.fields.donation_amount')"
         :dd="currencySymbol + formData.amount"
       />
       <DonationDetailRowItem
-        :dt="$t('components.step_3.fields.name')"
+        :dt="$t('components.thank_you_step.fields.name')"
         :dd="`${formData.donorInfo.firstName || '-/-'} ${
           formData.donorInfo.lastName || ''
         }`"
       />
       <DonationDetailRowItem
-        :dt="$t('components.step_3.fields.email')"
+        :dt="$t('components.thank_you_step.fields.email')"
         :dd="formData.donorInfo.email || '-/-'"
       />
       <DonationDetailRowItem
-        :dt="$t('components.step_3.fields.date')"
+        :dt="$t('components.thank_you_step.fields.date')"
         :dd="new Date().toDateString()"
       />
       <v-divider class="my-4" />
@@ -54,7 +54,7 @@
               )
             "
           >
-            {{ $t('components.step_3.buttons.support_other_causes') }}
+            {{ $t('components.thank_you_step.buttons.support_other_causes') }}
           </ButtonPrimary>
         </v-col>
       </v-row>
@@ -66,7 +66,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'DonateThirdStep',
+  name: 'DonateThankYouStep',
   props: {
     formData: {
       type: Object,

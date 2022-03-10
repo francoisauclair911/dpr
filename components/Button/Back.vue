@@ -1,5 +1,12 @@
 <template>
-  <v-btn large class="text-subtitle-2" plain icon @click="$router.back()">
+  <v-btn
+    large
+    class="text-subtitle-2"
+    plain
+    icon
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
     <v-icon>mdi-chevron-left</v-icon>
     <span class="text-subtitle-2 black--text text-capitalize">
       {{ $t('components.buttons.back') }}

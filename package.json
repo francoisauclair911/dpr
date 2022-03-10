@@ -20,6 +20,7 @@
     "@nuxtjs/i18n": "^7.2.0",
     "@nuxtjs/sentry": "^5.1.7",
     "@toast-ui/vue-editor": "^3.1.2",
+    "@vue-stripe/vue-stripe": "^4.4.2",
     "core-js": "^3.15.1",
     "currency-symbol-map": "^5.0.1",
     "iso-639-1": "^2.1.13",
@@ -30,7 +31,7 @@
   "devDependencies": {
     "@adra-network/env-ssm-env": "^1.0.8",
     "@babel/eslint-parser": "^7.14.7",
-    "@nuxt/bridge": "npm:@nuxt/bridge-edge@^3.0.0-27383920.81ee59c",
+    "@nuxt/bridge": "npm:@nuxt/bridge-edge@^3.0.0-27447229.20f3171",
     "@nuxtjs/eslint-config": "^6.0.1",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/vuetify": "^1.12.1",

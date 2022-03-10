@@ -3,7 +3,7 @@
     <v-tabs v-model="tab">
       <v-tabs-slider color="primary"></v-tabs-slider>
       <v-tab v-for="provider in paymentProviders" :key="provider">
-        {{ provider }}
+        {{ provider === 'stripe' ? 'Card' : provider }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
@@ -18,7 +18,7 @@
 export default {
   name: 'PaymentProviderList',
 
-  inject: ['page'],
+  inject: ['page', 'formData'],
 
   data() {
     return {

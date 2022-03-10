@@ -18,7 +18,12 @@ export default async ({ $axios }, locale) => {
           donation_amount: 'Donation Amount',
         },
       },
-      step_3: {
+      payment_details_step: {
+        subheaders: {
+          payment_information: 'Payment Information',
+        },
+      },
+      thank_you_step: {
         header: {
           thank_you: 'Thank you for your donation',
         },
@@ -41,7 +46,6 @@ export default async ({ $axios }, locale) => {
           fill_donor_code: 'Fill with your Donor Code',
           your_information: 'Your Information',
           billing_information: 'Billing Information',
-          payment_information: 'Payment Information',
         },
         fields: {
           title: {

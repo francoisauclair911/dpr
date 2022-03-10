@@ -61,7 +61,7 @@
 
 <script>
 export default {
-  name: 'DonateFirstStep',
+  name: 'DonateAmountStep',
   inject: ['content'],
   props: {
     amount: {

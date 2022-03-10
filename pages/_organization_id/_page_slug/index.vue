@@ -1,26 +1,41 @@
 <template>
   <v-row class="my-10 px-1 px-md-10">
     <v-col cols="12" md="10" offset-md="1">
+      {{ step }}
       <v-row :justify="$vuetify.breakpoint.mobile ? 'center' : form_alignment">
+        <v-col cols="4"
+          ><v-card
+            ><v-card-text>
+              <pre>{{ $store.state.payment.intent }}</pre>
+            </v-card-text></v-card
+          ></v-col
+        >
         <v-col cols="12" sm="9" md="6" lg="5" xl="3" class="">
           <v-card elevation="10" :loading="requestState === 'pending'">
             <v-overlay absolute :value="requestState === 'pending'" z-index="4">
               <v-progress-circular indeterminate size="50" color="white" />
             </v-overlay>
             <v-slide-x-transition hide-on-leave>
-              <DonateFirstStep
+              <DonateAmountStep
                 v-if="step === 1"
                 :amount="formData.amount"
                 @update:amount="formData.amount = $event"
                 @submit="goToDonorInfo"
               />
-              <DonateSecondStep
+              <DonateDonorInfoStep
                 v-if="step === 2"
                 v-model="formData"
                 @back="step--"
-                @submit="submitDonation"
+                @next="goToPaymentStep"
               />
-              <DonateThirdStep v-if="step === 3" :form-data="formData" />
+              <DonatePaymentDetailsStep
+                v-if="step === 3"
+                :form-data="formData"
+                @back="step--"
+                @next="step++"
+              />
+
+              <DonateThankYouStep v-if="step === 4" :form-data="formData" />
             </v-slide-x-transition>
           </v-card>
         </v-col>
@@ -37,6 +52,7 @@ export default {
     return {
       page: this.page,
       content: this.content,
+      formData: this.formData,
     }
   },
   async asyncData({ store, params }) {
@@ -126,6 +142,20 @@ export default {
     },
     goToDonorInfo() {
       this.step++
+    },
+    goToPaymentStep() {
+      this.$store
+        .dispatch('payment/createIntent', {
+          ...this.formData,
+          page: this.page,
+        })
+        .then((res) => {
+          this.step++
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$error('something happened')
+        })
     },
   },
 }
