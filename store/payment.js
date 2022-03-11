@@ -33,7 +33,24 @@ export const actions = {
 
     return response
   },
-
+  upsertIntent({ commit, dispatch, store }, payload) {
+    const { amount, page, donorInfo: donor } = payload
+    const piData = {
+      donation: {
+        amount,
+        currency: page.attributes.settings.currency,
+      },
+      donor,
+      page: {
+        donation_page_id: page.attributes.id,
+        ...page.attributes.internal_ids,
+      },
+    }
+    if (store.intent) {
+      return dispatch(updateIntent, piData)
+    }
+    return dispatch(createIntent, piData)
+  },
   async createIntent({ commit }, payload) {
     console.log('createIntent')
     const { amount, page, donorInfo: donor } = payload

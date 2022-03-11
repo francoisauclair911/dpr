@@ -145,10 +145,7 @@ export default {
     },
     goToPaymentStep() {
       this.$store
-        .dispatch('payment/createIntent', {
-          ...this.formData,
-          page: this.page,
-        })
+        .dispatch('payment/upsertIntent', payload)
         .then((res) => {
           this.step++
         })
