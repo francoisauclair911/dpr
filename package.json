@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "generate-env": "node node_modules/@adra-network/env-ssm-env/bin/env-ssm-env",
-    "dev": "nuxi dev --port 3333",
+    "dev": "nuxi dev --port 9999",
     "build": "nuxi build",
     "start": "nuxi preview",
     "generate": "nuxi generate",
@@ -31,7 +31,7 @@
   "devDependencies": {
     "@adra-network/env-ssm-env": "^1.0.8",
     "@babel/eslint-parser": "^7.14.7",
-    "@nuxt/bridge": "npm:@nuxt/bridge-edge@^3.0.0-27447229.20f3171",
+    "@nuxt/bridge": "npm:@nuxt/bridge-edge@^3.0.0-27451165.114cbe3",
     "@nuxtjs/eslint-config": "^6.0.1",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/vuetify": "^1.12.1",

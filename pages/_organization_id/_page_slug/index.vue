@@ -144,15 +144,7 @@ export default {
       this.step++
     },
     goToPaymentStep() {
-      this.$store
-        .dispatch('payment/upsertIntent', payload)
-        .then((res) => {
-          this.step++
-        })
-        .catch((err) => {
-          console.log(err)
-          this.$error('something happened')
-        })
+      this.step++
     },
   },
 }

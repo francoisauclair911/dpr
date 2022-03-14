@@ -3,7 +3,13 @@
 </template>
 
 <script>
-export default {}
+import { mapActions } from 'vuex'
+export default {
+  provide() {
+    return {
+      page: [],
+      formData: [],
+    }
+  },
+}
 </script>
-
-<style lang="scss" scoped></style>

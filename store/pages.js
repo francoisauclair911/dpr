@@ -91,10 +91,12 @@ export const actions = {
       { root: true }
     )
     if (!state.page || page.attributes.id !== state.page.attributes.id) {
+      console.log('\x1b[32;1m%s\x1b[0m  ', '=> here')
       commit('SET_PAGE', page)
       return page
     }
 
+    console.log('\x1b[32;1m%s\x1b[0m  ', '=> here2')
     commit('SET_PAGE_CONTENT', page.attributes.content)
   },
   async index({ commit, state, rootState }, params) {
