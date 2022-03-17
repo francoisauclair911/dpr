@@ -22,7 +22,7 @@ export const getters = {
   numberFormat(state, getters) {
     return new Intl.NumberFormat(getters?.content?.languageCode || 'en', {
       style: 'currency',
-      currency: getters?.settings?.currency,
+      currency: getters?.settings?.currency || 'usd',
     })
   },
   currencySymbol(state, getters) {
@@ -99,10 +99,9 @@ export const actions = {
     console.log('\x1b[32;1m%s\x1b[0m  ', '=> here2')
     commit('SET_PAGE_CONTENT', page.attributes.content)
   },
-  async index({ commit, state, rootState }, params) {
+  async index({ commit, rootState }, params) {
     const { organizationId, languageCode: lang = null } = params
     const languageCode = lang || rootState.languages.selected
-
     const {
       data: { data: pages },
     } = await this.$api.campaign.get(
@@ -113,9 +112,7 @@ export const actions = {
         },
       }
     )
-
     commit('SET_LIST', pages)
-
     return pages
   },
 }

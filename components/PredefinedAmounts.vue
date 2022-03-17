@@ -11,7 +11,7 @@
         color="primary"
         large
         elevation="2"
-        @click="$emit('click', amount.value)"
+        @click="updateAmount(amount.value)"
       >
         <span
           class="white--text text-h6 font-weight-medium"
@@ -23,8 +23,13 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'PredefinedAmounts',
   inject: ['content'],
+  methods: {
+    ...mapMutations('payment', ['updateAmount']),
+  },
 }
 </script>

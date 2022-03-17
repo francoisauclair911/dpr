@@ -1,6 +1,6 @@
 <template>
-  <v-row v-bind="$attrs">
-    <v-col cols="12" sm="6">
+  <v-row v-bind="$attrs" justify="space-between">
+    <v-col cols="12" sm="6" md="auto">
       <dt
         class="font-weight-light secondary--text text--lighten-2 text-capitalize"
       >
@@ -30,5 +30,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped></style>

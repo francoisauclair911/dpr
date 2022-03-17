@@ -10,25 +10,27 @@
     :prefix="currencySymbol"
     clearable
     @click:clear="$emit('clear')"
-    @input="$emit('input', $event)"
+    @input="update"
   >
   </v-text-field>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState, mapMutations } from 'vuex'
 export default {
   name: 'CustomAmount',
-  props: {
-    value: {
-      type: Number,
-      default: 0,
-    },
-  },
+
   computed: {
+    ...mapState('payment', ['amount']),
     ...mapGetters('pages', ['currencySymbol']),
     displayedValue() {
-      return this.value === 0 ? null : this.value
+      return this.amount === 0 ? null : this.amount
+    },
+  },
+  methods: {
+    ...mapMutations('payment', ['updateAmount']),
+    update(amount) {
+      return this.updateAmount(amount)
     },
   },
 }

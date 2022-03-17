@@ -13,17 +13,27 @@
           v-slot="{ field }"
           :field="$t('components.donorInfoForm.fields.title')"
         >
-          <v-combobox
-            v-model="form.title"
-            autocomplete="honorific-prefix"
-            hide-details="auto"
-            dense
-            :items="field.options"
-            :placeholder="field.placeholder"
-            :label="field.label"
-            outlined
+          <ValidationHandler
+            name="title"
+            v-slot="{ errors, hasError }"
+            v-bind="$attrs"
           >
-          </v-combobox>
+            <v-combobox
+              :value="title"
+              @input="updateTitle"
+              class="text-capitalize"
+              autocomplete="honorific-prefix"
+              hide-details="auto"
+              item-value="value"
+              item-text="text"
+              :error-messages="errors"
+              dense
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
         </TranslationField>
       </v-col>
     </v-row>
@@ -33,15 +43,21 @@
           v-slot="{ field }"
           :field="$t('components.donorInfoForm.fields.firstName')"
         >
-          <v-text-field
-            v-model="form.firstName"
-            hide-details="auto"
-            dense
-            :placeholder="field.placeholder"
-            :label="field.label"
-            outlined
+          <ValidationHandler
+            name="first_name"
+            v-slot="{ errors, hasError }"
+            v-bind="$attrs"
           >
-          </v-text-field>
+            <v-text-field
+              v-model="first_name"
+              hide-details="auto"
+              :error-messages="errors"
+              dense
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
         </TranslationField>
       </v-col>
       <v-col cols="12" sm="6">
@@ -49,16 +65,22 @@
           v-slot="{ field }"
           :field="$t('components.donorInfoForm.fields.lastName')"
         >
-          <v-text-field
-            v-model="form.lastName"
-            hide-details="auto"
-            dense
-            :items="field.options"
-            :placeholder="field.placeholder"
-            :label="field.label"
-            outlined
+          <ValidationHandler
+            name="last_name"
+            v-slot="{ errors, hasError }"
+            v-bind="$attrs"
           >
-          </v-text-field>
+            <v-text-field
+              v-model="last_name"
+              hide-details="auto"
+              dense
+              :error-messages="errors"
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
         </TranslationField>
       </v-col>
     </v-row>
@@ -68,16 +90,22 @@
           v-slot="{ field }"
           :field="$t('components.donorInfoForm.fields.phone')"
         >
-          <v-text-field
-            v-model="form.phone"
-            dense
-            hide-details="auto"
-            :items="field.options"
-            :placeholder="field.placeholder"
-            :label="field.label"
-            outlined
+          <ValidationHandler
+            name="phone"
+            v-slot="{ errors, hasError }"
+            v-bind="$attrs"
           >
-          </v-text-field>
+            <v-text-field
+              v-model="phone"
+              :error-messages="errors"
+              dense
+              hide-details="auto"
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
         </TranslationField>
       </v-col>
     </v-row>
@@ -87,23 +115,29 @@
           v-slot="{ field }"
           :field="$t('components.donorInfoForm.fields.email')"
         >
-          <v-text-field
-            v-model="form.email"
-            hide-details="auto"
-            dense
-            :items="field.options"
-            :placeholder="field.placeholder"
-            :label="field.label"
-            outlined
+          <ValidationHandler
+            name="email"
+            v-slot="{ errors, hasError }"
+            v-bind="$attrs"
           >
-          </v-text-field>
+            <v-text-field
+              v-model="email"
+              hide-details="auto"
+              dense
+              :error-messages="errors"
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
         </TranslationField>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
         <Subheader>
-          {{ $t('components.donorInfoForm.subheaders.billing_information') }}
+          {{ $t('components.donorInfoForm.subheaders.address_information') }}
         </Subheader>
       </v-col>
     </v-row>
@@ -111,18 +145,49 @@
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
-          :field="$t('components.donorInfoForm.fields.street_address')"
+          :field="$t('components.donorInfoForm.fields.address_line1')"
         >
-          <v-text-field
-            v-model="form.street_address"
-            hide-details="auto"
-            dense
-            :items="field.options"
-            :placeholder="field.placeholder"
-            :label="field.label"
-            outlined
+          <ValidationHandler
+            name="address_line1"
+            v-slot="{ errors }"
+            v-bind="$attrs"
           >
-          </v-text-field>
+            <v-text-field
+              v-model="address_line1"
+              hide-details="auto"
+              :error-messages="errors"
+              dense
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
+        </TranslationField>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <TranslationField
+          v-slot="{ field }"
+          :field="$t('components.donorInfoForm.fields.address_line2')"
+        >
+          <ValidationHandler
+            name="address_line2"
+            v-slot="{ errors }"
+            v-bind="$attrs"
+          >
+            <v-text-field
+              v-model="address_line2"
+              hide-details="auto"
+              :error-messages="errors"
+              dense
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
         </TranslationField>
       </v-col>
     </v-row>
@@ -132,24 +197,27 @@
           v-slot="{ field }"
           :field="$t('components.donorInfoForm.fields.country')"
         >
-          <v-autocomplete
-            v-if="countryListLoaded"
-            v-model="form.country"
-            :placeholder="field.placeholder"
-            :label="field.label"
-            hide-details="auto"
-            autocomplete="country-name"
-            cache-items
-            outlined
-            dense
-            item-text="name"
-            item-value="alpha3Code"
-            :items="countryList"
-          />
+          <ValidationHandler name="country" v-slot="{ errors }" v-bind="$attrs">
+            <v-autocomplete
+              v-if="countryListLoaded"
+              v-model="country"
+              :error-messages="errors"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              hide-details="auto"
+              autocomplete="country-name"
+              cache-items
+              outlined
+              dense
+              item-text="name"
+              item-value="alpha3Code"
+              :items="countryList"
+            />
 
-          <v-input v-else hide-details="auto">
-            <v-progress-linear indeterminate />
-          </v-input>
+            <v-input v-else hide-details="auto">
+              <v-progress-linear indeterminate />
+            </v-input>
+          </ValidationHandler>
         </TranslationField>
       </v-col>
     </v-row>
@@ -159,16 +227,18 @@
           v-slot="{ field }"
           :field="$t('components.donorInfoForm.fields.city')"
         >
-          <v-text-field
-            v-model="form.city"
-            hide-details="auto"
-            dense
-            :items="field.options"
-            :placeholder="field.placeholder"
-            :label="field.label"
-            outlined
-          >
-          </v-text-field>
+          <ValidationHandler name="city" v-slot="{ errors }" v-bind="$attrs">
+            <v-text-field
+              v-model="city"
+              :error-messages="errors"
+              hide-details="auto"
+              dense
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
         </TranslationField>
       </v-col>
     </v-row>
@@ -176,12 +246,18 @@
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
-          :field="$t('components.donorInfoForm.fields.city')"
+          :field="$t('components.donorInfoForm.fields.gdpr_text')"
         >
-          <v-checkbox v-model="form.gdpr" dense hide-details="auto"
-            ><template #label>
-              <AdraMarkdownViewer :value="content.gdpr_text" /></template
-          ></v-checkbox>
+          <ValidationHandler name="gdpr" v-slot="{ errors }" v-bind="$attrs">
+            <v-checkbox
+              v-model="gdpr"
+              :error-messages="errors"
+              dense
+              hide-details="auto"
+              ><template #label>
+                <AdraMarkdownViewer :value="content.gdpr_text" /></template
+            ></v-checkbox>
+          </ValidationHandler>
         </TranslationField>
       </v-col>
     </v-row>
@@ -189,17 +265,24 @@
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
-          :field="$t('components.donorInfoForm.fields.city')"
+          :field="$t('components.donorInfoForm.fields.communication_text')"
         >
-          <v-checkbox
-            v-model="form.communication"
-            hide-details="auto"
-            dense
-            class="mt-0"
-            ><template #label>
-              <AdraMarkdownViewer
-                :value="content.communication_text" /></template
-          ></v-checkbox>
+          <ValidationHandler
+            name="communication"
+            v-slot="{ errors }"
+            v-bind="$attrs"
+          >
+            <v-checkbox
+              v-model="communication"
+              :error-messages="errors"
+              hide-details="auto"
+              dense
+              class="mt-0"
+              ><template #label>
+                <AdraMarkdownViewer
+                  :value="content.communication_text" /></template
+            ></v-checkbox>
+          </ValidationHandler>
         </TranslationField>
       </v-col>
     </v-row>
@@ -207,42 +290,50 @@
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields'
+
 import PaymentProviderList from './PaymentProvider/List.vue'
 export default {
   name: 'DonorInfoForm',
   components: { PaymentProviderList },
   inject: ['content'],
-  props: {
-    donorInfo: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
+
   data() {
     return {
-      form: this.donorInfo,
+      form: {},
+
       countryList: [],
     }
   },
-  // async fetch() {
-  fetch() {
-    // const { data: countryList } = await this.$api.country('/')
-    // this.countryList = countryList
-    this.countryList = []
-
+  async fetch() {
+    const { data: countryList } = await this.$api.country('/')
+    this.countryList = countryList
     this.$emit('ready')
   },
-  computed: {
-    countryListLoaded() {
-      return this.countryList.length > 0
+  methods: {
+    updateTitle(event) {
+      this.title = event?.value || event || ''
     },
   },
-  watch: {
-    form: {
-      deep: true,
-      handler() {
-        this.$emit('input', this.form)
-      },
+  computed: {
+    capitalizeTitle() {
+      return this.title.capitalize()
+    },
+    ...mapFields('payment', [
+      'donorInfo.title',
+      'donorInfo.first_name',
+      'donorInfo.last_name',
+      'donorInfo.email',
+      'donorInfo.phone',
+      'donorInfo.address_line1',
+      'donorInfo.address_line2',
+      'donorInfo.country',
+      'donorInfo.city',
+      'donorInfo.communication',
+      'donorInfo.gdpr',
+    ]),
+    countryListLoaded() {
+      return this.countryList.length > 0
     },
   },
 }
@@ -269,5 +360,8 @@ input:-internal-autofill-selected {
 /* Reduce checkboxes font-size */
 /deep/ .v-input--checkbox .v-input__slot p {
   font-size: 0.85rem;
+}
+/deep/ .v-text-field--outlined.v-input--dense .v-label--active {
+  z-index: 1;
 }
 </style>

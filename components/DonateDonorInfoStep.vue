@@ -16,7 +16,7 @@
             &#8226;
           </span>
           <b class="primary--text">
-            {{ numberFormat.format(value.amount) }}
+            {{ numberFormat.format(amount) }}
           </b>
         </div>
       </v-card-title>
@@ -29,14 +29,14 @@
           @input="$emit('input', { ...value, donorInfo: $event })"
         />
 
-        <ButtonPrimary @click="$emit('next')">Payment Details</ButtonPrimary>
+        <ButtonPrimary @click="next">Payment Details</ButtonPrimary>
       </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'DonateDonorInfoStep',
   props: {
@@ -51,7 +51,17 @@ export default {
     }
   },
   computed: {
+    ...mapState('payment', ['amount']),
     ...mapGetters('pages', ['numberFormat']),
+  },
+  methods: {
+    next() {
+      this.$store.dispatch('payment/validateDonorForm').then((result) => {
+        if (!result.error) {
+          this.$emit('next')
+        }
+      })
+    },
   },
 }
 </script>

@@ -17,9 +17,9 @@
           <AdraMarkdownViewer :value="content.body" />
         </v-col>
       </v-row>
-      <v-row>
+      <v-row class="mt-4">
         <v-col>
-          <PredefinedAmounts @click="updateAmount" />
+          <PredefinedAmounts />
         </v-col>
       </v-row>
       <v-row>
@@ -28,8 +28,6 @@
             autofocus
             :error="missingAmount"
             :outlined="missingAmount"
-            :value="amount"
-            @input="updateAmount"
           />
         </v-col>
       </v-row>
@@ -60,15 +58,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'DonateAmountStep',
   inject: ['content'],
-  props: {
-    amount: {
-      type: Number,
-      default: 0,
-    },
-  },
 
   data() {
     return {
@@ -76,16 +70,17 @@ export default {
     }
   },
   computed: {
+    ...mapState('payment', ['amount']),
     hasSelectedAmount() {
       return this.amount > 0
     },
   },
-  methods: {
-    updateAmount(newAmount) {
+  watch: {
+    amount() {
       this.missingAmount = false
-
-      this.$emit('update:amount', Number(newAmount))
     },
+  },
+  methods: {
     submit() {
       if (this.hasSelectedAmount) {
         return this.$emit('submit')

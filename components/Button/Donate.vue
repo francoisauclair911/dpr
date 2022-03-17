@@ -13,7 +13,7 @@
   </ButtonPrimary>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ButtonDonate',

@@ -1,18 +1,22 @@
 <template>
   <v-app dark>
-    <v-row justify="center" align="start">
+    <v-row justify="center" align="center">
       <v-col cols="10" sm="8" md="4">
-        <pre>
-           {{ error }}
-        </pre>
-        <h2 class="text-h3 text-center font-weight-bold">Oops...</h2>
-        <svg-404 class="my-4" />
         <h2 class="text-h3 text-center">
+          {{ $t('pages.error.title') }}
+        </h2>
+
+        <svg-404 class="my-4" />
+        <h2 class="text-h4 text-center">
           {{ errorMessage }}
         </h2>
+        <v-row class="mt-4" justify="center">
+          <ButtonPrimary class="mx-auto" @click="$router.back()">
+            {{ $t('pages.error.buttons.back') }}
+          </ButtonPrimary>
+        </v-row>
       </v-col>
     </v-row>
-    <NuxtLink to="/"> Home page </NuxtLink>
   </v-app>
 </template>
 
@@ -27,28 +31,20 @@ export default {
     },
   },
   head() {
-    const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
     return {
-      title,
+      title: this.errorMessage,
     }
   },
-  data() {
-    return {
-      pageNotFound: '404 Not Found',
-      otherError: 'An error occurred',
-    }
-  },
-  computed: {
-    errorMessage() {
-      let message = 'An error occurred'
-      switch (this.error.statusCode) {
-        case 404:
-          message = 'Page not found!'
-          break
 
-        default:
-          break
+  computed: {
+    statusCode() {
+      return this.error.statusCode
+    },
+    errorMessage() {
+      const key = `pages.error.${this.error.statusCode}.message`
+      const message = this.$t(key)
+      if (message === key) {
+        return this.$t('pages.error.500.message')
       }
       return message
     },

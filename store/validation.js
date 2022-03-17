@@ -21,6 +21,8 @@ export const actions = {
     commit('SET_ERRORS', formattedError)
   },
   clearValidationErrors({ commit, state }) {
+    console.log('clearing validation errors')
+
     if (Object.keys(state.errors).length) {
       console.log('clearing validation errors')
       commit('CLEAR_ERRORS')

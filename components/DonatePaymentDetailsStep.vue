@@ -6,19 +6,8 @@
     </v-card-title>
     <v-card-text tag="dl">
       <v-row>
-        <v-col cols="12">
-          <Subheader>
-            {{
-              $t(
-                'components.payment_details_step.subheaders.payment_information'
-              )
-            }}
-          </Subheader>
-        </v-col>
-      </v-row>
-      <v-row>
         <v-col>
-          <PaymentProviderList></PaymentProviderList>
+          <PaymentProviderList @success="$emit('next')"></PaymentProviderList>
         </v-col>
       </v-row>
     </v-card-text>

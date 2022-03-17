@@ -26,7 +26,7 @@ export default {
       vm.$store.commit('pages/SET_PAGE', null)
     })
   },
-  async asyncData({ store, params }) {
+  async asyncData({ store, params, error }) {
     await store.dispatch('pages/index', {
       organizationId: params.organization_id,
     })
