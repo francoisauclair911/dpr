@@ -149,23 +149,13 @@ export default defineNuxtConfig({
   },
   publicRuntimeConfig: {
     DONATION_PAGE_BASE_URL: process.env.APP_URL,
-
-    STRIPE_PK_KEY: 'pk_live_kFHoGrq13mbo0CCf5nptfLZQ',
     FINGERPRINT_JS_PK: process.env.FINGERPRINT_JS_PK || '9K5NUIVUhV28vIu1EN50',
-    APP_VERSION_V2: process.env.CI_COMMIT_REF_NAME,
-    GIT_COMMIT_SHA: process.env.CI_COMMIT_SHORT_SHA,
-    AWS_COGNITO_USER_POOL_ID: process.env.AWS_COGNITO_USER_POOL_ID,
-    AWS_COGNITO_CLIENT_ID: process.env.AWS_COGNITO_CLIENT_ID,
-    AWS_COGNITO_BASE_URL: process.env.AWS_COGNITO_BASE_URL,
     COUNTRY_BASE_URL: process.env.COUNTRY_BASE_URL,
     CAMPAIGN_BASE_URL: process.env.CAMPAIGN_BASE_URL,
     PAYMENT_BASE_URL: process.env.PAYMENT_BASE_URL,
     IS_PRODUCTION: process.env.NODE_ENV === 'production',
     SENTRY_SAMPLE_RATE:
       process.env.SENTRY_SAMPLE_RATE || isProduction ? 0.2 : 0,
-    features: {
-      notification: false,
-    },
   },
   privateRuntimeConfig: {},
 })

@@ -7,7 +7,7 @@
     <v-card-text tag="dl">
       <v-row>
         <v-col>
-          <PaymentProviderList @success="$emit('next')"></PaymentProviderList>
+          <PaymentProviderList @success="next"></PaymentProviderList>
         </v-col>
       </v-row>
     </v-card-text>
@@ -22,6 +22,11 @@ export default {
 
   computed: {
     ...mapGetters('pages', ['currencySymbol']),
+  },
+  methods: {
+    next() {
+      this.$emit('next')
+    },
   },
 }
 </script>

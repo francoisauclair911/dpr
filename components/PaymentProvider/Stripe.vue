@@ -135,7 +135,7 @@ export default {
         })
         this.$store.commit('payment/SET_DONATION_INTENT_ID', intentId)
         this.confirmParams.return_url = this.baseReturnUrl + `/${intentId}`
-        // this.$refs.paymentRef.submit()
+
         this.confirmPayment()
       } catch (error) {
         this.$error('Ooops ')
@@ -163,8 +163,11 @@ export default {
         })
     },
     success() {
-      this.$emit('success')
-      sessionStorage.clear()
+      // this.$emit('success')
+      // sessionStorage.clear()
+      this.$router.push(
+        `${this.$route.path}/confirm/${this.$store.state.payment.donationIntentId}`
+      )
     },
   },
 }

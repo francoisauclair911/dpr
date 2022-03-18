@@ -115,58 +115,13 @@ export const actions = {
       page: rootState.pages.page.attributes,
       utms: rootState.url.utms,
     }
+    // lets save donor info in session
+    sessionStorage.setItem('donor', JSON.stringify(dataPayload.donor))
+    sessionStorage.setItem('donation', JSON.stringify(dataPayload.donation))
     return await this.$api.payment.post(`/authorize/process`, {
       data: dataPayload,
     })
   },
-
-  // upsertIntent({ commit, dispatch, state }, payload) {
-  //   const { amount, page, donorInfo: donor } = payload
-  //   const piData = {
-  //     donation: {
-  //       amount,
-  //       currency: page.attributes.settings.currency,
-  //     },
-  //     donor,
-  //     page: {
-  //       donation_page_id: page.attributes.id,
-  //       ...page.attributes.internal_ids,
-  //     },
-  //   }
-  //   if (state.intent) {
-  //     console.log('\x1b[32;1m%s\x1b[0m  ', '=> dispatch updateIntent', piData)
-
-  //     return dispatch('updateIntent', piData)
-  //   }
-  //   console.log('\x1b[32;1m%s\x1b[0m  ', '=> dispatch createIntent', piData)
-
-  //   return dispatch('createIntent', piData)
-  // },
-  // async createIntent({ commit }, payload) {
-  //   console.log('createIntent')
-
-  //   console.log('payload', payload)
-
-  //   const {
-  //     data: { data: paymentIntent },
-  //   } = await this.$api.payment.post(`/intents`, {
-  //     data: payload,
-  //   })
-  //   commit('SET_INTENT', paymentIntent)
-  // },
-  // async updateIntent({ commit, state }, payload) {
-  //   console.log('updateIntent')
-
-  //   console.log('payload', payload)
-
-  //   const {
-  //     data: { data: paymentIntent },
-  //   } = await this.$api.payment.patch(`/intents/${state.intent.id}`, {
-  //     data: payload,
-  //   })
-  //   console.log('\x1b[32;1m%s\x1b[0m  ', '=> paymentIntent', paymentIntent)
-  //   commit('SET_INTENT', paymentIntent)
-  // },
 
   validateDonorForm({ commit, state, dispatch }) {
     console.log('validateDonorForm')
