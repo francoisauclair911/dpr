@@ -63,7 +63,7 @@ export default {
       )
     },
     baseReturnUrl() {
-      return `${this.$config.DONATION_PAGE_BASE_URL}${this.$route.path}/confirm`
+      return `https://${this.$config.DONATION_PAGE_BASE_URL}${this.$route.path}/confirm`
     },
     paymentServiceIntentId() {
       return this.$store.state.payment.intent?.id || ''
