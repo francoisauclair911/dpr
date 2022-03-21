@@ -28,8 +28,8 @@ npm:
   stage: deploy
   environment:
     name: $ENVIRONMENT_NAME
-  dependencies:
-    - npm
+  # dependencies:
+  #   - npm
   before_script:
     - npm install -g cloudflare-cli
   script:
@@ -49,9 +49,7 @@ npm:
     # - npm run generate
     # - aws s3 sync --cache-control 'max-age=604800' --exclude index.html dist/ s3://${S3_BUCKET_NAME}/
     # - aws s3 sync --cache-control 'no-cache' dist/ s3://${S3_BUCKET_NAME}/
-  only:
-    changes:
-      - template.yaml
+
 
 
 .deployment_template: &bucket_push
@@ -72,6 +70,9 @@ npm:
 
 deployment_job:
   <<: *deployment
+  only:
+    changes:
+      - template.yaml
 
 deployment_job_bucket:
   <<: *bucket_push
@@ -86,6 +87,18 @@ deployment_production:
         CLOUDFORMATION_EXECUTION_ROLE: ${PRODUCTION_CLOUDFORMATION_EXECUTION_ROLE}
         ARTIFACTS_BUCKET: ${PRODUCTION_ARTIFACTS_BUCKET}
       when: manual
+
+deployment_production_bucket:
+  <<: *bucket_push
+  rules:
+    - if: $ENVIRONMENT_NAME == "staging"
+      variables:
+        ENVIRONMENT_NAME: production
+        PIPELINE_EXECUTION_ROLE: ${PRODUCTION_PIPELINE_EXECUTION_ROLE}
+        CLOUDFORMATION_EXECUTION_ROLE: ${PRODUCTION_CLOUDFORMATION_EXECUTION_ROLE}
+        ARTIFACTS_BUCKET: ${PRODUCTION_ARTIFACTS_BUCKET}
+      when: manual
+
 
 release_job:
   rules:
