@@ -5,7 +5,7 @@
 
       <v-skeleton-loader v-show="!showStripe" type="card"></v-skeleton-loader>
       <div v-show="showStripe">
-        <p>3d 4000002500003155</p>
+        <!-- <p>3d 4000002500003155</p> -->
         <stripe-element-payment
           @element-ready="showStripe = true"
           class="mt-4"
