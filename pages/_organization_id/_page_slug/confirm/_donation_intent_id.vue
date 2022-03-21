@@ -2,6 +2,13 @@
   <v-row class="my-10 px-1 px-md-10">
     <v-col cols="12" md="10" offset-md="1">
       <v-row>
+        <!-- <v-col>
+          <v-card>
+            <v-card-text>
+              {{ isSuccessful }}
+            </v-card-text>
+          </v-card>
+        </v-col> -->
         <v-col cols="12" sm="9" md="6" lg="5" xl="3" class="">
           <DonateCard>
             <DonateThankYouStep
@@ -46,7 +53,7 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'PageConfirmation',
-  async asyncData({ params, query, store }) {
+  async asyncData({ params, query, store, $config }) {
     let response = null
     let error = null
     await store.dispatch('pages/getPage', {
@@ -54,6 +61,19 @@ export default {
       pageSlug: params.page_slug,
     })
     console.log('\x1b[32;1m%s\x1b[0m  ', '=> query', params.donation_intent_id)
+    if ($config.FEATURES.LIVE_PAYMENT === false) {
+      console.log(
+        '\x1b[32;1m%s\x1b[0m  ',
+        '=> _donation_intent_id.vue/ Live Payment = OFF'
+      )
+
+      return {
+        response: {
+          status: 'succeeded',
+        },
+        error,
+      }
+    }
     try {
       const {
         data: { data },
@@ -72,8 +92,9 @@ export default {
   },
   mounted() {
     console.log('\x1b[32;1m%s\x1b[0m  ', '=> mounted')
-    console.log('clearing session')
+    const donor = sessionStorage.getItem('donor')
     sessionStorage.clear()
+    sessionStorage.setItem('donor', donor)
   },
   computed: {
     ...mapGetters('payment', ['intentStatus']),
@@ -86,10 +107,6 @@ export default {
     showThankYou() {
       return this.isSuccessful || this.isProcessing
     },
-  },
-  beforeDestroy() {
-    console.log('clearing session')
-    sessionStorage.clear()
   },
 }
 </script>

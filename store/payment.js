@@ -4,18 +4,22 @@ export const state = () => ({
   donationIntentId: sessionStorage.getItem('donationIntentId'),
   amount: 0,
   donorInfo: {
-    title: null,
-    first_name: null,
-    last_name: null,
-    email: null,
-    phone: null,
-    address_line1: null,
-    address_line2: null,
-    zip: null,
-    country: null,
-    city: null,
-    communication: false,
-    gdpr: false,
+    ...(sessionStorage.getItem('donor') &&
+      JSON.parse(sessionStorage.getItem('donor'))),
+    ...(!sessionStorage.getItem('donor') && {
+      title: null,
+      first_name: null,
+      last_name: null,
+      email: null,
+      phone: null,
+      address_line1: null,
+      address_line2: null,
+      zip: null,
+      country: null,
+      city: null,
+      communication: null,
+      gdpr: null,
+    }),
   },
 })
 
@@ -67,26 +71,24 @@ export const actions = {
       },
     })
   },
-  async preProcess({ commit }, payload) {
+  async preProcess(
+    { commit, state, rootState },
+    { paymentProvider, paymentProviderReferenceId = null }
+  ) {
     console.log('preProcess')
-    console.log('payload', payload)
-    const {
-      organizationId,
-      paymentProvider,
-      paymentProviderReferenceId = null,
-      amount = null,
-      currency = null,
-    } = payload
+    const payload = {
+      amount: state.amount,
+      currency: rootState.pages.page.attributes.settings.currency,
+      organization_id:
+        rootState.pages.page.attributes.internal_ids.organization_id,
+      payment_provider: paymentProvider,
+      payment_provider_reference_id: paymentProviderReferenceId,
+    }
+    console.log('\x1b[32;1m%s\x1b[0m  ', '=> payload', payload)
     const {
       data: { data: response },
     } = await this.$api.payment.post(`/authorize/pre-process`, {
-      data: {
-        amount,
-        currency,
-        organization_id: organizationId,
-        payment_provider: paymentProvider,
-        payment_provider_reference_id: paymentProviderReferenceId,
-      },
+      data: payload,
     })
     console.log('response', response)
 
@@ -118,14 +120,33 @@ export const actions = {
     // lets save donor info in session
     sessionStorage.setItem('donor', JSON.stringify(dataPayload.donor))
     sessionStorage.setItem('donation', JSON.stringify(dataPayload.donation))
+    if (this.$config.FEATURES.LIVE_PAYMENT === false) {
+      return {
+        data: {
+          data: {
+            intent_id: null,
+          },
+        },
+      }
+    }
     return await this.$api.payment.post(`/authorize/process`, {
       data: dataPayload,
     })
   },
 
   validateDonorForm({ commit, state, dispatch }) {
-    console.log('validateDonorForm')
+    console.log('validateDonorForm', state.donorInfo)
     dispatch('validation/clearValidationErrors', null, { root: true })
+
+    if (this.$config.FEATURES.LIVE_PAYMENT === false) {
+      console.log(
+        '\x1b[32;1m%s\x1b[0m  ',
+        '=> DonateDonorInfoStep.vue/ Live Payment = OFF'
+      )
+      return {
+        response: true,
+      }
+    }
     return this.$api.payment.post(`/authorize/validate`, {
       data: state.donorInfo,
     })

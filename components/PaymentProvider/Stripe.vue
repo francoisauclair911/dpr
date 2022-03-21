@@ -16,10 +16,7 @@
           :confirm-params="confirmParams"
         />
         <ButtonPrimary class="mt-4" block @click="pay">
-          {{
-            page.attributes.content.submit_text ||
-            $t('components.button_donate.donate')
-          }}
+          {{ content.submit_text || $t('components.button_donate.donate') }}
         </ButtonPrimary>
       </div>
 
@@ -30,13 +27,12 @@
 
 <script>
 import { StripeElementPayment } from '@vue-stripe/vue-stripe'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   name: 'PaymentProviderStripe',
   components: {
     StripeElementPayment,
   },
-  inject: ['page', 'formData'],
   data() {
     return {
       loading: true,
@@ -55,6 +51,8 @@ export default {
   },
   computed: {
     ...mapState('payment', ['amount']),
+    ...mapGetters('pages', ['content']),
+
     sessionActive() {
       return !!(
         this.pk &&
@@ -72,6 +70,15 @@ export default {
   mounted() {
     console.log('mounted')
     console.log('this.sessionActive', this.sessionActive)
+    if (this.$config.FEATURES.LIVE_PAYMENT === false) {
+      this.setPk(this.$config.ADRA_DEMO_STRIPE_PK_KEY)
+      this.setPaymentIntentSecret(this.$config.ADRA_DEMO_STRIPE_INTENT_SECRET)
+      let intentId = this.$config.ADRA_DEMO_STRIPE_INTENT_SECRET.split('_')
+      intentId = [intentId[0], intentId[1]].join('_')
+      console.log('\x1b[32;1m%s\x1b[0m  ', '=> intentId', intentId)
+      this.setStripePaymentIntentId(intentId)
+      return (this.loading = false)
+    }
     this.initSession()
   },
   methods: {
@@ -83,12 +90,8 @@ export default {
           publishable_key: pk,
           payment_provider_reference_id: stripePaymentIntentId,
         } = await this.preProcess({
-          organizationId: this.page.attributes.internal_ids.organization_id,
           paymentProvider: 'stripe',
           paymentProviderReferenceId: this.stripePaymentIntentId,
-          amount: this.amount,
-          // currency: this.page.attributes.settings.currency,
-          currency: 'eur',
         })
         this.setPk(pk)
         this.setPaymentIntentSecret(clientSecret)
@@ -133,6 +136,9 @@ export default {
           referenceId: this.stripePaymentIntentId,
           returnUrl: null,
         })
+        if (this.$config.FEATURES.LIVE_PAYMENT === false) {
+          return this.success()
+        }
         this.$store.commit('payment/SET_DONATION_INTENT_ID', intentId)
         this.confirmParams.return_url = this.baseReturnUrl + `/${intentId}`
 

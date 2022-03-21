@@ -23,13 +23,15 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'PredefinedAmounts',
-  inject: ['content'],
   methods: {
     ...mapMutations('payment', ['updateAmount']),
+  },
+  computed: {
+    ...mapGetters('pages', ['content']),
   },
 }
 </script>

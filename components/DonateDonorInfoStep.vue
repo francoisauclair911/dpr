@@ -51,13 +51,14 @@ export default {
     }
   },
   computed: {
-    ...mapState('payment', ['amount']),
+    ...mapState('payment', ['amount', 'donorInfo']),
     ...mapGetters('pages', ['numberFormat']),
   },
   methods: {
     next() {
       this.$store.dispatch('payment/validateDonorForm').then((result) => {
         if (!result.error) {
+          sessionStorage.setItem('donor', JSON.stringify(this.donorInfo))
           this.$emit('next')
         }
       })

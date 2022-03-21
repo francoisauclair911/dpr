@@ -32,7 +32,6 @@ export default defineNuxtConfig({
     fallback: true,
   },
   router: {
-    // middleware: ['url-parser'],
     routeNameSplitter: '/',
   },
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -63,11 +62,11 @@ export default defineNuxtConfig({
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/urlParser',
-    '~/plugins/adra',
     { src: '~/plugins/axios', ssr: true },
     '~/plugins/iso',
     '~/plugins/api',
     '~/plugins/fingerprint',
+    '~/plugins/adra',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -148,6 +147,9 @@ export default defineNuxtConfig({
     transpile: [],
   },
   publicRuntimeConfig: {
+    ADRA_DEMO_STRIPE_PK_KEY: 'pk_test_qCVboJvytvpilqW1RAriwxSG',
+    ADRA_DEMO_STRIPE_INTENT_SECRET:
+      'pi_3Kent8KwliJHFNUe0loW80dC_secret_4nNcP79L5JAyRWuVhy3B0nAhY',
     DONATION_PAGE_BASE_URL: process.env.APP_URL,
     FINGERPRINT_JS_PK: process.env.FINGERPRINT_JS_PK || '9K5NUIVUhV28vIu1EN50',
     COUNTRY_BASE_URL: process.env.COUNTRY_BASE_URL,
@@ -156,6 +158,9 @@ export default defineNuxtConfig({
     IS_PRODUCTION: process.env.NODE_ENV === 'production',
     SENTRY_SAMPLE_RATE:
       process.env.SENTRY_SAMPLE_RATE || isProduction ? 0.2 : 0,
+    FEATURES: {
+      LIVE_PAYMENT: process.env.FEATURES_LIVE_PAYMENT || false,
+    },
   },
   privateRuntimeConfig: {},
 })

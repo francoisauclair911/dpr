@@ -31,12 +31,15 @@ export const getters = {
 }
 export const actions = {
   switchLanguage({ commit }, languageCode = null) {
+    if (!languageCode) {
+      languageCode = this.$i18n.locale
+    }
+
     commit('SET_SELECTED', languageCode)
-
     this.$i18n.setLocale(languageCode)
-
-    const query = { ...this.$router.currentRoute.query, lang: languageCode }
-
-    this.$router.replace({ query })
+    if (this.$i18n.locale !== languageCode) {
+      const query = { ...this.$router.currentRoute.query, lang: languageCode }
+      this.$router.replace({ query })
+    }
   },
 }

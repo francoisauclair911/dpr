@@ -15,12 +15,8 @@
         >{{ $t('components.thank_you_step.header.payment_processing') }}
       </span>
     </v-card>
-    <v-skeleton-loader v-if="$fetchState.pending" type="sentences@5" />
 
-    <v-card-text
-      v-else-if="!$fetchState.pending && !errorFetchingIntent"
-      tag="dl"
-    >
+    <v-card-text tag="dl" v-if="hasNecessaryCacheData">
       <v-row justify="space-between">
         <v-col>
           <Subheader>
@@ -34,18 +30,16 @@
 
       <DonationDetailRowItem
         :dt="$t('components.thank_you_step.fields.donation_amount')"
-        :dd="currencySymbol + intent.attributes.donation.amount"
+        :dd="currencySymbol + donation.amount"
       />
       <DonationDetailRowItem
         :dt="$t('components.thank_you_step.fields.name')"
-        :dd="`${intent.attributes.donor.first_name || '-/-'} ${
-          intent.attributes.donor.last_name || ''
-        }`"
+        :dd="`${donor.first_name || '-/-'} ${donor.last_name || ''}`"
       />
 
       <DonationDetailRowItem
         :dt="$t('components.thank_you_step.fields.email')"
-        :dd="intent.attributes.donor.email || '-/-'"
+        :dd="donor.email || '-/-'"
       />
 
       <DonationDetailRowItem
@@ -85,28 +79,23 @@ export default {
       default: false,
     },
   },
-  data() {
-    return {
-      errorFetchingIntent: false,
-    }
-  },
-  async fetch() {
-    try {
-      await this.$store.dispatch(
-        'payment/getIntent',
-        this.$store.state.payment.donationIntentId
-      )
-    } catch (error) {
-      return (this.errorFetchingIntent = true)
-    }
-  },
-  beforeDestroy() {
-    sessionStorage.clear()
-  },
   computed: {
-    ...mapState('payment', ['intent']),
     ...mapGetters('pages', ['currencySymbol']),
+    hasNecessaryCacheData() {
+      return (
+        sessionStorage.getItem('donor') && sessionStorage.getItem('donation')
+      )
+    },
+    donor() {
+      const donor = sessionStorage.getItem('donor')
+      console.log('\x1b[32;1m%s\x1b[0m  ', '=> donor', donor)
+      return JSON.parse(donor)
+    },
+    donation() {
+      const donation = sessionStorage.getItem('donation')
+      console.log('\x1b[32;1m%s\x1b[0m  ', '=> donation', donation)
+      return JSON.parse(donation)
+    },
   },
-  components: { DonateCardHeaderIcon },
 }
 </script>

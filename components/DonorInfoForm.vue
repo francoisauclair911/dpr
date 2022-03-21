@@ -21,7 +21,7 @@
             <v-combobox
               :value="title"
               @input="updateTitle"
-              class="text-capitalize"
+              class="text-capitalize combobox"
               autocomplete="honorific-prefix"
               hide-details="auto"
               item-value="value"
@@ -199,7 +199,7 @@
         >
           <ValidationHandler name="country" v-slot="{ errors }" v-bind="$attrs">
             <v-autocomplete
-              v-if="countryListLoaded"
+              v-if="countriesLoaded"
               v-model="country"
               :error-messages="errors"
               :placeholder="field.placeholder"
@@ -211,7 +211,7 @@
               dense
               item-text="name"
               item-value="alpha3Code"
-              :items="countryList"
+              :items="countries"
             />
 
             <v-input v-else hide-details="auto">
@@ -244,46 +244,36 @@
     </v-row>
     <v-row v-if="content.gdpr_text" class="mt-0">
       <v-col cols="12">
-        <TranslationField
-          v-slot="{ field }"
-          :field="$t('components.donorInfoForm.fields.gdpr_text')"
-        >
-          <ValidationHandler name="gdpr" v-slot="{ errors }" v-bind="$attrs">
-            <v-checkbox
-              v-model="gdpr"
-              :error-messages="errors"
-              dense
-              hide-details="auto"
-              ><template #label>
-                <AdraMarkdownViewer :value="content.gdpr_text" /></template
-            ></v-checkbox>
-          </ValidationHandler>
-        </TranslationField>
+        <ValidationHandler name="gdpr" v-slot="{ errors }" v-bind="$attrs">
+          <v-checkbox
+            v-model="gdpr"
+            :error-messages="errors"
+            dense
+            hide-details="auto"
+            ><template #label>
+              <AdraMarkdownViewer :value="content.gdpr_text" /></template
+          ></v-checkbox>
+        </ValidationHandler>
       </v-col>
     </v-row>
     <v-row v-if="content.communication_text" class="mt-0">
       <v-col cols="12">
-        <TranslationField
-          v-slot="{ field }"
-          :field="$t('components.donorInfoForm.fields.communication_text')"
+        <ValidationHandler
+          name="communication"
+          v-slot="{ errors }"
+          v-bind="$attrs"
         >
-          <ValidationHandler
-            name="communication"
-            v-slot="{ errors }"
-            v-bind="$attrs"
-          >
-            <v-checkbox
-              v-model="communication"
-              :error-messages="errors"
-              hide-details="auto"
-              dense
-              class="mt-0"
-              ><template #label>
-                <AdraMarkdownViewer
-                  :value="content.communication_text" /></template
-            ></v-checkbox>
-          </ValidationHandler>
-        </TranslationField>
+          <v-checkbox
+            v-model="communication"
+            :error-messages="errors"
+            hide-details="auto"
+            dense
+            class="mt-0"
+            ><template #label>
+              <AdraMarkdownViewer
+                :value="content.communication_text" /></template
+          ></v-checkbox>
+        </ValidationHandler>
       </v-col>
     </v-row>
   </v-form>
@@ -291,34 +281,37 @@
 
 <script>
 import { mapFields } from 'vuex-map-fields'
-
-import PaymentProviderList from './PaymentProvider/List.vue'
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'DonorInfoForm',
-  components: { PaymentProviderList },
-  inject: ['content'],
 
-  data() {
-    return {
-      form: {},
-
-      countryList: [],
-    }
-  },
   async fetch() {
-    const { data: countryList } = await this.$api.country('/')
-    this.countryList = countryList
+    await this.$store.dispatch('helpers/getCountries')
+
+    if (this.content.gdpr_text) {
+      this.updateGdpr = false
+    }
     this.$emit('ready')
   },
+  mounted() {
+    this.initCheckboxes()
+  },
   methods: {
-    updateTitle(event) {
-      this.title = event?.value || event || ''
+    initCheckboxes() {
+      this.gdpr = this.content.gdpr_text ? false : null
+      this.communication = this.content.communication_text ? false : null
+    },
+    updateTitle(title) {
+      this.title = title?.value || title || ''
     },
   },
   computed: {
     capitalizeTitle() {
       return this.title.capitalize()
     },
+    ...mapState('helpers', ['countries']),
+    ...mapGetters('helpers', ['countriesLoaded']),
+    ...mapGetters('pages', ['content']),
     ...mapFields('payment', [
       'donorInfo.title',
       'donorInfo.first_name',
@@ -332,12 +325,10 @@ export default {
       'donorInfo.communication',
       'donorInfo.gdpr',
     ]),
-    countryListLoaded() {
-      return this.countryList.length > 0
-    },
   },
 }
 </script>
+
 <style scoped>
 /deep/ input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -363,5 +354,8 @@ input:-internal-autofill-selected {
 }
 /deep/ .v-text-field--outlined.v-input--dense .v-label--active {
   z-index: 1;
+}
+/deep/ .v-autocomplete input {
+  text-transform: capitalize;
 }
 </style>

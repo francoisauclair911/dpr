@@ -58,11 +58,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'DonateAmountStep',
-  inject: ['content'],
 
   data() {
     return {
@@ -71,6 +70,7 @@ export default {
   },
   computed: {
     ...mapState('payment', ['amount']),
+    ...mapGetters('pages', ['content']),
     hasSelectedAmount() {
       return this.amount > 0
     },

@@ -2,14 +2,6 @@
   <v-row class="my-10 px-1 px-md-10">
     <v-col cols="12" md="10" offset-md="1">
       <v-row :justify="$vuetify.breakpoint.mobile ? 'center' : form_alignment">
-        <!-- <v-col cols="4"
-          ><v-card
-            ><v-card-text>
-              <pre>{{ $store.state.validation.errors }}</pre>
-              <pre>{{ donorInfo }}</pre>
-            </v-card-text></v-card
-          ></v-col
-        > -->
         <v-col cols="12" sm="9" md="6" lg="5" xl="3" class="">
           <v-card elevation="10" :loading="requestState === 'pending'">
             <v-overlay absolute :value="requestState === 'pending'" z-index="4">
@@ -109,35 +101,6 @@ export default {
     }
   },
   methods: {
-    submitDonation() {
-      let visitorId = null
-      let confidenceScore = null
-      console.log('\x1b[32;1m%s\x1b[0m  ', '=> submitDonation')
-
-      this.$fingerprint
-        .then((fp) => fp.get())
-        .then((res) => {
-          visitorId = res?.visitorId || null
-          confidenceScore = res?.confidence?.score || null
-        })
-        .catch((e) => console.log('oops fingerprint crashed'))
-
-      this.requestState = 'pending'
-      const payload = {
-        ...this.formData.donorInfo,
-        fingerprint: {
-          visitorId,
-          confidenceScore,
-        },
-        amount: this.formData.amount,
-      }
-      console.log('\x1b[32;1m%s\x1b[0m  ', '=> payload', payload)
-      setTimeout(() => {
-        this.requestState = 'success'
-        this.step = 3
-        this.requestState = 'idle'
-      }, 1500)
-    },
     goToDonorInfo() {
       this.step++
     },

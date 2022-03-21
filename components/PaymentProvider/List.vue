@@ -8,7 +8,7 @@
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
-      <v-tab-item v-for="provider in ['stripe', 'paypal']" :key="provider">
+      <v-tab-item v-for="provider in paymentProviders" :key="provider">
         <component
           :is="`payment-provider-${provider}`"
           @success="$emit('success')"
@@ -23,10 +23,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'PaymentProviderList',
-
-  inject: ['page', 'formData'],
 
   data() {
     return {
@@ -35,8 +35,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('pages', ['settings']),
     paymentProviders() {
-      return this.page.attributes.settings.payment_providers
+      if (this.$config.FEATURES.LIVE_PAYMENT === false) {
+        console.log(
+          '\x1b[32;1m%s\x1b[0m  ',
+          '=> paymentProviderList.vue/ Live Payment = OFF'
+        )
+        return ['stripe']
+      }
+      return this.settings.payment_providers
     },
   },
 }

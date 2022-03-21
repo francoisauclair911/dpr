@@ -1,18 +1,29 @@
 import axios from 'axios'
 export const state = () => ({
-  countries: {},
+  countries: [],
 })
 
+export const getters = {
+  countriesLoaded(state) {
+    return state.countries.length > 0
+  },
+}
 export const mutations = {
-  UPSERT_COUNTRY(state, country) {
-    state.countries[country.alpha3code] = country
+  SET_COUNTRIES(state, countries) {
+    state.countries = countries
   },
 }
 export const actions = {
-  async getOrganizationCountryInfo({ commit }, alpha3code) {
-    const { data: country } = await this.$api.country.get(
-      `/alpha/${alpha3code}`
-    )
-    return country
+  async getCountries({ commit, getters }) {
+    console.log('getCountries')
+
+    if (getters.countriesLoaded) {
+      console.log('countriesLoaded', true)
+      return
+    }
+    console.log('fetching countries')
+
+    const { data: countries } = await this.$api.country()
+    commit('SET_COUNTRIES', countries)
   },
 }

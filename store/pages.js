@@ -97,6 +97,11 @@ export const actions = {
     }
 
     console.log('\x1b[32;1m%s\x1b[0m  ', '=> here2')
+    console.log(
+      '\x1b[32;1m%s\x1b[0m  ',
+      '=> page.attributes.content',
+      page.attributes.content
+    )
     commit('SET_PAGE_CONTENT', page.attributes.content)
   },
   async index({ commit, rootState }, params) {
