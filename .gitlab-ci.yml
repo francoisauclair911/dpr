@@ -1,6 +1,7 @@
 include:
   - project: 'adra-network/aws-core-deployment-roles'
     file: '/gitlab-templates/trunk-based-pipeline.yml'
+
 stages:
   - build
   - test
