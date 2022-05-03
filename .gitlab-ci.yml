@@ -1,6 +1,21 @@
-include:
-  - project: 'adra-network/aws-core-deployment-roles'
-    file: '/gitlab-templates/trunk-based-pipeline.yml'
+image: docker:20
+services:
+  - name: docker:dind
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+      variables:
+        AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_DEV}
+        AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID_DEV}
+        AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION_DEV}
+        ENVIRONMENT_NAME: dev
+        S3_BUCKET_NAME: ${S3_BUCKET_NAME_DEV}
+    - if: $CI_COMMIT_REF_NAME =~ /release/
+      variables:
+        ENVIRONMENT_NAME: staging
+        S3_BUCKET_NAME: ${S3_BUCKET_NAME_STAGING}
+    - when: always
 
 stages:
   - build
@@ -29,25 +44,12 @@ npm:
   stage: deploy
   environment:
     name: $ENVIRONMENT_NAME
-  # dependencies:
-  #   - npm
   before_script:
-    - npm install -g cloudflare-cli
+    - npm install -g env-cmd
   script:
     - echo exporting the following as tag  ${CI_COMMIT_REF_SLUG} | sed 's/.*-//'
     - export TAG="$(echo ${CI_COMMIT_REF_SLUG} | sed 's/.*-//')"
-    - . assume-role.sh ${PIPELINE_EXECUTION_ROLE} ${CI_ENVIRONMENT_NAME}-deployment
-    - sam deploy  --config-env ${CI_ENVIRONMENT_NAME} --force-upload --no-fail-on-empty-changeset --s3-bucket ${ARTIFACTS_BUCKET}  --role-arn ${CLOUDFORMATION_EXECUTION_ROLE}
-    - export S3_WEBSITE_DNS="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-receiver/s3-website-dns --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
-    - export DOMAIN_PREFIX="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-receiver/prefix --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
-    - export S3_BUCKET_NAME="$(aws ssm get-parameter --with-decryption --name /${CI_ENVIRONMENT_NAME}/frontend/donation-page-receiver/bucket-name --query 'Parameter.Value' --output text --region ${AWS_DEFAULT_REGION})"
-    - echo "S3_WEBSITE_DNS ${S3_WEBSITE_DNS}"
-    - echo "DOMAIN_PREFIX ${DOMAIN_PREFIX}"
-    - echo "S3_BUCKET_NAME ${S3_BUCKET_NAME}"
-    - cfcli -a -t CNAME edit ${DOMAIN_PREFIX} ${S3_WEBSITE_DNS}
-    - npm run generate-env -- --ssm-path-prefix /${CI_ENVIRONMENT_NAME} --region ${AWS_DEFAULT_REGION}
-    # - npm run build
-    - npm run generate
+    - npx env-cmd --file .env.${ENVIRONMENT_NAME} npm run generate
     - aws s3 sync --cache-control 'max-age=604800' --exclude index.html dist/ s3://${S3_BUCKET_NAME}/
     - aws s3 sync --cache-control 'no-cache' dist/ s3://${S3_BUCKET_NAME}/
 
@@ -60,9 +62,7 @@ deployment_production:
     - if: $ENVIRONMENT_NAME == "staging"
       variables:
         ENVIRONMENT_NAME: production
-        PIPELINE_EXECUTION_ROLE: ${PRODUCTION_PIPELINE_EXECUTION_ROLE}
-        CLOUDFORMATION_EXECUTION_ROLE: ${PRODUCTION_CLOUDFORMATION_EXECUTION_ROLE}
-        ARTIFACTS_BUCKET: ${PRODUCTION_ARTIFACTS_BUCKET}
+        S3_BUCKET_NAME: ${S3_BUCKET_NAME_PRODUCTION}
       when: manual
 
 release_job:
