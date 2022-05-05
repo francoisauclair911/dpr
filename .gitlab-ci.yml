@@ -11,6 +11,7 @@ workflow:
         AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION_DEV}
         ENVIRONMENT_NAME: dev
         S3_BUCKET_NAME: ${S3_BUCKET_NAME_DEV}
+        CDN_DISTRIBUTION: ${CDN_DISTRIBUTION_DEV}
     - if: $CI_COMMIT_REF_NAME =~ /release/
       variables:
         ENVIRONMENT_NAME: staging
@@ -52,6 +53,8 @@ npm:
     - npx env-cmd --file .env.${ENVIRONMENT_NAME} npm run generate
     - aws s3 sync --cache-control 'max-age=604800' --exclude index.html dist/ s3://${S3_BUCKET_NAME}/
     - aws s3 sync --cache-control 'no-cache' dist/ s3://${S3_BUCKET_NAME}/
+    - aws configure set preview.cloudfront true
+    - aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION} --paths "/"
 
 deployment_job:
   <<: *deployment
