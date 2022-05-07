@@ -12,10 +12,10 @@ workflow:
         ENVIRONMENT_NAME: dev
         S3_BUCKET_NAME: ${S3_BUCKET_NAME_DEV}
         CDN_DISTRIBUTION: ${CDN_DISTRIBUTION_DEV}
-    - if: $CI_COMMIT_REF_NAME =~ /release/
-      variables:
-        ENVIRONMENT_NAME: staging
-        S3_BUCKET_NAME: ${S3_BUCKET_NAME_STAGING}
+    # - if: $CI_COMMIT_REF_NAME =~ /release/
+    #   variables:
+    #     ENVIRONMENT_NAME: staging
+    #     S3_BUCKET_NAME: ${S3_BUCKET_NAME_STAGING}
     - when: always
 
 stages:
@@ -62,24 +62,28 @@ deployment_job:
 deployment_production:
   <<: *deployment
   rules:
-    - if: $ENVIRONMENT_NAME == "staging"
+    - if: $CI_COMMIT_REF_NAME =~ /release/
       variables:
+        AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID_PRODUCTION}
+        AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_PRODUCTION}
+        AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION_PRODUCTION}
         ENVIRONMENT_NAME: production
         S3_BUCKET_NAME: ${S3_BUCKET_NAME_PRODUCTION}
+        CDN_DISTRIBUTION: ${CDN_DISTRIBUTION_PRODUCTION}
       when: manual
 
-release_job:
-  rules:
-    - if: $ENVIRONMENT_NAME == "staging"
-  stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
+# release_job:
+#   rules:
+#     - if: $ENVIRONMENT_NAME == "staging"
+#   stage: release
+#   image: registry.gitlab.com/gitlab-org/release-cli:latest
 
-  script:
-    - echo exporting the following as tag  ${CI_COMMIT_REF_SLUG} | sed 's/.*-//'
-    - export TAG="$(echo ${CI_COMMIT_REF_SLUG} | sed 's/.*-//')"
-    - echo "running release_job for $TAG"
-  release:
-    name: 'Release $TAG'
-    description: 'Created using the release-cli'
-    tag_name: '$TAG' # variables must be defined elsewhere
-    ref: '$CI_COMMIT_SHA' # in the pipeline. For example, in the
+#   script:
+#     - echo exporting the following as tag  ${CI_COMMIT_REF_SLUG} | sed 's/.*-//'
+#     - export TAG="$(echo ${CI_COMMIT_REF_SLUG} | sed 's/.*-//')"
+#     - echo "running release_job for $TAG"
+#   release:
+#     name: 'Release $TAG'
+#     description: 'Created using the release-cli'
+#     tag_name: '$TAG' # variables must be defined elsewhere
+#     ref: '$CI_COMMIT_SHA' # in the pipeline. For example, in the
