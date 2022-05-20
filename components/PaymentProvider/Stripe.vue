@@ -1,8 +1,6 @@
 <template>
   <div>
     <v-skeleton-loader type="card" :loading="loading">
-      <!-- <div class="d-flex flex-column justify-center"> -->
-
       <v-skeleton-loader v-show="!showStripe" type="card"></v-skeleton-loader>
       <div v-show="showStripe">
         <!-- <p>3d 4000002500003155</p> -->
@@ -36,7 +34,6 @@ export default {
   data() {
     return {
       loading: true,
-
       showStripe: false,
       pk: sessionStorage.getItem('stripePk'),
       stripePaymentIntentId: sessionStorage.getItem('stripePaymentIntentId'),
@@ -61,7 +58,7 @@ export default {
       )
     },
     baseReturnUrl() {
-      return `https://${this.$config.DONATION_PAGE_BASE_URL}${this.$route.path}/confirm`
+      return `${this.$config.DONATION_PAGE_BASE_URL}${this.$route.path}/confirm`
     },
     paymentServiceIntentId() {
       return this.$store.state.payment.intent?.id || ''
@@ -99,7 +96,6 @@ export default {
 
         this.loading = false
       } catch (error) {
-        console.log(error)
         this.$error(
           'An error occurred with this payment provider, try again later, or select a different payment option'
         )
@@ -132,7 +128,7 @@ export default {
             data: { intent_id: intentId = null },
           },
         } = await this.process({
-          name: 'stripe',
+          paymentProvider: 'stripe',
           referenceId: this.stripePaymentIntentId,
           returnUrl: null,
         })
@@ -140,7 +136,8 @@ export default {
           return this.success()
         }
         this.$store.commit('payment/SET_DONATION_INTENT_ID', intentId)
-        this.confirmParams.return_url = this.baseReturnUrl + `/${intentId}`
+        this.confirmParams.return_url =
+          this.baseReturnUrl + `/${intentId}?payment_provider=stripe`
 
         this.confirmPayment()
       } catch (error) {
@@ -172,7 +169,7 @@ export default {
       // this.$emit('success')
       // sessionStorage.clear()
       this.$router.push(
-        `${this.$route.path}/confirm/${this.$store.state.payment.donationIntentId}`
+        `${this.$route.path}/confirm/${this.$store.state.payment.donationIntentId}?payment_provider=stripe`
       )
     },
   },

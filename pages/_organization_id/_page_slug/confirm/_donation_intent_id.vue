@@ -77,10 +77,11 @@ export default {
     try {
       const {
         data: { data },
-      } = await store.dispatch(
-        'payment/confirm',
-        params.donation_intent_id || store.state.payment.donationIntentId
-      )
+      } = await store.dispatch('payment/confirm', {
+        paymentProvider: query.payment_provider,
+        donationIntentId:
+          params.donation_intent_id || store.state.payment.donationIntentId,
+      })
       response = data
     } catch (e) {
       error = true

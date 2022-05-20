@@ -1,16 +1,7 @@
-import colors from 'vuetify/es5/util/colors'
 import { defineNuxtConfig } from '@nuxt/bridge'
 
-const baseCognitoURL = process.env.AWS_COGNITO_BASE_URL
 const isProduction = process.env.NODE_ENV === 'production'
 console.log('\x1b[32;1m%s\x1b[0m  ', '=> isProduction', isProduction)
-
-// If production or secure localhost then we resort to https, else http
-const httpProtocol = isProduction
-  ? 'https://'
-  : process.env.APP_URL === 'localhost'
-  ? 'https://'
-  : 'http://'
 
 export default defineNuxtConfig({
   // Fix for using sentry and nuxt bridge
@@ -159,7 +150,7 @@ export default defineNuxtConfig({
     SENTRY_SAMPLE_RATE:
       process.env.SENTRY_SAMPLE_RATE || isProduction ? 0.2 : 0,
     FEATURES: {
-      LIVE_PAYMENT: process.env.FEATURES_LIVE_PAYMENT || false,
+      LIVE_PAYMENT: process.env.FEATURES_LIVE_PAYMENT || true,
     },
   },
   privateRuntimeConfig: {},

@@ -20,7 +20,8 @@ const handleError = (error, store, nuxtErrorThrower = null) => {
     } else if (code === 403) {
       store.dispatch('notifications/danger', 'Unauthorized')
     } else if (code === 500) {
-      store.dispatch('notifications/danger', 'A server error occurred')
+      console.error('A server error occurred')
+      throw new Error('A server error occurred')
     } else {
       return store.dispatch(
         'notifications/danger',

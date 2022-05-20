@@ -60,19 +60,23 @@ export const actions = {
     } = await this.$api.payment.get(`/intents/${intentId}`)
     commit('SET_INTENT', paymentIntent)
   },
-  async confirm({ commit }, intentId = null) {
+  async confirm({ commit }, payload) {
     console.log('getIntent')
-    if (!intentId) {
+    const { paymentProvider, donationIntentId } = payload
+    if (!donationIntentId) {
       throw new Error('No donation intent provided')
     }
-    return await this.$api.payment.post(`/authorize/confirm`, {
-      data: {
-        donation_intent_id: intentId,
-      },
-    })
+    return await this.$api.payment.post(
+      `/authorize/confirm/${paymentProvider}`,
+      {
+        data: {
+          donation_intent_id: donationIntentId,
+        },
+      }
+    )
   },
   async preProcess(
-    { commit, state, rootState },
+    { state, rootState },
     { paymentProvider, paymentProviderReferenceId = null }
   ) {
     console.log('preProcess')
@@ -87,16 +91,19 @@ export const actions = {
     console.log('\x1b[32;1m%s\x1b[0m  ', '=> payload', payload)
     const {
       data: { data: response },
-    } = await this.$api.payment.post(`/authorize/pre-process`, {
-      data: payload,
-    })
+    } = await this.$api.payment.post(
+      `/authorize/pre-process/${paymentProvider}`,
+      {
+        data: payload,
+      }
+    )
     console.log('response', response)
 
     return response
   },
-  async process({ commit, state, rootState }, payload) {
+  async process({ state, rootState }, payload) {
     console.log('store process')
-    const { name, referenceId, returnUrl } = payload
+    const { paymentProvider: name, referenceId, returnUrl } = payload
     const dataPayload = {
       payment_provider: {
         name,
@@ -129,7 +136,7 @@ export const actions = {
         },
       }
     }
-    return await this.$api.payment.post(`/authorize/process`, {
+    return await this.$api.payment.post(`/authorize/process/${name}`, {
       data: dataPayload,
     })
   },
