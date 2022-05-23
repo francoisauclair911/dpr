@@ -5,7 +5,9 @@
         <v-col cols="12">
           <v-card color="primary">
             <v-card-title class="white--text">
-              Hello this is {{ $config.PAYMENT_BASE_URL }}
+              Hello this is {{ $config.PAYMENT_BASE_URL }} Hello this is
+              {{ $config.PAYMENT_BASE_URL }} Hello this is
+              {{ $config.PAYMENT_BASE_URL }}
             </v-card-title>
           </v-card>
         </v-col>
