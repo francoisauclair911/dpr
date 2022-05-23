@@ -19,6 +19,7 @@ export default defineNuxtConfig({
   // },
   ssr: false,
   generate: {
+    cache: false,
     crawler: false,
     // https://nuxtjs.org/deployments/netlify/#for-client-side-rendering-only
     fallback: true,
