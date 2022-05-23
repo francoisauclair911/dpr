@@ -2,6 +2,7 @@ import { defineNuxtConfig } from '@nuxt/bridge'
 
 const isProduction = process.env.NODE_ENV === 'production'
 console.log('\x1b[32;1m%s\x1b[0m  ', '=> isProduction', isProduction)
+console.log('\x1b[32;1m%s\x1b[0m  ', '=> process.env', process.env)
 
 export default defineNuxtConfig({
   // Fix for using sentry and nuxt bridge
