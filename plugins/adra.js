@@ -3,5 +3,4 @@ export default function ({ $axios, $config, store }, inject) {
   inject('success', (text) => store.dispatch('notifications/success', text))
   inject('error', (text) => store.dispatch('notifications/danger', text))
   store.dispatch('helpers/getCountries')
-  console.log('testing env', $config)
 }
