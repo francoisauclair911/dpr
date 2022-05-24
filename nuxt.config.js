@@ -78,14 +78,12 @@ export default defineNuxtConfig({
     '@nuxtjs/sentry',
   ],
   sentry: {
-    dsn: '',
+    dsn: process.env.SENTRY_DNS || '',
     // https://sentry.nuxtjs.org/sentry/options
     config: {
-      environment: process.env.ENVIRONMENT_NAME || 'local',
+      environment: process.env.ENV || 'local',
       release:
-        'aws-frontend-donation-campaign-receiver@' +
-        process.env.CI_COMMIT_SHORT_SHA,
-      // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
+        'aws-frontend-donation-receiver@' + process.env.CI_COMMIT_SHORT_SHA,
     },
   },
   i18n: {
@@ -148,8 +146,7 @@ export default defineNuxtConfig({
     CAMPAIGN_BASE_URL: process.env.CAMPAIGN_BASE_URL,
     PAYMENT_BASE_URL: process.env.PAYMENT_BASE_URL,
     IS_PRODUCTION: process.env.NODE_ENV === 'production',
-    SENTRY_SAMPLE_RATE:
-      process.env.SENTRY_SAMPLE_RATE || isProduction ? 0.2 : 0,
+    SENTRY_SAMPLE_RATE: process.env.SENTRY_SAMPLE_RATE || 0.1,
     FEATURES: {
       LIVE_PAYMENT: process.env.FEATURES_LIVE_PAYMENT || true,
     },
