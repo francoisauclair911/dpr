@@ -78,7 +78,7 @@ export default defineNuxtConfig({
     '@nuxtjs/sentry',
   ],
   sentry: {
-    dsn: process.env.SENTRY_DNS || '',
+    dsn: process.env.SENTRY_DSN || '',
     // https://sentry.nuxtjs.org/sentry/options
     config: {
       environment: process.env.ENV || 'local',
