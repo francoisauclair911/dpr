@@ -75,14 +75,17 @@ export const actions = {
       }
     )
   },
+
   async preProcess(
     { state, rootState },
     { paymentProvider, paymentProviderReferenceId = null }
   ) {
     console.log('preProcess')
+    const currency = rootState.pages.page.attributes.settings.currency
+    const amount = convertedAmount(state.amount, currency)
     const payload = {
-      amount: state.amount,
-      currency: rootState.pages.page.attributes.settings.currency,
+      amount,
+      currency,
       organization_id:
         rootState.pages.page.attributes.internal_ids.organization_id,
       payment_provider: paymentProvider,
@@ -104,6 +107,8 @@ export const actions = {
   async process({ state, rootState }, payload) {
     console.log('store process')
     const { paymentProvider: name, referenceId, returnUrl } = payload
+    const currency = rootState.pages.page.attributes.settings.currency
+    const amount = convertedAmount(state.amount, currency)
     const dataPayload = {
       payment_provider: {
         name,
@@ -111,8 +116,8 @@ export const actions = {
         return_url: returnUrl,
       },
       donation: {
-        amount: state.amount,
-        currency: rootState.pages.page.attributes.settings.currency,
+        amount,
+        currency,
         donation_page_id: rootState.pages.page.attributes.id,
         organization_id:
           rootState.pages.page.attributes.internal_ids.organization_id,
@@ -158,4 +163,28 @@ export const actions = {
       data: state.donorInfo,
     })
   },
+}
+
+function convertedAmount(amount, currency) {
+  const nonDecimalCurrencies = [
+    'BIF',
+    'CLP',
+    'DJF',
+    'GNF',
+    'JPY',
+    'KMF',
+    'KRW',
+    'MGA',
+    'PYG',
+    'RWF',
+    'UGX',
+    'VND',
+    'VUV',
+    'XAF',
+    'XOF',
+    'XPF',
+  ]
+  return nonDecimalCurrencies.includes(currency.toUpperCase())
+    ? amount
+    : amount * 100
 }
