@@ -2,13 +2,6 @@
   <v-row class="my-10 px-1 px-md-10">
     <v-col cols="12" md="10" offset-md="1">
       <v-row>
-        <!-- <v-col>
-          <v-card>
-            <v-card-text>
-              {{ isSuccessful }}
-            </v-card-text>
-          </v-card>
-        </v-col> -->
         <v-col cols="12" sm="9" md="6" lg="5" xl="3" class="">
           <DonateCard>
             <DonateThankYouStep
