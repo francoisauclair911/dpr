@@ -131,7 +131,13 @@ export const actions = {
     }
     // lets save donor info in session
     sessionStorage.setItem('donor', JSON.stringify(dataPayload.donor))
-    sessionStorage.setItem('donation', JSON.stringify(dataPayload.donation))
+    sessionStorage.setItem(
+      'donation',
+      JSON.stringify({
+        ...dataPayload.donation,
+        amount: state.amount,
+      })
+    )
     if (this.$config.FEATURES.LIVE_PAYMENT === false) {
       return {
         data: {
