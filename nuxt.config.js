@@ -145,6 +145,7 @@ export default defineNuxtConfig({
     COUNTRY_BASE_URL: process.env.COUNTRY_BASE_URL,
     CAMPAIGN_BASE_URL: process.env.CAMPAIGN_BASE_URL,
     PAYMENT_BASE_URL: process.env.PAYMENT_BASE_URL,
+    ASSET_BASE_URL: process.env.ASSET_URL,
     IS_PRODUCTION: process.env.NODE_ENV === 'production',
     SENTRY_SAMPLE_RATE: process.env.SENTRY_SAMPLE_RATE || 0.1,
     FEATURES: {

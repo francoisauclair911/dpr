@@ -19,16 +19,17 @@
             v-bind="$attrs"
           >
             <v-combobox
+              v-if="titlesLoaded"
               :value="title"
               @input="updateTitle"
               class="text-capitalize combobox"
               autocomplete="honorific-prefix"
               hide-details="auto"
               item-value="value"
-              item-text="text"
+              item-text="label"
+              :items="titles"
               :error-messages="errors"
               dense
-              :items="field.options"
               :placeholder="field.placeholder"
               :label="field.label"
               outlined
@@ -311,16 +312,14 @@ import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'DonorInfoForm',
 
-  async fetch() {
-    await this.$store.dispatch('helpers/getCountries')
+  fetch() {},
+  mounted() {
+    this.initCheckboxes()
 
     if (this.content.gdpr_text) {
       this.updateGdpr = false
     }
     this.$emit('ready')
-  },
-  mounted() {
-    this.initCheckboxes()
   },
   methods: {
     initCheckboxes() {
@@ -335,8 +334,8 @@ export default {
     capitalizeTitle() {
       return this.title.capitalize()
     },
-    ...mapState('helpers', ['countries']),
-    ...mapGetters('helpers', ['countriesLoaded']),
+    ...mapState('helpers', ['countries', 'titles']),
+    ...mapGetters('helpers', ['countriesLoaded', 'titlesLoaded']),
     ...mapGetters('pages', ['content']),
     ...mapFields('payment', [
       'donorInfo.title',

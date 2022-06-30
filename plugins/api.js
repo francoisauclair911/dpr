@@ -18,6 +18,7 @@ export default function (
   }
   const repositories = {
     country: createAxiosInstance($config.COUNTRY_BASE_URL),
+    asset: createAxiosInstance($config.ASSET_BASE_URL),
     campaign: createAxiosInstance($config.CAMPAIGN_BASE_URL),
     payment: createAxiosInstance($config.PAYMENT_BASE_URL),
   }

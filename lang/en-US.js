@@ -79,27 +79,6 @@ export default async ({ $axios }, locale) => {
           title: {
             label: 'Title',
             placeholder: 'Mr',
-            // options: await $axios(
-            //   'https://adra-public-assets.s3.eu-west-1.amazonaws.com/json-apis/titles.json'
-            // ).then((res) => res.data),
-            options: [
-              {
-                text: 'Mr',
-                value: 'mr',
-              },
-              {
-                text: 'Mrs',
-                value: 'mrs',
-              },
-              {
-                text: 'Dr',
-                value: 'dr',
-              },
-              {
-                text: 'Dre',
-                value: 'dre',
-              },
-            ],
           },
           firstName: {
             label: 'First Name',
