@@ -95,6 +95,15 @@
             v-slot="{ errors, hasError }"
             v-bind="$attrs"
           >
+            <AdraPhoneInput
+              @input:country_code="phone_country_code = $event"
+              @input:number="phone_number = $event"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              dense
+              outlined
+            >
+            </AdraPhoneInput>
             <v-text-field
               v-model="phone"
               :error-messages="errors"
@@ -318,6 +327,8 @@ export default {
       'donorInfo.last_name',
       'donorInfo.email',
       'donorInfo.phone',
+      'donorInfo.phone_number',
+      'donorInfo.phone_country_code',
       'donorInfo.address_line1',
       'donorInfo.address_line2',
       'donorInfo.country',
