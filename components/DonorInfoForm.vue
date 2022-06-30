@@ -135,6 +135,32 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col>
+        <TranslationField
+          v-slot="{ field }"
+          :field="$t('components.donorInfoForm.fields.birthday')"
+        >
+          <ValidationHandler
+            name="birthday"
+            v-slot="{ errors, hasError }"
+            v-bind="$attrs"
+          >
+            <AdraDatePicker
+              v-model="birthday"
+              hide-details="auto"
+              min="1900-01-01"
+              dense
+              :error-messages="errors"
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
+        </TranslationField>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12">
         <Subheader>
           {{ $t('components.donorInfoForm.subheaders.address_information') }}
@@ -317,6 +343,7 @@ export default {
       'donorInfo.first_name',
       'donorInfo.last_name',
       'donorInfo.email',
+      'donorInfo.birthday',
       'donorInfo.phone',
       'donorInfo.address_line1',
       'donorInfo.address_line2',

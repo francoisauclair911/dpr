@@ -117,6 +117,10 @@ export default async ({ $axios }, locale) => {
             label: 'Email',
             placeholder: 'john@example.com',
           },
+          birthday: {
+            label: 'Birthdate',
+            placeholder: '1980-01-01',
+          },
           address_line1: {
             label: 'Address Line 1',
             placeholder: '...',
