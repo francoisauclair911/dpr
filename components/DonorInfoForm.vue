@@ -19,16 +19,17 @@
             v-bind="$attrs"
           >
             <v-combobox
+              v-if="titlesLoaded"
               :value="title"
               @input="updateTitle"
               class="text-capitalize combobox"
               autocomplete="honorific-prefix"
               hide-details="auto"
               item-value="value"
-              item-text="text"
+              item-text="label"
+              :items="titles"
               :error-messages="errors"
               dense
-              :items="field.options"
               :placeholder="field.placeholder"
               :label="field.label"
               outlined
@@ -132,6 +133,32 @@
             <v-text-field
               v-model="email"
               hide-details="auto"
+              dense
+              :error-messages="errors"
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
+        </TranslationField>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <TranslationField
+          v-slot="{ field }"
+          :field="$t('components.donorInfoForm.fields.birthday')"
+        >
+          <ValidationHandler
+            name="birthday"
+            v-slot="{ errors, hasError }"
+            v-bind="$attrs"
+          >
+            <AdraDatePicker
+              v-model="birthday"
+              hide-details="auto"
+              min="1900-01-01"
               dense
               :error-messages="errors"
               :items="field.options"
@@ -294,16 +321,14 @@ import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'DonorInfoForm',
 
-  async fetch() {
-    await this.$store.dispatch('helpers/getCountries')
+  fetch() {},
+  mounted() {
+    this.initCheckboxes()
 
     if (this.content.gdpr_text) {
       this.updateGdpr = false
     }
     this.$emit('ready')
-  },
-  mounted() {
-    this.initCheckboxes()
   },
   methods: {
     initCheckboxes() {
@@ -318,14 +343,15 @@ export default {
     capitalizeTitle() {
       return this.title.capitalize()
     },
-    ...mapState('helpers', ['countries']),
-    ...mapGetters('helpers', ['countriesLoaded']),
+    ...mapState('helpers', ['countries', 'titles']),
+    ...mapGetters('helpers', ['countriesLoaded', 'titlesLoaded']),
     ...mapGetters('pages', ['content']),
     ...mapFields('payment', [
       'donorInfo.title',
       'donorInfo.first_name',
       'donorInfo.last_name',
       'donorInfo.email',
+      'donorInfo.birthday',
       'donorInfo.phone',
       'donorInfo.phone_number',
       'donorInfo.phone_country_code',

@@ -79,27 +79,6 @@ export default async ({ $axios }, locale) => {
           title: {
             label: 'Title',
             placeholder: 'Mr',
-            // options: await $axios(
-            //   'https://adra-public-assets.s3.eu-west-1.amazonaws.com/json-apis/titles.json'
-            // ).then((res) => res.data),
-            options: [
-              {
-                text: 'Mr',
-                value: 'mr',
-              },
-              {
-                text: 'Mrs',
-                value: 'mrs',
-              },
-              {
-                text: 'Dr',
-                value: 'dr',
-              },
-              {
-                text: 'Dre',
-                value: 'dre',
-              },
-            ],
           },
           firstName: {
             label: 'First Name',
@@ -116,6 +95,10 @@ export default async ({ $axios }, locale) => {
           email: {
             label: 'Email',
             placeholder: 'john@example.com',
+          },
+          birthday: {
+            label: 'Birthdate',
+            placeholder: '1980-01-01',
           },
           address_line1: {
             label: 'Address Line 1',

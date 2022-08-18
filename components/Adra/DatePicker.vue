@@ -11,14 +11,14 @@
       <v-text-field
         :value="value"
         outlined
-        prepend-inner-icon="mdi-calendar"
+        prepend-inner-icon=""
         v-bind="{ ...attrs, ...$attrs }"
         clearable
         @input="$emit('input', $event)"
         v-on="on"
       ></v-text-field>
     </template>
-    <v-date-picker clearable @input="changed"></v-date-picker>
+    <v-date-picker clearable @input="changed" v-bind="$attrs"></v-date-picker>
   </v-menu>
 </template>
 

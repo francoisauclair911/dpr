@@ -11,6 +11,7 @@ export const state = () => ({
       first_name: null,
       last_name: null,
       email: null,
+      birthday: null,
       phone: null,
       phone_number: null,
       phone_country_code: null,
