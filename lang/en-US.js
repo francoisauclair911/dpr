@@ -88,10 +88,15 @@ export default async ({ $axios }, locale) => {
             label: 'Last Name',
             placeholder: 'John',
           },
-          phone: {
-            label: 'Phone',
-            placeholder: '+1514',
+          phone_calling_code: {
+            label: 'Calling Code',
+            placeholder: '',
           },
+          phone_number: {
+            label: 'Phone Number',
+            placeholder: '5145556854',
+          },
+
           email: {
             label: 'Email',
             placeholder: 'john@example.com',
@@ -100,11 +105,11 @@ export default async ({ $axios }, locale) => {
             label: 'Birthdate',
             placeholder: '1980-01-01',
           },
-          address_line1: {
+          address_line_1: {
             label: 'Address Line 1',
             placeholder: '...',
           },
-          address_line2: {
+          address_line_2: {
             label: 'Address Line 2',
             placeholder: '...',
           },
@@ -112,8 +117,20 @@ export default async ({ $axios }, locale) => {
             label: 'Country',
             placeholder: '...',
           },
-          city: {
+          locality: {
             label: 'City',
+            placeholder: '...',
+          },
+          dependent_locality: {
+            label: 'Suburb Name',
+            placeholder: '...',
+          },
+          administrative_area: {
+            label: 'State/Province',
+            placeholder: '...',
+          },
+          postal_code: {
+            label: 'Postal code',
             placeholder: '...',
           },
         },
