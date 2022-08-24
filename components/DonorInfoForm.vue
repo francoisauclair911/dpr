@@ -87,27 +87,19 @@
     </v-row>
     <v-row>
       <v-col>
-        <TranslationField
-          v-slot="{ field }"
-          :field="$t('components.donorInfoForm.fields.phone')"
+        <ValidationHandler
+          name="phone"
+          v-slot="{ errors, hasError }"
+          v-bind="$attrs"
         >
-          <ValidationHandler
-            name="phone"
-            v-slot="{ errors, hasError }"
-            v-bind="$attrs"
-          >
-            <v-text-field
-              v-model="phone"
-              :error-messages="errors"
-              dense
-              hide-details="auto"
-              :items="field.options"
-              :placeholder="field.placeholder"
-              :label="field.label"
-              outlined
-            />
-          </ValidationHandler>
-        </TranslationField>
+          <AdraPhoneField
+            @input:callingCode="phone_calling_code = $event"
+            @input:number="phone_number = $event"
+            :error-messages="errors"
+            dense
+            outlined
+          />
+        </ValidationHandler>
       </v-col>
     </v-row>
     <v-row>
@@ -172,15 +164,15 @@
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
-          :field="$t('components.donorInfoForm.fields.address_line1')"
+          :field="$t('components.donorInfoForm.fields.address_line_1')"
         >
           <ValidationHandler
-            name="address_line1"
+            name="address_line_1"
             v-slot="{ errors }"
             v-bind="$attrs"
           >
             <v-text-field
-              v-model="address_line1"
+              v-model="address_line_1"
               hide-details="auto"
               :error-messages="errors"
               dense
@@ -197,15 +189,15 @@
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
-          :field="$t('components.donorInfoForm.fields.address_line2')"
+          :field="$t('components.donorInfoForm.fields.address_line_2')"
         >
           <ValidationHandler
-            name="address_line2"
+            name="address_line_2"
             v-slot="{ errors }"
             v-bind="$attrs"
           >
             <v-text-field
-              v-model="address_line2"
+              v-model="address_line_2"
               hide-details="auto"
               :error-messages="errors"
               dense
@@ -252,11 +244,90 @@
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
-          :field="$t('components.donorInfoForm.fields.city')"
+          :field="$t('components.donorInfoForm.fields.administrative_area')"
         >
-          <ValidationHandler name="city" v-slot="{ errors }" v-bind="$attrs">
+          <ValidationHandler
+            name="administrative_area"
+            v-slot="{ errors }"
+            v-bind="$attrs"
+          >
             <v-text-field
-              v-model="city"
+              v-model="administrative_area"
+              :error-messages="errors"
+              hide-details="auto"
+              dense
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
+        </TranslationField>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <TranslationField
+          v-slot="{ field }"
+          :field="$t('components.donorInfoForm.fields.locality')"
+        >
+          <ValidationHandler
+            name="locality"
+            v-slot="{ errors }"
+            v-bind="$attrs"
+          >
+            <v-text-field
+              v-model="locality"
+              :error-messages="errors"
+              hide-details="auto"
+              dense
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
+        </TranslationField>
+      </v-col>
+    </v-row>
+    <v-row v-if="content.dependent_locality">
+      <v-col cols="12">
+        <TranslationField
+          v-slot="{ field }"
+          :field="$t('components.donorInfoForm.fields.dependent_locality')"
+        >
+          <ValidationHandler
+            name="dependent_locality"
+            v-slot="{ errors }"
+            v-bind="$attrs"
+          >
+            <v-text-field
+              v-model="dependent_locality"
+              :error-messages="errors"
+              hide-details="auto"
+              dense
+              :items="field.options"
+              :placeholder="field.placeholder"
+              :label="field.label"
+              outlined
+            />
+          </ValidationHandler>
+        </TranslationField>
+      </v-col>
+    </v-row>
+    <v-row v-if="content.postal_code">
+      <v-col cols="12">
+        <TranslationField
+          v-slot="{ field }"
+          :field="$t('components.donorInfoForm.fields.postal_code')"
+        >
+          <ValidationHandler
+            name="postal_code"
+            v-slot="{ errors }"
+            v-bind="$attrs"
+          >
+            <v-text-field
+              v-model="postal_code"
               :error-messages="errors"
               hide-details="auto"
               dense
@@ -343,11 +414,15 @@ export default {
       'donorInfo.last_name',
       'donorInfo.email',
       'donorInfo.birthday',
-      'donorInfo.phone',
-      'donorInfo.address_line1',
-      'donorInfo.address_line2',
+      'donorInfo.phone_number',
+      'donorInfo.phone_calling_code',
+      'donorInfo.postal_code',
+      'donorInfo.address_line_1',
+      'donorInfo.address_line_2',
+      'donorInfo.dependent_locality',
+      'donorInfo.locality',
       'donorInfo.country',
-      'donorInfo.city',
+      'donorInfo.administrative_area',
       'donorInfo.communication',
       'donorInfo.gdpr',
     ]),

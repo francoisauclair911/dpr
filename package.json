@@ -27,6 +27,7 @@
     "iso-639-1": "^2.1.13",
     "lodash": "^4.17.21",
     "nuxt-edge": "latest",
+    "vue-tel-input-vuetify": "^1.5.3",
     "vuetify": "^2.5.5",
     "vuex-map-fields": "^1.4.1"
   },
