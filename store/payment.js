@@ -138,7 +138,7 @@ export const actions = {
       fingerprint: {},
       page: rootState.pages.page.attributes,
       utms: rootState.url.utms,
-      donation_intent_id: sessionStorage.getItem('donationIntentId'), || null
+      donation_intent_id: sessionStorage.getItem('donationIntentId') || null
     }
     // lets save donor info in session
     sessionStorage.setItem('donor', JSON.stringify(dataPayload.donor))
