@@ -87,7 +87,7 @@ export default {
   mounted() {
     console.log('\x1b[32;1m%s\x1b[0m  ', '=> mounted')
     const donor = sessionStorage.getItem('donor')
-    sessionStorage.clear()
+    this.$store.dispatch('payment/resetState')
     sessionStorage.setItem('donor', donor)
   },
   computed: {

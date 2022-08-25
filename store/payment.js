@@ -54,6 +54,12 @@ export const mutations = {
 }
 
 export const actions = {
+  resetState({ commit }) {
+    sessionStorage.clear();
+    commit('SET_INTENT', null)
+    commit('SET_DONATION_INTENT_ID', null)
+    commit('updateAmount', 0)
+  },
   async getIntent({ commit }, intentId = null) {
     console.log('/store.payment/getIntent')
     if (!intentId) {
@@ -132,7 +138,7 @@ export const actions = {
       fingerprint: {},
       page: rootState.pages.page.attributes,
       utms: rootState.url.utms,
-      donation_intent_id: state.donationIntentId || null
+      donation_intent_id: sessionStorage.getItem('donationIntentId'), || null
     }
     // lets save donor info in session
     sessionStorage.setItem('donor', JSON.stringify(dataPayload.donor))
