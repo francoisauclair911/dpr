@@ -76,7 +76,11 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxtjs/axios',
     '@nuxtjs/sentry',
+    '@nuxtjs/gtm',
   ],
+  gtm: {
+    enabled: true,
+  },
   sentry: {
     dsn: process.env.SENTRY_DSN || '',
     // https://sentry.nuxtjs.org/sentry/options

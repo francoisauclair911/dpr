@@ -62,11 +62,30 @@ import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'DonateAmountStep',
-
+  inject: ['page'],
   data() {
     return {
       missingAmount: false,
     }
+  },
+  mounted() {
+    this.$gtm.push({ event: 'start_donation' })
+
+    const gtmPayload = {
+      event: 'view_item',
+      items: [
+        {
+          item_id: this.page.attributes.id,
+          item_name: this.page.attributes.slug,
+          affiliation: 'Donation Form',
+          currency: this.page.attributes.settings.currency.toUpperCase(),
+          item_category: 'One-time Donation',
+          price: this.amount,
+          quantity: 1,
+        },
+      ],
+    }
+    this.$gtm.push(gtmPayload)
   },
   computed: {
     ...mapState('payment', ['amount']),

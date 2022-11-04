@@ -50,6 +50,28 @@ export default {
       loading: true,
     }
   },
+  inject: ['page'],
+  mounted() {
+    const currency = this.page.attributes.settings.currency.toUpperCase()
+    const gtmPayload = {
+      event: 'add_to_cart',
+      currency,
+      value: this.amount,
+      items: [
+        {
+          item_id: this.page.attributes.id,
+          item_name: this.page.attributes.slug,
+          affiliation: 'Donation Form',
+          currency,
+          item_category: 'One-time Donation',
+          price: 0,
+          quantity: 1,
+        },
+      ],
+    }
+    this.$gtm.push(gtmPayload)
+    console.log('gtm_event_add_to_cart', gtmPayload)
+  },
   computed: {
     ...mapState('payment', ['amount', 'donorInfo']),
     ...mapGetters('pages', ['numberFormat']),

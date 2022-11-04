@@ -68,8 +68,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
-import DonateCardHeaderIcon from './DonateCardHeaderIcon.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'DonateThankYouStep',
@@ -78,6 +77,33 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  mounted() {
+    console.log('mounted thank you')
+    console.log('this.donation', this.donation)
+    const currency = this.donation.currency.toUpperCase()
+    const gtmPayload = {
+      event: 'purchase',
+      currency,
+      value: this.donation.amount,
+      affiliation: 'Donation form', //  how the transaction should be affiliated
+      transaction_id:
+        this.$route.params.donation_intent_id ||
+        this.$store.state.payment.donationIntentId,
+      items: [
+        {
+          item_id: this.donation.donation_page_id,
+          item_name: this.$route.params.page_slug,
+          affiliation: 'Donation Form',
+          currency,
+          item_category: 'One-time Donation',
+          price: 0,
+          quantity: 1,
+        },
+      ],
+    }
+    this.$gtm.push(gtmPayload)
+    console.log('gtm_event_purchase', gtmPayload)
   },
   computed: {
     ...mapGetters('pages', ['currencySymbol']),
