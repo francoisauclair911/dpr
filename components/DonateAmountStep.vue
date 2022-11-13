@@ -40,6 +40,19 @@
           />
         </v-col>
       </v-row>
+      <v-fade-transition>
+        <v-row v-if="showMultiplier">
+          <v-col class="d-flex">
+            <p class="text-subtitle-1">
+              {{
+                content.multiplier_text ||
+                $t('components.donate_amount_step.multiplier_text')
+              }}
+              <b>{{ multipliedAmount }}</b>
+            </p>
+          </v-col>
+        </v-row>
+      </v-fade-transition>
       <v-row>
         <v-col class="d-flex">
           <ButtonDonate @click="submit"> </ButtonDonate>
@@ -89,9 +102,20 @@ export default {
   },
   computed: {
     ...mapState('payment', ['amount']),
-    ...mapGetters('pages', ['content']),
+    ...mapGetters('pages', ['content', 'numberFormat']),
     hasSelectedAmount() {
       return this.amount > 0
+    },
+    hasMultiplier() {
+      return this.page.attributes.settings.multiplier > 1
+    },
+    showMultiplier() {
+      return this.hasMultiplier && this.hasSelectedAmount
+    },
+    multipliedAmount() {
+      return this.numberFormat.format(
+        this.amount * this.page.attributes.settings.multiplier
+      )
     },
   },
   watch: {
