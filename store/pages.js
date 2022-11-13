@@ -22,6 +22,7 @@ export const getters = {
   numberFormat(state, getters) {
     return new Intl.NumberFormat(getters?.content?.languageCode || 'en', {
       style: 'currency',
+      maximumSignificantDigits: 2,
       currency: getters?.settings?.currency || 'usd',
     })
   },

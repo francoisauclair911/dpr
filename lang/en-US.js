@@ -24,6 +24,9 @@ export default async ({ $axios }, locale) => {
       },
     },
     components: {
+      donate_amount_step: {
+        multiplier_text: 'Your gift becomes',
+      },
       payment_provider_list: {
         payment_information: 'Payment Information',
       },
