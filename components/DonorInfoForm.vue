@@ -7,7 +7,7 @@
         </Subheader>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="extended">
       <v-col>
         <TranslationField
           v-slot="{ field }"
@@ -85,7 +85,7 @@
         </TranslationField>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="extended">
       <v-col>
         <ValidationHandler
           name="phone"
@@ -127,7 +127,7 @@
         </TranslationField>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="extended">
       <v-col>
         <TranslationField
           v-slot="{ field }"
@@ -153,14 +153,14 @@
         </TranslationField>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="extended">
       <v-col cols="12">
         <Subheader>
           {{ $t('components.donorInfoForm.subheaders.address_information') }}
         </Subheader>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="extended">
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
@@ -185,7 +185,7 @@
         </TranslationField>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="extended">
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
@@ -210,7 +210,7 @@
         </TranslationField>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="extended">
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
@@ -240,7 +240,7 @@
         </TranslationField>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="extended">
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
@@ -265,7 +265,7 @@
         </TranslationField>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="extended">
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
@@ -290,7 +290,7 @@
         </TranslationField>
       </v-col>
     </v-row>
-    <v-row v-if="content.dependent_locality">
+    <v-row v-if="content.dependent_locality && extended">
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
@@ -315,7 +315,7 @@
         </TranslationField>
       </v-col>
     </v-row>
-    <v-row v-if="content.postal_code">
+    <v-row v-if="content.postal_code && extended">
       <v-col cols="12">
         <TranslationField
           v-slot="{ field }"
@@ -382,7 +382,12 @@ import { mapFields } from 'vuex-map-fields'
 import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'DonorInfoForm',
-
+  props: {
+    extended: {
+      type: Boolean,
+      default: false,
+    },
+  },
   fetch() {},
   mounted() {
     this.initCheckboxes()

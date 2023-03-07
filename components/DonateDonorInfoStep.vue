@@ -5,10 +5,7 @@
     <v-card v-show="!loading" flat>
       <v-card-title class="black--text font-weight-bold">
         <ButtonBack @click="$emit('back')"></ButtonBack>
-        <!-- <v-btn class="text-subtitle-2" plain icon @click="$emit('back')">
-          <v-icon>mdi-chevron-left</v-icon>
-          <span class="text-subtitle-2 black--text text-capitalize"> Back</span>
-        </v-btn> -->
+
         <v-spacer />
         <div class="text-subtitle-1">
           <span class=""
@@ -24,12 +21,13 @@
         <v-divider />
 
         <DonorInfoForm
+          class="mb-2"
           :donor-info="value.donorInfo"
           @ready="loading = false"
           @input="$emit('input', { ...value, donorInfo: $event })"
         />
 
-        <ButtonPrimary @click="next">Payment Details</ButtonPrimary>
+        <ButtonPrimary block @click="next">Payment Details</ButtonPrimary>
       </v-card-text>
     </v-card>
   </div>

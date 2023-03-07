@@ -5,7 +5,9 @@ export const state = () => ({
 
 export const getters = {
   backgroundSrc(state, getters) {
-    return getters?.settings?.background_src || null
+    const src = getters?.settings?.background_src || null
+
+    return src.includes('picsum') ? null : src
   },
   settings(state, getters) {
     return getters?.attributes?.settings
