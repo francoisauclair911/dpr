@@ -1,4 +1,4 @@
 include:
   - project: 'adra-network/aws-core-deployment-roles'
-    ref: templates-for-pipelines
+    ref: main
     file: '/gitlab-templates/trunk-based-pipeline-frontend.yml'
