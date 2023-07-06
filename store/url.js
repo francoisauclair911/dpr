@@ -1,4 +1,5 @@
 export const state = () => ({
+  domain: null,
   utms: {
     medium: null,
     source: null,
@@ -10,6 +11,9 @@ export const state = () => ({
 export const mutations = {
   SET_UTM(state, [key, value = null]) {
     state.utms[key] = value
+  },
+  SET_DOMAIN(state, domain) {
+    state.domain = domain
   },
 }
 

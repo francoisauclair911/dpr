@@ -3,7 +3,7 @@
     <!-- <v-card max-height="200" tile flat> -->
     <v-img
       class="white--text align-end"
-      :src="page.attributes.settings.background_src"
+      src="page.attributes.settings.background_src"
       max-height="400"
       height="300"
     >
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'DonationPageBox',
   provide() {
@@ -49,6 +50,9 @@ export default {
       type: Object,
       default: () => {},
     },
+  },
+  computed: {
+    ...mapGetters('pages', ['backgroundSrc']),
   },
 }
 </script>

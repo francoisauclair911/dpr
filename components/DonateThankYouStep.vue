@@ -55,7 +55,9 @@
             class="text-caption mx-auto"
             @click="
               $router.push(
-                '/' + $route.params.organization_id + '?utm_medium=constituent'
+                '/' +
+                  store.state.settings.domain.organization_id +
+                  '?utm_medium=constituent'
               )
             "
           >
@@ -103,7 +105,6 @@ export default {
       ],
     }
     this.$gtm.push(gtmPayload)
-    console.log('gtm_event_purchase', gtmPayload)
   },
   computed: {
     ...mapGetters('pages', ['currencySymbol']),

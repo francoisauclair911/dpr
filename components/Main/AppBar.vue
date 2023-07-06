@@ -2,7 +2,7 @@
   <v-app-bar v-bind="$attrs" :extended="$vuetify.breakpoint.xsOnly">
     <slot name="prepend-title"></slot>
     <v-toolbar-title class="primary--text text-h6 flex-shrink-0">
-      <slot name="title">ADRA Donation Receiver</slot>
+      <slot name="title">{{ settings.site_title.value }}</slot>
     </v-toolbar-title>
     <v-spacer />
 
@@ -16,7 +16,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'MainAppBar',
+  computed: {
+    ...mapState('settings', ['settings']),
+  },
 }
 </script>
