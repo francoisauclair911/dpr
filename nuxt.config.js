@@ -1,7 +1,6 @@
 import { defineNuxtConfig } from '@nuxt/bridge'
 
 const isProduction = process.env.NODE_ENV === 'production'
-console.log('\x1b[32;1m%s\x1b[0m  ', '=> isProduction', isProduction)
 
 export default defineNuxtConfig({
   // Fix for using sentry and nuxt bridge
@@ -53,10 +52,11 @@ export default defineNuxtConfig({
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/urlParser',
     { src: '~/plugins/axios', ssr: true },
     '~/plugins/iso',
     '~/plugins/api',
+    '~/plugins/init',
+
     '~/plugins/fingerprint',
     '~/plugins/adra',
   ],
@@ -79,7 +79,9 @@ export default defineNuxtConfig({
     '@nuxtjs/gtm',
   ],
   gtm: {
-    enabled: true,
+    autoInit: false,
+    enabled: isProduction,
+    debug: !isProduction,
   },
   sentry: {
     dsn: process.env.SENTRY_DSN || '',

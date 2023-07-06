@@ -27,7 +27,7 @@
                   class="text-caption mx-auto"
                   @click="
                     $router.push(
-                      `/${$route.params.organization_id}/${$route.params.page_slug}`
+                      `/${store.state.settings.domain.organization_id}/${$route.params.page_slug}`
                     )
                   "
                 >

@@ -9,7 +9,7 @@ export const getters = {
     if (!src) {
       return null
     }
-    return src.includes('picsum') ? null : src
+    return src.includes('picsum') ? '/tile-bg.png' : src
   },
   settings(state, getters) {
     return getters?.attributes?.settings

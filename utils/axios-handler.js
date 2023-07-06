@@ -4,9 +4,9 @@ const handleError = (error, store, nuxtErrorThrower = null) => {
     if (code === 404) {
       store.dispatch('notifications/danger', 'Could not find the page')
 
-      throw nuxtErrorThrower({
-        statusCode: code,
-      })
+      // throw nuxtErrorThrower({
+      //   statusCode: code,
+      // })
     }
     if (code === 422) {
       store.dispatch(

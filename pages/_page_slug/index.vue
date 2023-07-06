@@ -45,7 +45,7 @@ export default {
   },
   async asyncData({ store, params }) {
     await store.dispatch('pages/getPage', {
-      organizationId: params.organization_id,
+      organizationId: store.state.settings.domain?.organization_id,
       pageSlug: params.page_slug,
     })
   },
@@ -95,17 +95,13 @@ export default {
     },
   },
   mounted() {
-    console.log('\x1b[32;1m%s\x1b[0m  ', '=> mounted')
-    if (this.page.attributes.gtm.enabled && this.page.attributes.gtm.tag_id) {
-      this.$gtm.init(this.page.attributes.gtm.tag_id)
-    }
     if (this.$route.query.amount) {
       this.$store.commit('payment/updateAmount', this.$route.query.amount)
     }
   },
   methods: {
     goToDonorInfo() {
-      this.$gtm.push({ event: 'start_donation' })
+      // this.$gtm.push({ event: 'start_donation' })
       this.step++
     },
     goToPaymentStep() {
