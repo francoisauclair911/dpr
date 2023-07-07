@@ -5,3 +5,11 @@ include:
 
 variables:
   MULTIPLE_CLOUDFRONT_DISTRIBUTION: 'true'
+
+cloudflare_deploy:
+  image: node:latest
+  stage: deploy
+  script:
+    - echo "Deploying to cloudflare pages"
+    - npm i wrangler -g
+    - CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN wrangler pages publish dist/ --project-name=$CLOUDFLARE_PROJECT_NAME
