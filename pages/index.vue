@@ -7,10 +7,10 @@
           :key="page.id"
           cols="12"
           sm="6"
-          md="3"
-          lg="4"
+          md="4"
+          lg="3"
         >
-          <DonationPageBox :page="page"></DonationPageBox>
+          <DonationPageBox class="flex" :page="page"></DonationPageBox>
         </v-col>
       </v-row>
     </v-col>
@@ -24,6 +24,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.commit('pages/SET_PAGE', null)
+      vm.$store.commit('pages/SET_BG_OVERRIDE')
     })
   },
   async asyncData({ store, params, error, $api }) {
@@ -43,9 +44,7 @@ export default {
     */
     $route: {
       async handler(to, from) {
-        await this.$store.dispatch('pages/index', {
-          organizationId: store.state.settings.domain?.organization_id,
-        })
+        await this.$store.dispatch('pages/index')
       },
     },
   },

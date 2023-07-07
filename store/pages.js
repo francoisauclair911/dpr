@@ -1,10 +1,14 @@
 export const state = () => ({
   page: null,
   list: [],
+  bgOverride: null,
 })
 
 export const getters = {
   backgroundSrc(state, getters) {
+    if (state.bgOverride) {
+      return state.bgOverride
+    }
     const src = getters?.settings?.background_src || null
     if (!src) {
       return null
@@ -54,6 +58,9 @@ export const mutations = {
   SET_PAGE(state, page) {
     state.page = page
   },
+  SET_BG_OVERRIDE(state, bg = '/tile-bg.png') {
+    state.bgOverride = bg
+  },
   SET_LIST(state, pages) {
     state.list = pages
   },
@@ -65,7 +72,12 @@ export const mutations = {
 export const actions = {
   async getPage({ commit, state, rootState }, params) {
     let page
-    const { organizationId, pageSlug, languageCode: lang = null } = params
+    const {
+      organizationId = rootState.settings.domain.organization_id,
+      pageSlug,
+      languageCode: lang = null,
+    } = params
+
     const languageCode = lang || rootState.languages.selected
 
     page = state.list.find((p) => {
@@ -101,16 +113,13 @@ export const actions = {
       return page
     }
 
-    console.log('\x1b[32;1m%s\x1b[0m  ', '=> here2')
-    console.log(
-      '\x1b[32;1m%s\x1b[0m  ',
-      '=> page.attributes.content',
-      page.attributes.content
-    )
     commit('SET_PAGE_CONTENT', page.attributes.content)
   },
-  async index({ commit, rootState }, params) {
-    const { organizationId, languageCode: lang = null } = params
+  async index({ commit, rootState }, params = {}) {
+    const {
+      organizationId = rootState.settings.domain.organization_id,
+      languageCode: lang = null,
+    } = params
     const languageCode = lang || rootState.languages.selected
     const {
       data: { data: pages },

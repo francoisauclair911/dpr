@@ -23,6 +23,8 @@ export const getters = {
 
   languages(state, getters) {
     const mergedAndUnique = [
+      // hello darkness my old friend.... its me again
+      // .... yeah we haven found a good solution for that yet....
       // ...new Set([...state.pageLanguages, ...getters.i18nLanguagesCodes]),
       ...new Set([...state.pageLanguages]),
     ]
@@ -37,9 +39,7 @@ export const actions = {
 
     commit('SET_SELECTED', languageCode)
     this.$i18n.setLocale(languageCode)
-    if (this.$i18n.locale !== languageCode) {
-      const query = { ...this.$router.currentRoute.query, lang: languageCode }
-      this.$router.replace({ query })
-    }
+    const query = { ...this.$router.currentRoute.query, lang: languageCode }
+    this.$router.replace({ query })
   },
 }

@@ -1,14 +1,18 @@
 <template>
-  <v-select
-    prepend-inner-icon="mdi-translate"
-    :items="languages"
-    hide-details
-    item-value="code"
-    item-text="nativeName"
-    :placeholder="$t('components.language_selector.placeholder')"
-    :value="lang"
-    @change="switchLanguage"
-  ></v-select>
+  <div>
+    <v-select
+      v-show="languages.length > 1"
+      prepend-inner-icon="mdi-translate"
+      :items="languages"
+      hide-details
+      item-value="code"
+      item-text="nativeName"
+      :placeholder="$t('components.language_selector.placeholder')"
+      :value="lang"
+      no-data-text="No languages available"
+      @change="switchLanguage"
+    ></v-select>
+  </div>
 </template>
 
 <script>

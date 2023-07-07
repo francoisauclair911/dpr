@@ -17,8 +17,7 @@ export const actions = {
     console.log('🚀 ~ file: settings.js:17 ~ initialConfig ~ initialConfig:')
     const response = await this.$api.campaign.get(`/domains/lookup`, {
       params: {
-        // name: window.location.hostname,
-        name: window.location.host,
+        name: window.location.hostname,
       },
     })
     const domain = response?.data?.data

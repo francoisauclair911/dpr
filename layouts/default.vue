@@ -8,10 +8,9 @@
       :clipped-left="primaryDrawer"
     >
       <template #prepend-title>
-        <ButtonBack
-          v-show="!$vuetify.breakpoint.xsOnly"
-          @click="$router.back()"
-        />
+        <v-btn v-show="!$vuetify.breakpoint.xsOnly" nuxt to="/" icon plain text>
+          <v-icon>mdi-home</v-icon>
+        </v-btn>
       </template>
       <v-row class="pl-4" justify="start" justify-sm="end">
         <v-col cols="auto" sm="auto">

@@ -88,7 +88,6 @@ export default {
     $route: {
       async handler(to, from) {
         await this.$store.dispatch('pages/getPage', {
-          organizationId: to.params.organization_id,
           pageSlug: to.params.page_slug,
         })
       },
