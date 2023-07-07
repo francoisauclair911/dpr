@@ -12,4 +12,4 @@ cloudflare_deploy:
   script:
     - echo "Deploying to cloudflare pages"
     - npm i wrangler -g
-    - CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN wrangler pages publish dist/ --project-name=$CLOUDFLARE_PROJECT_NAME
+    - CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN wrangler pages publish dist/ --project-name=$CLOUDFLARE_PROJECT_NAME --branch=$CI_COMMIT_BRANCH
