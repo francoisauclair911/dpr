@@ -1,19 +1,8 @@
 include:
   - project: 'adra-network/aws-core-deployment-roles'
-    ref: main
-    file: '/gitlab-templates/trunk-based-pipeline-frontend.yml'
+    ref: frontend-refactor
+    file: '/gitlab-templates/frontend/cloudflare-deployment.yml'
 
 variables:
   MULTIPLE_CLOUDFRONT_DISTRIBUTION: 'true'
-
-cloudflare_deploy:
-  image: node:latest
-  stage: deploy
-  script:
-    - echo "Deploying to Cloudflare Pages"
-    - echo "Project Name | $CLOUDFLARE_PROJECT_NAME"
-    - echo "Project Branch | $ENV"
-    # Install wrangler CLI to publish to cloudflare pages
-    - npm i wrangler -g
-    # Pushing to the right page branch (dev/stage/production) their named match the $ENV set in /gitlab-templates/trunk-based-pipeline-frontend.yml
-    - CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN wrangler pages publish dist/ --project-name=$CLOUDFLARE_PROJECT_NAME --branch=$ENV
+  CLOUDFLARE_PROJECT_NAME: 'donations'
