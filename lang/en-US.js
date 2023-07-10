@@ -12,6 +12,9 @@ export default async ({ $axios }, locale) => {
         500: {
           message: 'Something went wrong',
         },
+        100: {
+          message: 'This organization has no active fundraising pages',
+        },
       },
       confirm: {
         headers: {

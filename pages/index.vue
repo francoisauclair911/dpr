@@ -31,9 +31,18 @@ export default {
     await await store.dispatch('pages/index', {
       organizationId: store.state.settings.domain?.organization_id,
     })
+    if (store.state.pages.list.length === 0) {
+      error({
+        statusCode: 100,
+        message: 'No pages found',
+      })
+    }
   },
 
   computed: {
+    hasPages() {
+      return this.list.length > 0
+    },
     ...mapState('pages', ['list']),
     ...mapState('settings', ['settings']),
   },

@@ -65,7 +65,6 @@ export const mutations = {
     state.list = pages
   },
   SET_PAGE_CONTENT(state, content) {
-    console.log('\x1b[32;1m%s\x1b[0m  ', '=> SET_PAGE_CONTENT')
     state.page.attributes.content = content
   },
 }
@@ -108,7 +107,6 @@ export const actions = {
       { root: true }
     )
     if (!state.page || page.attributes.id !== state.page.attributes.id) {
-      console.log('\x1b[32;1m%s\x1b[0m  ', '=> here')
       commit('SET_PAGE', page)
       return page
     }
@@ -121,9 +119,7 @@ export const actions = {
       languageCode: lang = null,
     } = params
     const languageCode = lang || rootState.languages.selected
-    const {
-      data: { data: pages },
-    } = await this.$api.campaign.get(
+    const response = await this.$api.campaign.get(
       `/organizations/${organizationId}/frontend-pages`,
       {
         params: {
@@ -131,6 +127,7 @@ export const actions = {
         },
       }
     )
+    const pages = response?.data?.data || []
     commit('SET_LIST', pages)
     return pages
   },

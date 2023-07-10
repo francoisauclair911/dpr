@@ -16,14 +16,12 @@ export default async function ({
   try {
     await store.dispatch('settings/initialConfig')
   } catch (e) {
-    if (e.constructor.name === 'AdraException' && e.code === '001') {
+    if (e?.response?.status === 404) {
       window.onNuxtReady(() => {
-        console.log('errrrr')
-        // window.$nuxt.$router.push('/404')
-        return window.$nuxt.error({
-          statusCode: 404,
-          message: 'Your error message',
+        window.$nuxt.error({
+          statusCode: 100,
         })
+        // window.$nuxt._router.push('/404')
       })
     }
   }

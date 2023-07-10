@@ -8,7 +8,7 @@
     <v-toolbar-title class="primary--text text-h6 flex-shrink-0 ml-0 px-0">
       <slot name="title">
         <nuxt-link to="/" class="primary--text text-decoration-none">
-          {{ settings.site_title.value }}
+          {{ settings ? settings.site_title.value : 'ADRA' }}
         </nuxt-link>
       </slot>
     </v-toolbar-title>
