@@ -10,6 +10,10 @@ cloudflare_deploy:
   image: node:latest
   stage: deploy
   script:
-    - echo "Deploying to cloudflare pages"
+    - echo "Deploying to Cloudflare Pages"
+    - echo "Project Name | $CLOUDFLARE_PROJECT_NAME"
+    - echo "Project Branch | $ENV"
+    # Install wrangler CLI to publish to cloudflare pages
     - npm i wrangler -g
-    - CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN wrangler pages publish dist/ --project-name=$CLOUDFLARE_PROJECT_NAME --branch=$CI_COMMIT_BRANCH
+    # Pushing to the right page branch (dev/stage/production) their named match the $ENV set in /gitlab-templates/trunk-based-pipeline-frontend.yml
+    - CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN wrangler pages publish dist/ --project-name=$CLOUDFLARE_PROJECT_NAME --branch=$ENV
