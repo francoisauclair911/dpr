@@ -53,13 +53,7 @@
         <v-col cols="auto">
           <ButtonPrimary
             class="text-caption mx-auto"
-            @click="
-              $router.push(
-                '/' +
-                  store.state.settings.domain.organization_id +
-                  '?utm_medium=constituent'
-              )
-            "
+            @click="$router.push('/')"
           >
             {{ $t('components.thank_you_step.buttons.support_other_causes') }}
           </ButtonPrimary>
