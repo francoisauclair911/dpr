@@ -1,6 +1,6 @@
 include:
   - project: 'adra-network/aws-core-deployment-roles'
-    ref: frontend-refactor
+    ref: main
     file: '/gitlab-templates/frontend/cloudflare-deployment.yml'
 
 variables:
