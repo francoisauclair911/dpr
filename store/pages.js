@@ -1,3 +1,8 @@
+import {
+  NoFundraisingPagesException,
+  FundraisingPageNotFound,
+} from '~/exceptions'
+
 export const state = () => ({
   page: null,
   list: [],
@@ -89,17 +94,24 @@ export const actions = {
     })
 
     if (!page) {
-      const {
-        data: { data },
-      } = await this.$api.campaign.get(
-        `/organizations/${organizationId}/frontend-pages/${pageSlug}`,
-        {
-          params: {
-            language_code: languageCode,
-          },
+      try {
+        const {
+          data: { data },
+        } = await this.$api.campaign.get(
+          `/organizations/${organizationId}/frontend-pages/${pageSlug}`,
+          {
+            params: {
+              language_code: languageCode,
+            },
+          }
+        )
+        page = data
+      } catch (e) {
+        if (e?.response?.status === 404) {
+          // throw new FundraisingPageNotFound()
         }
-      )
-      page = data
+        throw e
+      }
     }
     commit(
       'languages/SET_PAGE_LANGUAGES',
@@ -113,22 +125,28 @@ export const actions = {
 
     commit('SET_PAGE_CONTENT', page.attributes.content)
   },
-  async index({ commit, rootState }, params = {}) {
-    const {
-      organizationId = rootState.settings.domain.organization_id,
-      languageCode: lang = null,
-    } = params
-    const languageCode = lang || rootState.languages.selected
-    const response = await this.$api.campaign.get(
-      `/organizations/${organizationId}/frontend-pages`,
-      {
-        params: {
-          language_code: languageCode,
-        },
+  async index({ commit, rootState, error }, params = {}) {
+    try {
+      const {
+        organizationId = rootState.settings.domain.organization_id,
+        languageCode: lang = null,
+      } = params
+      const languageCode = lang || rootState.languages.selected
+      const response = await this.$api.campaign.get(
+        `/organizations/${organizationId}/frontend-pages`,
+        {
+          params: {
+            language_code: languageCode,
+          },
+        }
+      )
+      const pages = response?.data?.data || []
+      commit('SET_LIST', pages)
+      return pages
+    } catch (e) {
+      if (e.response?.status === 404) {
+        throw new NoFundraisingPagesException()
       }
-    )
-    const pages = response?.data?.data || []
-    commit('SET_LIST', pages)
-    return pages
+    }
   },
 }

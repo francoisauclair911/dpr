@@ -19,6 +19,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import NoFundraisingPagesException from '~/exceptions/NoFundraisingPagesException'
 export default {
   name: 'PageList',
   beforeRouteEnter(to, from, next) {
@@ -27,15 +28,18 @@ export default {
       vm.$store.commit('pages/SET_BG_OVERRIDE')
     })
   },
-  async asyncData({ store, params, error, $api }) {
-    await await store.dispatch('pages/index', {
-      organizationId: store.state.settings.domain?.organization_id,
-    })
-    if (store.state.pages.list.length === 0) {
-      error({
-        statusCode: 100,
-        message: 'No pages found',
+  async asyncData({ store, params, error, $api, app }) {
+    try {
+      await await store.dispatch('pages/index', {
+        organizationId: store.state.settings.domain?.organization_id,
       })
+    } catch (e) {
+      if (e instanceof NoFundraisingPagesException) {
+        throw error({
+          message: app.i18n.t('pages.error.no_fundraising_pages'),
+        })
+      }
+      throw e
     }
   },
 

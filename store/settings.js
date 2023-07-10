@@ -1,4 +1,4 @@
-import AdraException from '~/utils/error'
+import AdraException from '~/exceptions/AdraException'
 export const state = () => ({
   settings: null,
   domain: null,

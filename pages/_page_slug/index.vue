@@ -33,6 +33,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import { FundraisingPageNotFound } from '~/exceptions'
 export default {
   name: 'PageIndex',
   provide() {
@@ -43,11 +44,20 @@ export default {
       amount: this.formData.amount,
     }
   },
-  async asyncData({ store, params }) {
-    await store.dispatch('pages/getPage', {
-      organizationId: store.state.settings.domain?.organization_id,
-      pageSlug: params.page_slug,
-    })
+  async asyncData({ store, params, error, app }) {
+    try {
+      await store.dispatch('pages/getPage', {
+        organizationId: store.state.settings.domain?.organization_id,
+        pageSlug: params.page_slug,
+      })
+    } catch (e) {
+      if (e instanceof FundraisingPageNotFound) {
+        throw error({
+          message: app.i18n.t('pages.error.fundraising_page_not_found'),
+        })
+      }
+      throw e
+    }
   },
 
   data() {

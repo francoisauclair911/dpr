@@ -6,14 +6,13 @@ export default async ({ $axios }, locale) => {
         buttons: {
           back: 'Go Back',
         },
+        no_fundraising_pages: 'No fundraising pages found',
+        fundraising_page_not_found: 'Fundraising page could not be found',
         404: {
           message: 'Page could not be found',
         },
         500: {
           message: 'Something went wrong',
-        },
-        100: {
-          message: 'This organization has no active fundraising pages',
         },
       },
       confirm: {
