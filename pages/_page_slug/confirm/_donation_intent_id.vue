@@ -53,13 +53,7 @@ export default {
       organizationId: params.organization_id,
       pageSlug: params.page_slug,
     })
-    console.log('\x1b[32;1m%s\x1b[0m  ', '=> query', params.donation_intent_id)
     if ($config.FEATURES.LIVE_PAYMENT === false) {
-      console.log(
-        '\x1b[32;1m%s\x1b[0m  ',
-        '=> _donation_intent_id.vue/ Live Payment = OFF'
-      )
-
       return {
         response: {
           status: 'succeeded',
@@ -85,7 +79,6 @@ export default {
     }
   },
   mounted() {
-    console.log('\x1b[32;1m%s\x1b[0m  ', '=> mounted')
     const donor = sessionStorage.getItem('donor')
     this.$store.dispatch('payment/resetState')
     sessionStorage.setItem('donor', donor)

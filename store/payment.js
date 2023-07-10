@@ -40,7 +40,6 @@ export const mutations = {
     state.intent = intent
   },
   updateDonorInfo(state, { field, value }) {
-    console.log('mutating donorInfo for ', field)
     state.donorInfo[field] = value
   },
 
@@ -61,7 +60,6 @@ export const actions = {
     commit('updateAmount', 0)
   },
   async getIntent({ commit }, intentId = null) {
-    console.log('/store.payment/getIntent')
     if (!intentId) {
       throw new Error('Intent is null')
     }
@@ -71,7 +69,6 @@ export const actions = {
     commit('SET_INTENT', paymentIntent)
   },
   async confirm({ commit }, payload) {
-    console.log('getIntent')
     const { paymentProvider, donationIntentId } = payload
     if (!donationIntentId) {
       throw new Error('No donation intent provided')
@@ -90,7 +87,6 @@ export const actions = {
     { state, rootState },
     { paymentProvider, paymentProviderReferenceId = null }
   ) {
-    console.log('preProcess')
     const currency = rootState.pages.page.attributes.settings.currency
     const amount = convertedAmount(state.amount, currency)
     const payload = {
@@ -101,7 +97,6 @@ export const actions = {
       payment_provider: paymentProvider,
       payment_provider_reference_id: paymentProviderReferenceId,
     }
-    console.log('\x1b[32;1m%s\x1b[0m  ', '=> payload', payload)
     const {
       data: { data: response },
     } = await this.$api.payment.post(
@@ -110,12 +105,10 @@ export const actions = {
         data: payload,
       }
     )
-    console.log('response', response)
 
     return response
   },
   async process({ state, rootState }, payload) {
-    console.log('store process')
     const { paymentProvider: name, referenceId, returnUrl } = payload
     const currency = rootState.pages.page.attributes.settings.currency
     const amount = convertedAmount(state.amount, currency)
@@ -164,14 +157,9 @@ export const actions = {
   },
 
   validateDonorForm({ commit, state, dispatch }) {
-    console.log('validateDonorForm', state.donorInfo)
     dispatch('validation/clearValidationErrors', null, { root: true })
 
     if (this.$config.FEATURES.LIVE_PAYMENT === false) {
-      console.log(
-        '\x1b[32;1m%s\x1b[0m  ',
-        '=> DonateDonorInfoStep.vue/ Live Payment = OFF'
-      )
       return {
         response: true,
       }

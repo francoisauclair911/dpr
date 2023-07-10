@@ -75,8 +75,6 @@ export default {
     },
   },
   mounted() {
-    console.log('mounted thank you')
-    console.log('this.donation', this.donation)
     const currency = this.donation.currency.toUpperCase()
     const gtmPayload = {
       event: 'purchase',
@@ -109,12 +107,10 @@ export default {
     },
     donor() {
       const donor = sessionStorage.getItem('donor')
-      console.log('\x1b[32;1m%s\x1b[0m  ', '=> donor', donor)
       return JSON.parse(donor)
     },
     donation() {
       const donation = sessionStorage.getItem('donation')
-      console.log('\x1b[32;1m%s\x1b[0m  ', '=> donation', donation)
       return JSON.parse(donation)
     },
   },

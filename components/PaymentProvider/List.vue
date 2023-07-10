@@ -38,10 +38,6 @@ export default {
     ...mapGetters('pages', ['settings']),
     paymentProviders() {
       if (this.$config.FEATURES.LIVE_PAYMENT === false) {
-        console.log(
-          '\x1b[32;1m%s\x1b[0m  ',
-          '=> paymentProviderList.vue/ Live Payment = OFF'
-        )
         return ['stripe']
       }
       return this.settings.payment_providers

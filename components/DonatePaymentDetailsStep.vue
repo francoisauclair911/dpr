@@ -38,7 +38,6 @@ export default {
       ],
     }
     this.$gtm.push(gtmPayload)
-    console.log('gtm_event_add_shipping_info', gtmPayload)
   },
   computed: {
     ...mapGetters('pages', ['currencySymbol']),

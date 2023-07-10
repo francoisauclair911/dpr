@@ -65,14 +65,11 @@ export default {
     },
   },
   mounted() {
-    console.log('mounted')
-    console.log('this.sessionActive', this.sessionActive)
     if (this.$config.FEATURES.LIVE_PAYMENT === false) {
       this.setPk(this.$config.ADRA_DEMO_STRIPE_PK_KEY)
       this.setPaymentIntentSecret(this.$config.ADRA_DEMO_STRIPE_INTENT_SECRET)
       let intentId = this.$config.ADRA_DEMO_STRIPE_INTENT_SECRET.split('_')
       intentId = [intentId[0], intentId[1]].join('_')
-      console.log('\x1b[32;1m%s\x1b[0m  ', '=> intentId', intentId)
       this.setStripePaymentIntentId(intentId)
       return (this.loading = false)
     }
@@ -80,7 +77,6 @@ export default {
   },
   methods: {
     async initSession() {
-      console.log('initSession')
       try {
         const {
           client_secret: clientSecret,
@@ -106,11 +102,6 @@ export default {
       sessionStorage.setItem('stripePaymentIntentSecret', paymentIntentSecret)
     },
     setStripePaymentIntentId(paymentIntentId) {
-      console.log(
-        'New stripe intent? ',
-        this.stripePaymentIntentId !== paymentIntentId
-      )
-
       this.stripePaymentIntentId = paymentIntentId
       sessionStorage.setItem('stripePaymentIntentId', paymentIntentId)
     },
@@ -154,8 +145,6 @@ export default {
           redirect: 'if_required',
         })
         .then((result) => {
-          console.log('\x1b[32;1m%s\x1b[0m  ', '=> result', result)
-
           if (result.error) {
             this.$error(result.error.message)
             this.$emit('processing', false)

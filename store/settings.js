@@ -14,14 +14,12 @@ export const mutations = {
 
 export const actions = {
   async initialConfig({ commit, state }) {
-    console.log('🚀 ~ file: settings.js:17 ~ initialConfig ~ initialConfig:')
     const response = await this.$api.campaign.get(`/domains/lookup`, {
       params: {
         name: window.location.hostname,
       },
     })
     const domain = response?.data?.data
-    console.log('🚀 ~ file: settings.js:21 ~ initialConfig ~ domain:')
 
     if (!domain) {
       throw new AdraException('001', 'Domain not found')

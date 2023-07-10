@@ -22,25 +22,17 @@ export const mutations = {
 }
 export const actions = {
   async getCountries({ commit, getters }) {
-    console.log('getCountries')
-
     if (getters.countriesLoaded) {
-      console.log('countriesLoaded', true)
       return
     }
-    console.log('fetching countries')
 
     const { data: countries } = await this.$api.country()
     commit('SET_COUNTRIES', countries)
   },
   async getTitles({ commit, getters }) {
-    console.log('getTitles')
-
     if (getters.titlesLoaded) {
-      console.log('titlesLoaded', true)
       return
     }
-    console.log('fetching titles')
 
     const {
       data: { data: titles = [] },

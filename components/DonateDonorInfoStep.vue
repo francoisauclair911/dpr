@@ -68,7 +68,6 @@ export default {
       ],
     }
     this.$gtm.push(gtmPayload)
-    console.log('gtm_event_add_to_cart', gtmPayload)
   },
   computed: {
     ...mapState('payment', ['amount', 'donorInfo']),

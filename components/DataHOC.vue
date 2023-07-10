@@ -146,7 +146,6 @@ export default {
   async fetch() {
     try {
       this.json = null
-      console.log('\x1b[32;1m%s\x1b[0m  ', '=> fetch')
       let response
       if (this.baseUrl) {
         response = await this.$axios(this.completeURL)
@@ -204,9 +203,7 @@ export default {
       await this.$fetch()
     },
     async refresh() {
-      console.log('refreshing')
       await this.$fetch()
-      console.log('filteredItems', this.filteredItems.length)
     },
   },
   methods: {

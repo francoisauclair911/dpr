@@ -44,7 +44,6 @@ export default {
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     },
     changed(date) {
-      console.log('\x1b[32;1m%s\x1b[0m  ', '=> date', date)
       this.$emit('input', date)
       this.visibility = false
     },
