@@ -1,8 +1,10 @@
+import { DomainNotFound } from '~/exceptions'
 export default async function ({
   store,
   route,
   app,
   $api,
+  $sentry,
   redirect,
   $gtm,
   error,
@@ -16,12 +18,13 @@ export default async function ({
   try {
     await store.dispatch('settings/initialConfig')
   } catch (e) {
-    if (e?.response?.status === 404) {
+    $sentry.captureException(e)
+    if (e instanceof DomainNotFound) {
       window.onNuxtReady(() => {
         window.$nuxt.error({
-          statusCode: 100,
+          statusCode: 404,
+          message: $i18n.t('pages.error.domain_not_found'),
         })
-        // window.$nuxt._router.push('/404')
       })
     }
   }

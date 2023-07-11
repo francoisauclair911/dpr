@@ -1,9 +1,9 @@
 import { AdraException } from '.'
 
-export default class FundraisingPageNotFound extends AdraException {
+export default class DomainNotFound extends AdraException {
   constructor(code, message) {
     super(message)
     this.code = code
-    this.name = 'FundraisingPageNotFound'
+    this.name = 'DomainNotFound'
   }
 }

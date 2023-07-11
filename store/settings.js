@@ -1,4 +1,4 @@
-import AdraException from '~/exceptions/AdraException'
+import { DomainNotFound } from '~/exceptions'
 export const state = () => ({
   settings: null,
   domain: null,
@@ -14,17 +14,19 @@ export const mutations = {
 
 export const actions = {
   async initialConfig({ commit, state }) {
-    const response = await this.$api.campaign.get(`/domains/lookup`, {
-      params: {
-        name: window.location.hostname,
-      },
-    })
-    const domain = response?.data?.data
-
-    if (!domain) {
-      throw new AdraException('001', 'Domain not found')
+    try {
+      const response = await this.$api.campaign.get(`/domains/lookup`, {
+        params: {
+          name: window.location.hostname,
+        },
+      })
+      const domain = response?.data?.data
+      commit('SET_DOMAIN', domain)
+    } catch (error) {
+      if (error?.response?.status === 404) {
+        throw new DomainNotFound()
+      }
     }
-    commit('SET_DOMAIN', domain)
 
     const {
       data: { data: settings = null },

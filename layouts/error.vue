@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-row justify="center" align="center">
       <v-col cols="10" sm="8" md="4">
         <h2 class="text-h3 text-center">

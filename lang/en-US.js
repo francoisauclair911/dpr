@@ -6,6 +6,7 @@ export default async ({ $axios }, locale) => {
         buttons: {
           back: 'Go Back',
         },
+        domain_not_found: 'No organization found for this url',
         no_fundraising_pages: 'No fundraising pages found',
         fundraising_page_not_found: 'Fundraising page could not be found',
         404: {

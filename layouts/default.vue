@@ -29,7 +29,7 @@
           :style="cardStyle"
         >
           <v-row class="fill-height ma-0">
-            <v-col class="py-0">
+            <v-col class="py-0 px-0">
               <Nuxt />
             </v-col>
           </v-row>
