@@ -3,7 +3,7 @@
     <!-- <v-card max-height="200" tile flat> -->
     <v-img
       class="white--text align-end"
-      src="page.attributes.settings.background_src"
+      :src="page.attributes.settings.background_src"
       max-height="400"
       height="300"
     >

@@ -52,6 +52,7 @@ export default {
     cardStyle() {
       if (this.backgroundSrc) {
         return {
+          transition: `background-image 0.2s ease-in-out`,
           backgroundImage: `url("${this.backgroundSrc}")`,
           backgroundSize: `cover`,
         }

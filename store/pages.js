@@ -11,14 +11,9 @@ export const state = () => ({
 
 export const getters = {
   backgroundSrc(state, getters) {
-    if (state.bgOverride) {
-      return state.bgOverride
-    }
-    const src = getters?.settings?.background_src || null
-    if (!src) {
-      return null
-    }
-    return src.includes('picsum') ? '/tile-bg.png' : src
+    return (
+      state?.bgOverride || getters?.settings?.background_src || '/tile-bg.png'
+    )
   },
   settings(state, getters) {
     return getters?.attributes?.settings
@@ -108,7 +103,7 @@ export const actions = {
         page = data
       } catch (e) {
         if (e?.response?.status === 404) {
-          // throw new FundraisingPageNotFound()
+          throw new FundraisingPageNotFound()
         }
         throw e
       }
@@ -120,6 +115,7 @@ export const actions = {
     )
     if (!state.page || page.attributes.id !== state.page.attributes.id) {
       commit('SET_PAGE', page)
+
       return page
     }
 

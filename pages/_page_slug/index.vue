@@ -44,6 +44,11 @@ export default {
       amount: this.formData.amount,
     }
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$store.commit('pages/SET_BG_OVERRIDE', null)
+    })
+  },
   async asyncData({ store, params, error, app }) {
     try {
       await store.dispatch('pages/getPage', {
