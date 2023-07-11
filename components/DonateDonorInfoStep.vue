@@ -37,6 +37,7 @@
 import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'DonateDonorInfoStep',
+  inject: ['page'],
   props: {
     value: {
       type: Object,
@@ -48,7 +49,10 @@ export default {
       loading: true,
     }
   },
-  inject: ['page'],
+  computed: {
+    ...mapState('payment', ['amount', 'donorInfo']),
+    ...mapGetters('pages', ['numberFormat']),
+  },
   mounted() {
     const currency = this.page.attributes.settings.currency.toUpperCase()
     const gtmPayload = {
@@ -69,18 +73,18 @@ export default {
     }
     this.$gtm.push(gtmPayload)
   },
-  computed: {
-    ...mapState('payment', ['amount', 'donorInfo']),
-    ...mapGetters('pages', ['numberFormat']),
-  },
+
   methods: {
     next() {
-      this.$store.dispatch('payment/validateDonorForm').then((result) => {
-        if (!result.error) {
-          sessionStorage.setItem('donor', JSON.stringify(this.donorInfo))
-          this.$emit('next')
-        }
-      })
+      this.$store
+        .dispatch('payment/validateDonorForm')
+        .then((result) => {
+          if (!result.error) {
+            sessionStorage.setItem('donor', JSON.stringify(this.donorInfo))
+            this.$emit('next')
+          }
+        })
+        .catch(() => {})
     },
   },
 }

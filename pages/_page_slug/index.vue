@@ -21,7 +21,6 @@
                 @back="step--"
                 @next="step++"
               />
-
               <DonateThankYouStep v-if="step === 4" />
             </v-slide-x-transition>
           </v-card>
@@ -52,16 +51,14 @@ export default {
   async asyncData({ store, params, error, app }) {
     try {
       await store.dispatch('pages/getPage', {
-        organizationId: store.state.settings.domain?.organization_id,
         pageSlug: params.page_slug,
       })
     } catch (e) {
       if (e instanceof FundraisingPageNotFound) {
-        throw error({
+        error({
           message: app.i18n.t('pages.error.fundraising_page_not_found'),
         })
       }
-      throw e
     }
   },
 

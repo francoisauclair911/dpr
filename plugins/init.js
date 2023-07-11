@@ -9,6 +9,8 @@ export default async function ({
   $gtm,
   error,
 }) {
+  console.log('🚀  init')
+
   const $i18n = app.i18n
   store.dispatch('url/parseURL', route)
 
@@ -16,7 +18,7 @@ export default async function ({
   store.dispatch('languages/switchLanguage', route.query.lang)
 
   try {
-    await store.dispatch('settings/initialConfig')
+    await await store.dispatch('settings/initialConfig')
   } catch (e) {
     $sentry.captureException(e)
     if (e instanceof DomainNotFound) {
