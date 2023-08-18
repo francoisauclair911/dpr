@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="10">
+  <v-card :elevation="elevation">
     <v-slide-x-transition hide-on-leave>
       <slot />
     </v-slide-x-transition>
@@ -7,5 +7,12 @@
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    elevation: {
+      type: Number,
+      default: 10,
+    },
+  },
+}
 </script>

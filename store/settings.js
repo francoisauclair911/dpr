@@ -16,7 +16,11 @@ export const mutations = {
     state.domain = domain
   },
 }
-
+export const getters = {
+  stripeAccountId(state) {
+    return state.settings?.stripe_account_id.value || null
+  },
+}
 export const actions = {
   domainLookup({ commit, state }) {
     return this.$api.campaign
@@ -48,8 +52,6 @@ export const actions = {
     commit('SET_DOMAIN', domain)
 
     await dispatch('getOrganizationSettings')
-
-    console.log('🚀  3', state.settings.enable_gtm.value)
 
     if (
       state.settings.enable_gtm.value === true &&

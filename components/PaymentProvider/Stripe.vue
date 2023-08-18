@@ -1,165 +1,137 @@
 <template>
   <div>
-    <v-skeleton-loader type="card" :loading="loading">
-      <v-skeleton-loader v-show="!showStripe" type="card"></v-skeleton-loader>
-      <div v-show="showStripe">
-        <!-- <p>3d 4000002500003155</p> -->
-        <stripe-element-payment
-          @element-ready="showStripe = true"
-          class="mt-4"
-          ref="paymentRef"
-          :pk="pk"
-          :test-mode="!$config.IS_PRODUCTION"
-          :elements-options="elementsOptions"
-          :confirm-params="confirmParams"
-        />
-        <ButtonPrimary class="mt-4" block @click="pay">
-          {{ content.submit_text || $t('components.button_donate.donate') }}
-        </ButtonPrimary>
-      </div>
-
-      <!-- </div> -->
-    </v-skeleton-loader>
+    <!-- <div class="d-flex">
+      <v-btn plain class="flex-grow-1" @click="destroy">destroy</v-btn>
+      <v-btn plain class="flex-grow-1" @click="initialize">Initialize</v-btn>
+      <v-btn plain class="flex-grow-1" @click="completeDonation()"
+        >confirm</v-btn
+      >
+      <v-btn plain class="flex-grow-1" @click="completeDonation()"
+        >confirmTrue</v-btn
+      >
+    </div> -->
+    <!-- <v-btn plain class="flex-grow-1" @click="clearVuex">clearVuex</v-btn> -->
+    <v-skeleton-loader v-if="loading && !hasError" type="card" />
+    <div v-show="!loading && !hasError" id="checkout"></div>
+    <v-card v-if="hasError" class="mt-4">
+      <v-alert outlined type="warning" color="primary" prominent>
+        {{ $t('error_loading_payment_provider') }}
+      </v-alert>
+    </v-card>
   </div>
 </template>
 
 <script>
-import { StripeElementPayment } from '@vue-stripe/vue-stripe'
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapGetters, mapState, mapMutations } from 'vuex'
+
+import { loadStripe } from '@stripe/stripe-js/pure'
+import { check } from 'prettier'
+loadStripe.setLoadParameters({ advancedFraudSignals: false }) // https://github.com/stripe/stripe-js#disabling-advanced-fraud-detection-signals
+let stripe, elements
 export default {
-  name: 'PaymentProviderStripe',
-  components: {
-    StripeElementPayment,
-  },
   data() {
     return {
+      stripe: null,
+      checkout: null,
+      clientSecret: null,
       loading: true,
-      showStripe: false,
-      pk: sessionStorage.getItem('stripePk'),
-      stripePaymentIntentId: sessionStorage.getItem('stripePaymentIntentId'),
-      elementsOptions: {
-        appearance: {},
-        clientSecret: sessionStorage.getItem('stripePaymentIntentSecret'),
-      },
-      confirmParams: {
-        return_url: `${this.$config.DONATION_PAGE_BASE_URL}${this.$route.path}/confirm`,
-      },
+      hasError: false,
     }
   },
   computed: {
-    ...mapState('payment', ['amount']),
-    ...mapGetters('pages', ['content']),
-
-    sessionActive() {
-      return !!(
-        this.pk &&
-        this.stripePaymentIntentId &&
-        this.elementsOptions.clientSecret
-      )
-    },
-    baseReturnUrl() {
-      return `${this.$config.DONATION_PAGE_BASE_URL}${this.$route.path}/confirm`
-    },
-    paymentServiceIntentId() {
-      return this.$store.state.payment.intent?.id || ''
+    ...mapState('payment', [
+      'amount',
+      'donationType',
+      'currency',
+      'donor',
+      'phone',
+      'address',
+      'consents',
+    ]),
+    ...mapState('pages', ['page']),
+    ...mapState('languages', {
+      languageCode: 'selected',
+    }),
+    ...mapState('settings', ['domain']),
+    ...mapGetters('payment', ['convertedAmount']),
+    ...mapGetters('settings', ['stripeAccountId']),
+    initializePayload() {
+      return {
+        paymentProvider: {
+          referenceId: this.checkoutSessionId,
+          accountId: this.stripeAccountId,
+          name: 'stripe',
+        },
+        internalReferences: {
+          organizationId: this.domain.organization_id,
+          donationPageId: this.page.attributes.id,
+        },
+        donation: {
+          donationType: this.donationType,
+          amount: this.convertedAmount,
+          currency: this.currency,
+        },
+        donor: { ...this.donor, languageCode: this.languageCode },
+        phone: this.phone,
+        address: this.address,
+        consents: this.consents,
+      }
     },
   },
-  mounted() {
-    if (this.$config.FEATURES.LIVE_PAYMENT === false) {
-      this.setPk(this.$config.ADRA_DEMO_STRIPE_PK_KEY)
-      this.setPaymentIntentSecret(this.$config.ADRA_DEMO_STRIPE_INTENT_SECRET)
-      let intentId = this.$config.ADRA_DEMO_STRIPE_INTENT_SECRET.split('_')
-      intentId = [intentId[0], intentId[1]].join('_')
-      this.setStripePaymentIntentId(intentId)
-      return (this.loading = false)
+  async mounted() {
+    await this.initialize()
+  },
+  beforeDestroy() {
+    if (this.checkout) {
+      this.checkout.destroy()
     }
-    this.initSession()
   },
+
   methods: {
-    async initSession() {
+    clearVuex() {
+      localStorage.removeItem('vuex')
+    },
+    completeDonation(fake = false) {
+      this.$emit('success')
+    },
+    destroy() {
+      this.checkout.destroy()
+    },
+    async initialize() {
+      stripe = await loadStripe('pk_test_qCVboJvytvpilqW1RAriwxSG', {
+        betas: ['embedded_checkout_beta_1'],
+        stripeAccount: 'acct_1NYXZnG82aoDDcXS',
+      })
       try {
-        const {
-          client_secret: clientSecret,
-          publishable_key: pk,
-          payment_provider_reference_id: stripePaymentIntentId,
-        } = await this.preProcess({
-          paymentProvider: 'stripe',
-          paymentProviderReferenceId: this.stripePaymentIntentId,
-        })
-        this.setPk(pk)
-        this.setPaymentIntentSecret(clientSecret)
-        this.setStripePaymentIntentId(stripePaymentIntentId)
-
-        this.loading = false
-      } catch (error) {
-        this.$error(
-          'An error occurred with this payment provider, try again later, or select a different payment option'
+        const response = await this.$api.payment.post(
+          '/authorize/stripe/create',
+          this.initializePayload
         )
-      }
-    },
-    setPaymentIntentSecret(paymentIntentSecret) {
-      this.elementsOptions.clientSecret = paymentIntentSecret
-      sessionStorage.setItem('stripePaymentIntentSecret', paymentIntentSecret)
-    },
-    setStripePaymentIntentId(paymentIntentId) {
-      this.stripePaymentIntentId = paymentIntentId
-      sessionStorage.setItem('stripePaymentIntentId', paymentIntentId)
-    },
-    setPk(pk) {
-      this.pk = pk
-      sessionStorage.setItem('stripePk', pk)
-    },
 
-    ...mapActions('payment', ['preProcess', 'process']),
-    async pay() {
-      this.$emit('processing', true)
-      try {
         const {
-          data: {
-            data: { intent_id: intentId = null },
-          },
-        } = await this.process({
-          paymentProvider: 'stripe',
-          referenceId: this.stripePaymentIntentId,
-          returnUrl: null,
-        })
-        if (this.$config.FEATURES.LIVE_PAYMENT === false) {
-          return this.success()
-        }
-        this.$store.commit('payment/SET_DONATION_INTENT_ID', intentId)
-        this.confirmParams.return_url =
-          this.baseReturnUrl + `/${intentId}?payment_provider=stripe`
+          clientSecret,
+          id: checkoutSessionId,
+          donationIntentId = null,
+        } = response.data.data
 
-        this.confirmPayment()
+        const checkout = await stripe.initEmbeddedCheckout({
+          clientSecret,
+          onComplete: () => {
+            this.completeDonation()
+          },
+        })
+        this.checkoutSessionId = checkoutSessionId
+
+        // Store donationIntentId for reuse on the thank you page
+        this.$store.commit('payment/SET_DONATION_INTENT_ID', donationIntentId)
+        this.loading = false
+
+        checkout.mount('#checkout')
+        this.checkout = checkout
       } catch (error) {
-        this.$error('Ooops ')
-        console.log(error)
-        this.$emit('processing', false)
+        console.log('🚀 ~ file: Stripe.vue:47 ~ initialize ~ error:', error)
+        this.hasError = true
       }
-    },
-    confirmPayment() {
-      this.$refs.paymentRef.stripe
-        .confirmPayment({
-          elements: this.$refs.paymentRef.elements,
-          confirmParams: this.confirmParams,
-          redirect: 'if_required',
-        })
-        .then((result) => {
-          if (result.error) {
-            this.$error(result.error.message)
-            this.$emit('processing', false)
-          }
-          if (result.paymentIntent) {
-            this.success()
-          }
-        })
-    },
-    success() {
-      // this.$emit('success')
-      // sessionStorage.clear()
-      this.$router.push(
-        `${this.$route.path}/confirm/${this.$store.state.payment.donationIntentId}?payment_provider=stripe`
-      )
     },
   },
 }

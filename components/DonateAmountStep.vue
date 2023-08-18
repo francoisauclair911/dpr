@@ -19,6 +19,14 @@
       </v-row>
       <v-row class="mt-4">
         <v-col>
+          <DonationTypeSelector />
+          <v-divider></v-divider>
+        </v-col>
+        <!-- <v-col>
+        </v-col> -->
+      </v-row>
+      <v-row class="mt-4">
+        <v-col>
           <PredefinedAmounts />
         </v-col>
       </v-row>
@@ -82,6 +90,9 @@ export default {
     }
   },
   mounted() {
+    if (this.$route.query.amount) {
+      this.$store.commit('payment/updateAmount', this.$route.query.amount)
+    }
     this.$gtm.push({ event: 'start_donation' })
 
     const gtmPayload = {

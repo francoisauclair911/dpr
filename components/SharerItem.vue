@@ -1,5 +1,5 @@
 <template>
-  <v-icon @click="share">mdi-share-variant</v-icon>
+  <v-icon v-if="shareApiSupported" @click="share">mdi-share-variant</v-icon>
 </template>
 
 <script>
@@ -17,6 +17,12 @@ export default {
     url: {
       type: String,
       default: '',
+    },
+  },
+
+  computed: {
+    shareApiSupported() {
+      return navigator.share !== undefined
     },
   },
   methods: {

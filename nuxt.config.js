@@ -40,7 +40,8 @@ export default defineNuxtConfig({
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    script: [{ src: 'https://js.stripe.com/v3' }],
+    // async false for now
+    script: [{ src: 'https://js.stripe.com/v3', async: false }],
     link: [
       // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
@@ -52,11 +53,13 @@ export default defineNuxtConfig({
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~/plugins/unleash.js' },
+    // we need to load unleash plugin prior to the ones using feature plags to trigger
+    { src: '~/plugins/persistedState.client.js' },
     { src: '~/plugins/axios', ssr: true },
     '~/plugins/iso',
     '~/plugins/api',
     '~/plugins/init',
-
     '~/plugins/fingerprint',
     '~/plugins/adra',
   ],
@@ -143,6 +146,7 @@ export default defineNuxtConfig({
     transpile: [],
   },
   publicRuntimeConfig: {
+    ADRA_DEBUG: process.env.ADRA_DEBUG || false,
     ADRA_DEMO_STRIPE_PK_KEY: 'pk_test_qCVboJvytvpilqW1RAriwxSG',
     ADRA_DEMO_STRIPE_INTENT_SECRET:
       'pi_3Kent8KwliJHFNUe0loW80dC_secret_4nNcP79L5JAyRWuVhy3B0nAhY',

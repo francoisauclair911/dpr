@@ -14,9 +14,10 @@
           :field="$t('components.donorInfoForm.fields.title')"
         >
           <ValidationHandler
-            name="title"
             v-slot="{ errors, hasError }"
             v-bind="$attrs"
+            name="title"
+            keep-prefix
           >
             <v-combobox
               v-if="titlesLoaded"
@@ -45,9 +46,10 @@
           :field="$t('components.donorInfoForm.fields.firstName')"
         >
           <ValidationHandler
-            name="first_name"
             v-slot="{ errors, hasError }"
             v-bind="$attrs"
+            name="first_name"
+            keep-prefix
           >
             <v-text-field
               v-model="first_name"
@@ -67,9 +69,10 @@
           :field="$t('components.donorInfoForm.fields.lastName')"
         >
           <ValidationHandler
-            name="last_name"
             v-slot="{ errors, hasError }"
             v-bind="$attrs"
+            name="last_name"
+            keep-prefix
           >
             <v-text-field
               v-model="last_name"
@@ -88,13 +91,14 @@
     <v-row v-if="extended">
       <v-col>
         <ValidationHandler
-          name="phone"
           v-slot="{ errors, hasError }"
           v-bind="$attrs"
+          name="phone"
+          keep-prefix
         >
           <AdraPhoneField
-            @input:callingCode="phone_calling_code = $event"
-            @input:number="phone_number = $event"
+            @input:callingCode="phoneCountryCallingCode = $event"
+            @input:number="phoneNumber = $event"
             :error-messages="errors"
             dense
             outlined
@@ -109,9 +113,10 @@
           :field="$t('components.donorInfoForm.fields.email')"
         >
           <ValidationHandler
-            name="email"
             v-slot="{ errors, hasError }"
             v-bind="$attrs"
+            name="email"
+            keep-prefix
           >
             <v-text-field
               v-model="email"
@@ -134,9 +139,10 @@
           :field="$t('components.donorInfoForm.fields.birthday')"
         >
           <ValidationHandler
-            name="birthday"
             v-slot="{ errors, hasError }"
             v-bind="$attrs"
+            name="birthday"
+            keep-prefix
           >
             <AdraDatePicker
               v-model="birthday"
@@ -167,9 +173,10 @@
           :field="$t('components.donorInfoForm.fields.address_line_1')"
         >
           <ValidationHandler
-            name="address_line_1"
             v-slot="{ errors }"
             v-bind="$attrs"
+            name="address_line_1"
+            keep-prefix
           >
             <v-text-field
               v-model="address_line_1"
@@ -192,9 +199,10 @@
           :field="$t('components.donorInfoForm.fields.address_line_2')"
         >
           <ValidationHandler
-            name="address_line_2"
             v-slot="{ errors }"
             v-bind="$attrs"
+            name="address_line_2"
+            keep-prefix
           >
             <v-text-field
               v-model="address_line_2"
@@ -216,7 +224,12 @@
           v-slot="{ field }"
           :field="$t('components.donorInfoForm.fields.country')"
         >
-          <ValidationHandler name="country" v-slot="{ errors }" v-bind="$attrs">
+          <ValidationHandler
+            v-slot="{ errors }"
+            v-bind="$attrs"
+            name="country"
+            keep-prefix
+          >
             <v-autocomplete
               v-if="countriesLoaded"
               v-model="country"
@@ -247,9 +260,10 @@
           :field="$t('components.donorInfoForm.fields.administrative_area')"
         >
           <ValidationHandler
-            name="administrative_area"
             v-slot="{ errors }"
             v-bind="$attrs"
+            name="administrative_area"
+            keep-prefix
           >
             <v-text-field
               v-model="administrative_area"
@@ -272,9 +286,10 @@
           :field="$t('components.donorInfoForm.fields.locality')"
         >
           <ValidationHandler
-            name="locality"
             v-slot="{ errors }"
             v-bind="$attrs"
+            name="locality"
+            keep-prefix
           >
             <v-text-field
               v-model="locality"
@@ -297,9 +312,10 @@
           :field="$t('components.donorInfoForm.fields.dependent_locality')"
         >
           <ValidationHandler
-            name="dependent_locality"
             v-slot="{ errors }"
             v-bind="$attrs"
+            name="dependent_locality"
+            keep-prefix
           >
             <v-text-field
               v-model="dependent_locality"
@@ -322,9 +338,10 @@
           :field="$t('components.donorInfoForm.fields.postal_code')"
         >
           <ValidationHandler
-            name="postal_code"
             v-slot="{ errors }"
             v-bind="$attrs"
+            name="postal_code"
+            keep-prefix
           >
             <v-text-field
               v-model="postal_code"
@@ -342,7 +359,12 @@
     </v-row>
     <v-row v-if="content.gdpr_text" class="mt-0">
       <v-col cols="12">
-        <ValidationHandler name="gdpr" v-slot="{ errors }" v-bind="$attrs">
+        <ValidationHandler
+          v-slot="{ errors }"
+          v-bind="$attrs"
+          name="gdpr"
+          keep-prefix
+        >
           <v-checkbox
             v-model="gdpr"
             :error-messages="errors"
@@ -357,9 +379,10 @@
     <v-row v-if="content.communication_text" class="mt-0">
       <v-col cols="12">
         <ValidationHandler
-          name="communication"
           v-slot="{ errors }"
           v-bind="$attrs"
+          name="communication"
+          keep-prefix
         >
           <v-checkbox
             v-model="communication"
@@ -413,24 +436,25 @@ export default {
     ...mapState('helpers', ['countries', 'titles']),
     ...mapGetters('helpers', ['countriesLoaded', 'titlesLoaded']),
     ...mapGetters('pages', ['content']),
-    ...mapFields('payment', [
-      'donorInfo.title',
-      'donorInfo.first_name',
-      'donorInfo.last_name',
-      'donorInfo.email',
-      'donorInfo.birthday',
-      'donorInfo.phone_number',
-      'donorInfo.phone_calling_code',
-      'donorInfo.postal_code',
-      'donorInfo.address_line_1',
-      'donorInfo.address_line_2',
-      'donorInfo.dependent_locality',
-      'donorInfo.locality',
-      'donorInfo.country',
-      'donorInfo.administrative_area',
-      'donorInfo.communication',
-      'donorInfo.gdpr',
-    ]),
+    ...mapFields('payment', {
+      phoneNumber: 'phone.number',
+      phoneCountryCallingCode: 'phone.countryCallingCode',
+      phoneExtension: 'phone.extension',
+      address_line_1: 'address.address_line_1',
+      address_line_2: 'address.address_line_2',
+      postal_code: 'address.postal_code',
+      dependent_locality: 'address.dependent_locality',
+      locality: 'address.locality',
+      administrative_area: 'address.administrative_area',
+      country: 'address.country',
+      gdpr: 'consents.gdpr',
+      communication: 'consents.communication',
+      title: 'donor.title',
+      first_name: 'donor.first_name',
+      last_name: 'donor.last_name',
+      email: 'donor.email',
+      birthday: 'donor.birthday',
+    }),
   },
 }
 </script>

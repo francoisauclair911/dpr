@@ -9,8 +9,6 @@ export default async function ({
   $gtm,
   error,
 }) {
-  console.log('🚀  init')
-
   const $i18n = app.i18n
   store.dispatch('url/parseURL', route)
 

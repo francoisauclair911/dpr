@@ -54,7 +54,9 @@ export default {
         return {
           transition: `background-image 0.2s ease-in-out`,
           backgroundImage: `url("${this.backgroundSrc}")`,
+          backgroundRepeat: `repeat`,
           backgroundSize: `cover`,
+          backgroundPosition: `center`,
         }
       }
       return {}

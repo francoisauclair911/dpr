@@ -1,5 +1,7 @@
 export default async ({ $axios }, locale) => {
   return await Promise.resolve({
+    error_loading_payment_provider:
+      'An error occured loading this payment provider, try again later or choose a different one',
     pages: {
       error: {
         title: 'We are sorry',
@@ -20,6 +22,9 @@ export default async ({ $axios }, locale) => {
         headers: {
           unsuccessful: 'Your donation was unsuccessful',
           please_try_again: 'Please try again',
+          confirmation_error: 'We could not confirm your donation',
+          confirmation_error_instructions:
+            'Refresh this page later to verify the status of your donation',
         },
         buttons: {
           try_again: 'Try again',
@@ -62,17 +67,17 @@ export default async ({ $axios }, locale) => {
             "You donation is beeing processed, you'll receive a confirmation email on completion",
         },
         subheader: {
-          donation_detail: 'Donation Detail',
+          donation_detail: 'Donation Details',
         },
         buttons: {
           support_other_causes: 'Support other causes',
         },
         fields: {
-          donation_amount: 'Donation Amount',
+          donation_amount: 'Amount',
           name: 'name',
           address: 'address',
           email: 'email',
-          date: 'Donation Date',
+          date: 'Date',
         },
       },
       donorInfoForm: {

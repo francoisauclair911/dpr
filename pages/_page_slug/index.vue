@@ -1,7 +1,7 @@
 <template>
   <v-row class="my-10 px-1 px-md-10">
     <v-col cols="12" md="10" offset-md="1">
-      <v-row :justify="$vuetify.breakpoint.mobile ? 'center' : form_alignment">
+      <v-row :justify="rowJustification">
         <v-col cols="12" sm="9" md="6" lg="5" xl="4" class="">
           <v-card elevation="10" :loading="requestState === 'pending'">
             <v-overlay absolute :value="requestState === 'pending'" z-index="4">
@@ -19,9 +19,12 @@
                 v-if="step === 3"
                 :form-data="formData"
                 @back="step--"
-                @next="step++"
+                @next="goToConfirmationStep"
               />
-              <DonateThankYouStep v-if="step === 4" />
+              <DonateConfirmation
+                v-if="step === 4"
+                :donation-intent-id="$store.state.payment.donationIntentId"
+              />
             </v-slide-x-transition>
           </v-card>
         </v-col>
@@ -61,18 +64,16 @@ export default {
       }
     }
   },
-
   data() {
     return {
       requestState: 'idle',
-      step: 1,
+      step: this.$route.query.step ? Number(this.$route.query.step) : 1,
       formData: {
         amount: 0,
         donorInfo: {},
       },
     }
   },
-
   head() {
     return {
       title: this?.content?.title || 'Donate',
@@ -85,18 +86,19 @@ export default {
       ],
     }
   },
-
   computed: {
     ...mapState('pages', ['page']),
     ...mapState('payment', ['donorInfo']),
     ...mapGetters('pages', ['content', 'form_alignment']),
+    rowJustification() {
+      return this.$vuetify.breakpoint.mobile ? 'center' : this.form_alignment
+    },
   },
-
   watch: {
     /*
-    / This watches the route and if the languages changes,
-    / reloads the page content to get the translated content
-    */
+        / This watches the route and if the languages changes,
+        / reloads the page content to get the translated content
+        */
     $route: {
       async handler(to, from) {
         await this.$store.dispatch('pages/getPage', {
@@ -105,18 +107,20 @@ export default {
       },
     },
   },
-  mounted() {
-    if (this.$route.query.amount) {
-      this.$store.commit('payment/updateAmount', this.$route.query.amount)
-    }
-  },
   methods: {
+    goToConfirmationStep() {
+      this.step = 4
+      history.pushState(
+        {},
+        null,
+        `${this.$route.path}/confirm/${this.$store.state.payment.donationIntentId}?formAlignment=${this.rowJustification}`
+      )
+    },
     goToDonorInfo() {
-      // this.$gtm.push({ event: 'start_donation' })
-      this.step++
+      this.step = 2
     },
     goToPaymentStep() {
-      this.step++
+      this.step = 3
     },
   },
 }

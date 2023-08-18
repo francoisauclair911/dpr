@@ -50,7 +50,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('payment', ['amount', 'donorInfo']),
+    ...mapState('payment', ['amount', 'donor']),
     ...mapGetters('pages', ['numberFormat']),
   },
   mounted() {
@@ -84,7 +84,19 @@ export default {
             this.$emit('next')
           }
         })
-        .catch(() => {})
+        .catch((error) => {
+          const code = parseInt(error.response && error.response.status)
+          if (code === 422) {
+            this.$store.dispatch(
+              'notifications/danger',
+              'Some fields require your attention'
+            )
+            this.$store.dispatch(
+              'validation/handleValidation',
+              error.response.data
+            )
+          }
+        })
     },
   },
 }

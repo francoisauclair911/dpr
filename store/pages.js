@@ -12,7 +12,9 @@ export const state = () => ({
 export const getters = {
   backgroundSrc(state, getters) {
     return (
-      state?.bgOverride || getters?.settings?.background_src || '/tile-bg.png'
+      state?.bgOverride ||
+      getters?.settings?.background_src ||
+      '/bg-ts-v2-co.png'
     )
   },
   settings(state, getters) {
@@ -113,6 +115,10 @@ export const actions = {
       page.attributes.available_languages,
       { root: true }
     )
+    commit('payment/updateCurrency', page.attributes.settings.currency, {
+      root: true,
+    })
+
     if (!state.page || page.attributes.id !== state.page.attributes.id) {
       commit('SET_PAGE', page)
 

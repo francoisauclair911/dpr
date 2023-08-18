@@ -8,6 +8,7 @@
     :value="displayedValue"
     :placeholder="$t('components.custom_amount.custom_amount_placeholder')"
     :prefix="currencySymbol"
+    :suffix="isRecurring ? '/ monthly' : ''"
     clearable
     @click:clear="$emit('clear')"
     @input="update"
@@ -21,8 +22,10 @@ export default {
   name: 'CustomAmount',
 
   computed: {
-    ...mapState('payment', ['amount']),
+    ...mapState('payment', ['amount', 'donationType']),
     ...mapGetters('pages', ['currencySymbol']),
+    ...mapGetters('payment', ['isRecurring']),
+
     displayedValue() {
       return this.amount === 0 ? null : this.amount
     },
@@ -35,3 +38,8 @@ export default {
   },
 }
 </script>
+<style>
+.v-text-field__suffix {
+  color: rgba(0, 0, 0, 0.6);
+}
+</style>

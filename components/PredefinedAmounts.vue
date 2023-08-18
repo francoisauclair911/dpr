@@ -27,11 +27,11 @@ import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'PredefinedAmounts',
-  methods: {
-    ...mapMutations('payment', ['updateAmount']),
-  },
   computed: {
     ...mapGetters('pages', ['content']),
+  },
+  methods: {
+    ...mapMutations('payment', ['updateAmount']),
   },
 }
 </script>
