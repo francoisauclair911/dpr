@@ -32,6 +32,10 @@ export default async ({ $axios }, locale) => {
       },
     },
     components: {
+      donation_type_selector: {
+        one_time: 'one-time',
+        monthly: 'monthly',
+      },
       donate_amount_step: {
         multiplier_text: 'Your gift becomes',
       },
@@ -50,10 +54,12 @@ export default async ({ $axios }, locale) => {
       custom_amount: {
         custom_amount_placeholder: 'Enter other amount',
       },
-      step_2: {
+      donor_info_step: {
         header: {
           donation_amount: 'Donation Amount',
         },
+        monthly: '/ monthly',
+        payment_details_button_text: 'Payment Details',
       },
       payment_details_step: {
         subheaders: {

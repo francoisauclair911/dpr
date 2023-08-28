@@ -72,18 +72,20 @@
           >
             <template #append>
               <v-divider class="my-4" />
-              <v-row justify="center">
-                <v-col cols="auto">
-                  <ButtonPrimary
-                    class="text-subtitle-2 mx-auto"
-                    @click="$router.push('/')"
-                  >
-                    {{
-                      $t(
-                        'components.thank_you_step.buttons.support_other_causes'
-                      )
-                    }}
-                  </ButtonPrimary>
+              <v-row>
+                <v-col class="d-flex">
+                  <ButtonDonate @click="$router.push('/')">
+                    <template #icon>
+                      <v-icon left>mdi-hand-heart </v-icon>
+                    </template>
+                    <template #default>
+                      {{
+                        $t(
+                          'components.thank_you_step.buttons.support_other_causes'
+                        )
+                      }}
+                    </template>
+                  </ButtonDonate>
                 </v-col>
               </v-row>
             </template>

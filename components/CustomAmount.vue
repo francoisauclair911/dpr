@@ -12,6 +12,7 @@
     clearable
     @click:clear="$emit('clear')"
     @input="update"
+    v-on="$listeners"
   >
   </v-text-field>
 </template>

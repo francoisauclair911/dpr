@@ -25,9 +25,7 @@
 import { mapGetters, mapState, mapMutations } from 'vuex'
 
 import { loadStripe } from '@stripe/stripe-js/pure'
-import { check } from 'prettier'
 loadStripe.setLoadParameters({ advancedFraudSignals: false }) // https://github.com/stripe/stripe-js#disabling-advanced-fraud-detection-signals
-let stripe, elements
 export default {
   data() {
     return {
@@ -80,6 +78,7 @@ export default {
   },
   async mounted() {
     await this.initialize()
+    this.$emit('loaded')
   },
   beforeDestroy() {
     if (this.checkout) {
@@ -91,6 +90,14 @@ export default {
     clearVuex() {
       localStorage.removeItem('vuex')
     },
+    validateInitData() {
+      if (!this.stripeAccountId) {
+        throw new Error('stripeAccountId is required')
+      }
+      if (!this.$config.STRIPE_API_VERSION) {
+        throw new Error('stripePublishableKey is required')
+      }
+    },
     completeDonation(fake = false) {
       this.$emit('success')
     },
@@ -98,11 +105,13 @@ export default {
       this.checkout.destroy()
     },
     async initialize() {
-      stripe = await loadStripe('pk_test_qCVboJvytvpilqW1RAriwxSG', {
-        betas: ['embedded_checkout_beta_1'],
-        stripeAccount: 'acct_1NYXZnG82aoDDcXS',
-      })
       try {
+        this.validateInitData()
+        const stripe = await loadStripe(this.$config.STRIPE_PUBLISHABLE_KEY, {
+          apiVersion: this.$config.STRIPE_API_VERSION,
+          betas: this.$config.STRIPE_API_BETAS.split(',').map((o) => o.trim()),
+          stripeAccount: this.stripeAccountId,
+        })
         const response = await this.$api.payment.post(
           '/authorize/stripe/create',
           this.initializePayload

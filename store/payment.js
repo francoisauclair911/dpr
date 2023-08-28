@@ -46,6 +46,18 @@ export const getters = {
   convertedAmount(state) {
     return convertedAmount(state.amount, state.currency)
   },
+
+  numberFormat(state, getters) {
+    return new Intl.NumberFormat(window.navigator.language || 'en', {
+      style: 'currency',
+      roundingMode: 'halfCeil',
+      maximumFractionDigits: 0,
+      currency: state.currency || 'usd',
+    })
+  },
+  formattedAmount(state, getters) {
+    return getters.numberFormat.format(state.amount)
+  },
 }
 
 export const mutations = {

@@ -147,9 +147,9 @@ export default defineNuxtConfig({
   },
   publicRuntimeConfig: {
     ADRA_DEBUG: process.env.ADRA_DEBUG || false,
-    ADRA_DEMO_STRIPE_PK_KEY: 'pk_test_qCVboJvytvpilqW1RAriwxSG',
-    ADRA_DEMO_STRIPE_INTENT_SECRET:
-      'pi_3Kent8KwliJHFNUe0loW80dC_secret_4nNcP79L5JAyRWuVhy3B0nAhY',
+    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+    STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
+    STRIPE_API_BETAS: process.env.STRIPE_API_BETAS,
     DONATION_PAGE_BASE_URL: process.env.APP_URL,
     FINGERPRINT_JS_PK: process.env.FINGERPRINT_JS_PK || '9K5NUIVUhV28vIu1EN50',
     COUNTRY_BASE_URL: process.env.COUNTRY_BASE_URL,

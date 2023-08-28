@@ -3,19 +3,10 @@
     <v-skeleton-loader v-show="loading" type="list-item-two-line@8, actions">
     </v-skeleton-loader>
     <v-card v-show="!loading" flat>
-      <v-card-title class="black--text font-weight-bold">
-        <ButtonBack @click="$emit('back')"></ButtonBack>
+      <!-- <v-card-text> -->
 
-        <v-spacer />
-        <div class="text-subtitle-1">
-          <span class=""
-            >{{ $t('components.step_2.header.donation_amount') }}
-            &#8226;
-          </span>
-          <b class="primary--text">
-            {{ numberFormat.format(amount) }}
-          </b>
-        </div>
+      <v-card-title class="black--text font-weight-bold">
+        <DonateTopBar @back="$emit('back')"></DonateTopBar>
       </v-card-title>
       <v-card-text>
         <v-divider />
@@ -27,7 +18,13 @@
           @input="$emit('input', { ...value, donorInfo: $event })"
         />
 
-        <ButtonPrimary block @click="next">Payment Details</ButtonPrimary>
+        <v-row>
+          <v-col class="d-flex">
+            <ButtonDonate @click="next">
+              {{ $t('components.donor_info_step.payment_details_button_text') }}
+            </ButtonDonate>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
   </div>
@@ -51,7 +48,14 @@ export default {
   },
   computed: {
     ...mapState('payment', ['amount', 'donor']),
-    ...mapGetters('pages', ['numberFormat']),
+    ...mapGetters('payment', ['formattedAmount', 'isRecurring']),
+    displayedAmountText() {
+      return !this.isRecurring
+        ? this.formattedAmount
+        : `${this.formattedAmount}  ${this.$t(
+            'components.donor_info_step.monthly'
+          )}`
+    },
   },
   mounted() {
     const currency = this.page.attributes.settings.currency.toUpperCase()

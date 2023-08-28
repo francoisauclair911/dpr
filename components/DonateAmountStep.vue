@@ -36,6 +36,7 @@
             autofocus
             :error="missingAmount"
             :outlined="missingAmount"
+            @keyup.enter="submit"
           />
         </v-col>
       </v-row>
@@ -63,7 +64,7 @@
       </v-fade-transition>
       <v-row>
         <v-col class="d-flex">
-          <ButtonDonate @click="submit"> </ButtonDonate>
+          <ButtonDonate @click="submit"> {{ buttonText }} </ButtonDonate>
         </v-col>
       </v-row>
       <v-row>
@@ -114,6 +115,11 @@ export default {
   computed: {
     ...mapState('payment', ['amount']),
     ...mapGetters('pages', ['content', 'numberFormat']),
+    buttonText() {
+      return (
+        this.content.submit_text || this.$t('components.button_donate.donate')
+      )
+    },
     hasSelectedAmount() {
       return this.amount > 0
     },
@@ -136,6 +142,7 @@ export default {
   },
   methods: {
     submit() {
+      console.log('🚀 ~ file: DonateAmountStep.vue:140 ~ submit ~ submit:')
       if (this.hasSelectedAmount) {
         return this.$emit('submit')
       }

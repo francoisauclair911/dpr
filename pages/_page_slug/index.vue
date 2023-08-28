@@ -7,7 +7,7 @@
             <v-overlay absolute :value="requestState === 'pending'" z-index="4">
               <v-progress-circular indeterminate size="50" color="white" />
             </v-overlay>
-            <v-slide-x-transition hide-on-leave>
+            <v-slide-x-reverse-transition hide-on-leave>
               <DonateAmountStep v-if="step === 1" @submit="goToDonorInfo" />
               <DonateDonorInfoStep
                 v-if="step === 2"
@@ -25,7 +25,7 @@
                 v-if="step === 4"
                 :donation-intent-id="$store.state.payment.donationIntentId"
               />
-            </v-slide-x-transition>
+            </v-slide-x-reverse-transition>
           </v-card>
         </v-col>
       </v-row>

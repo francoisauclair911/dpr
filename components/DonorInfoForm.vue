@@ -411,24 +411,6 @@ export default {
       default: false,
     },
   },
-  fetch() {},
-  mounted() {
-    this.initCheckboxes()
-
-    if (this.content.gdpr_text) {
-      this.updateGdpr = false
-    }
-    this.$emit('ready')
-  },
-  methods: {
-    initCheckboxes() {
-      this.gdpr = this.content.gdpr_text ? false : null
-      this.communication = this.content.communication_text ? false : null
-    },
-    updateTitle(title) {
-      this.title = title?.value || title || ''
-    },
-  },
   computed: {
     capitalizeTitle() {
       return this.title.capitalize()
@@ -455,6 +437,23 @@ export default {
       email: 'donor.email',
       birthday: 'donor.birthday',
     }),
+  },
+  mounted() {
+    this.initCheckboxes()
+
+    if (this.content.gdpr_text) {
+      this.updateGdpr = false
+    }
+    this.$emit('ready')
+  },
+  methods: {
+    initCheckboxes() {
+      this.gdpr = this.content.gdpr_text ? false : null
+      this.communication = this.content.communication_text ? false : null
+    },
+    updateTitle(title) {
+      this.title = title?.value || title || ''
+    },
   },
 }
 </script>

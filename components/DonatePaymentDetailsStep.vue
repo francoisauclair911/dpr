@@ -1,8 +1,7 @@
 <template>
   <v-card flat>
     <v-card-title class="black--text font-weight-bold">
-      <ButtonBack @click="back" />
-      <v-spacer></v-spacer>
+      <DonateTopBar v-show="paymentProviderLoaded" @back="back" />
     </v-card-title>
     <v-card-text tag="dl">
       <v-row>
@@ -19,6 +18,7 @@
               <component
                 :is="`payment-provider-${provider}`"
                 @success="success"
+                @loaded="paymentProviderLoaded = true"
               />
             </v-tab-item>
           </v-tabs-items>
@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       tab: 0,
+      paymentProviderLoaded: false,
     }
   },
   mounted() {

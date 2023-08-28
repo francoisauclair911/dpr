@@ -7,7 +7,7 @@
       @click="updateDonationType('one_time')"
     >
       <v-icon left>mdi-gift</v-icon>
-      One-time</v-btn
+      {{ $t('components.donation_type_selector.one_time') }}</v-btn
     >
     <v-btn
       plain
@@ -16,7 +16,7 @@
       @click="updateDonationType('recurring')"
     >
       <v-icon left>mdi-refresh</v-icon>
-      Monthly</v-btn
+      {{ $t('components.donation_type_selector.monthly') }}</v-btn
     >
   </div>
 </template>
