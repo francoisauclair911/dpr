@@ -1,10 +1,9 @@
 import { UnleashClient } from 'unleash-proxy-client'
 
-export default ({ store }, inject) => {
+export default ({ $config }, inject) => {
   const unleash = new UnleashClient({
-    url: 'https://us.app.unleash-hosted.com/usgg0024/api/frontend',
-    clientKey:
-      '*:development.c7a08fc852c0e232db2ecaed683d3e146f8628cd55eb2ac99ff4aa4e',
+    url: $config.UNLEASH_URL,
+    clientKey: $config.UNLEASH_CLIENT_KEY,
     appName: 'default',
   })
   inject('unleash', unleash)

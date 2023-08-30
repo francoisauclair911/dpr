@@ -152,6 +152,10 @@ export default defineNuxtConfig({
     STRIPE_API_BETAS: process.env.STRIPE_API_BETAS,
     DONATION_PAGE_BASE_URL: process.env.APP_URL,
     FINGERPRINT_JS_PK: process.env.FINGERPRINT_JS_PK || '9K5NUIVUhV28vIu1EN50',
+    UNLEASH_CLIENT_KEY: process.env.UNLEASH_CLIENT_KEY,
+    UNLEASH_URL:
+      process.env.UNLEASH_URL ||
+      'https://us.app.unleash-hosted.com/usgg0024/api/frontend',
     COUNTRY_BASE_URL: process.env.COUNTRY_BASE_URL,
     CAMPAIGN_BASE_URL: process.env.CAMPAIGN_BASE_URL,
     PAYMENT_BASE_URL: process.env.PAYMENT_BASE_URL,
