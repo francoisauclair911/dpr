@@ -151,7 +151,7 @@ export default defineNuxtConfig({
     STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
     STRIPE_API_BETAS: process.env.STRIPE_API_BETAS,
     DONATION_PAGE_BASE_URL: process.env.APP_URL,
-    FINGERPRINT_JS_PK: process.env.FINGERPRINT_JS_PK || '9K5NUIVUhV28vIu1EN50',
+    FINGERPRINT_JS_PK: process.env.FINGERPRINT_JS_PK,
     UNLEASH_CLIENT_KEY: process.env.UNLEASH_CLIENT_KEY,
     UNLEASH_URL:
       process.env.UNLEASH_URL ||
