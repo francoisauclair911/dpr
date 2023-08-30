@@ -47,6 +47,7 @@ export default {
       'consents',
     ]),
     ...mapState('pages', ['page']),
+    ...mapState('utms', ['utms']),
     ...mapState('languages', {
       languageCode: 'selected',
     }),
@@ -73,6 +74,7 @@ export default {
         phone: this.phone,
         address: this.address,
         consents: this.consents,
+        utms: this.utms,
       }
     },
   },

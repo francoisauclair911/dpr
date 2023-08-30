@@ -10,7 +10,7 @@ export default async function ({
   error,
 }) {
   const $i18n = app.i18n
-  store.dispatch('url/parseURL', route)
+  store.dispatch('utms/parseURL', route)
 
   store.commit('languages/SET_I18N_LANGUAGES', $i18n.locales)
   store.dispatch('languages/switchLanguage', route.query.lang)

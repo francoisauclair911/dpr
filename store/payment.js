@@ -162,7 +162,7 @@ export const actions = {
       donor: state.donor,
       fingerprint: {},
       page: rootState.pages.page.attributes,
-      utms: rootState.url.utms,
+      utms: rootState.utms.utms,
       donation_intent_id: sessionStorage.getItem('donationIntentId') || null,
     }
     // lets save donor info in session
