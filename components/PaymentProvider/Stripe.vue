@@ -54,6 +54,12 @@ export default {
     ...mapState('settings', ['domain']),
     ...mapGetters('payment', ['convertedAmount']),
     ...mapGetters('settings', ['stripeAccountId']),
+    // if we are using stripe to setup recurring, we need to pass the donation type as recurring_setup
+    stripeDonationType() {
+      return this.donationType === 'recurring'
+        ? 'recurring_setup'
+        : this.donationType
+    },
     initializePayload() {
       return {
         paymentProvider: {
@@ -66,7 +72,7 @@ export default {
           donationPageId: this.page.attributes.id,
         },
         donation: {
-          donationType: this.donationType,
+          donationType: this.stripeDonationType,
           amount: this.convertedAmount,
           currency: this.currency,
         },
