@@ -49,7 +49,7 @@
           />
         </v-col>
       </v-row>
-      <v-fade-transition>
+      <v-slide-x-transition>
         <v-row v-if="showMultiplier">
           <v-col class="d-flex">
             <p class="text-subtitle-1">
@@ -61,7 +61,7 @@
             </p>
           </v-col>
         </v-row>
-      </v-fade-transition>
+      </v-slide-x-transition>
       <v-row>
         <v-col class="d-flex">
           <ButtonDonate @click="submit"> {{ buttonText }} </ButtonDonate>
@@ -114,6 +114,7 @@ export default {
   },
   computed: {
     ...mapState('payment', ['amount']),
+    ...mapGetters('payment', ['isRecurring']),
     ...mapGetters('pages', ['content', 'numberFormat']),
     buttonText() {
       return (
@@ -127,7 +128,7 @@ export default {
       return this.page.attributes.settings.multiplier > 1
     },
     showMultiplier() {
-      return this.hasMultiplier && this.hasSelectedAmount
+      return !this.isRecurring && this.hasMultiplier && this.hasSelectedAmount
     },
     multipliedAmount() {
       return this.numberFormat.format(
