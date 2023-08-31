@@ -46,10 +46,19 @@ import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'DefaultLayout',
+
   computed: {
     ...mapState('navigations', ['primaryDrawer']),
     ...mapGetters('pages', ['attributes', 'backgroundSrc']),
     cardStyle() {
+      if (this.$nuxt.context.isDev) {
+        return {
+          transition: `background-image 0.2s ease-in-out`,
+          backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg width='250' height='250' viewBox='0 0 280 250' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3ctext x='30' y='40' transform='rotate(-12)' fill='%23007b5f'%3eLOCAL DEV%3c/text%3e%3c/svg%3e ")`,
+          backgroundRepeat: `repeat`,
+          backgroundPosition: `center`,
+        }
+      }
       if (this.backgroundSrc) {
         return {
           transition: `background-image 0.2s ease-in-out`,
