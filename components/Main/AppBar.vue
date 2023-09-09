@@ -1,9 +1,5 @@
 <template>
-  <v-app-bar
-    v-bind="$attrs"
-    :extended="$vuetify.breakpoint.xsOnly"
-    class="mx-4"
-  >
+  <v-app-bar v-bind="$attrs" :extended="$vuetify.breakpoint.xsOnly">
     <slot name="prepend-title"></slot>
     <v-toolbar-title class="primary--text text-h6 flex-shrink-0 ml-0 px-0">
       <slot name="title">
