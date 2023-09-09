@@ -66,6 +66,9 @@ export default {
           backgroundRepeat: `repeat`,
           backgroundSize: `cover`,
           backgroundPosition: `center`,
+          minHeight: `100vh`,
+          maxHeight: '100vh',
+          overflowY: 'scroll',
         }
       }
       return {}
