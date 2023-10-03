@@ -22,15 +22,13 @@
           <DonationTypeSelector />
           <v-divider></v-divider>
         </v-col>
-        <!-- <v-col>
-        </v-col> -->
       </v-row>
       <v-row class="mt-4">
         <v-col>
           <PredefinedAmounts />
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="isCustomAmountEnabled">
         <v-col>
           <CustomAmount
             autofocus
@@ -115,11 +113,14 @@ export default {
   computed: {
     ...mapState('payment', ['amount']),
     ...mapGetters('payment', ['isRecurring']),
-    ...mapGetters('pages', ['content', 'numberFormat']),
+    ...mapGetters('pages', ['content', 'numberFormat', 'settings']),
     buttonText() {
       return (
         this.content.submit_text || this.$t('components.button_donate.donate')
       )
+    },
+    isCustomAmountEnabled() {
+      return this.settings.allow_custom_amount
     },
     hasSelectedAmount() {
       return this.amount > 0
