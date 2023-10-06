@@ -10,6 +10,7 @@
       {{ $t('components.donation_type_selector.one_time') }}</v-btn
     >
     <v-btn
+      v-if="settings.recurring_donation_enabled"
       plain
       :color="isRecurring ? 'primary' : 'secondary'"
       class="flex-grow-1"
@@ -22,12 +23,14 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'DonationTypeSelector',
   computed: {
     ...mapState('payment', ['donationType']),
+    ...mapGetters('pages', ['settings']),
+
     isRecurring() {
       return this.donationType === 'recurring'
     },
