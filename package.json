@@ -31,8 +31,7 @@
     "unleash-proxy-client": "^2.5.0",
     "vue-tel-input-vuetify": "^1.5.3",
     "vuetify": "^2.5.5",
-    "vuex-map-fields": "^1.4.1",
-    "vuex-persistedstate": "^4.1.0"
+    "vuex-map-fields": "^1.4.1"
   },
   "devDependencies": {
     "@adra-network/env-ssm-env": "^1.0.8",

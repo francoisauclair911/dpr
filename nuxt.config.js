@@ -55,7 +55,6 @@ export default defineNuxtConfig({
   plugins: [
     { src: '~/plugins/unleash.js' },
     // we need to load unleash plugin prior to the ones using feature plags to trigger
-    { src: '~/plugins/persistedState.client.js' },
     { src: '~/plugins/axios', ssr: true },
     '~/plugins/iso',
     '~/plugins/api',
