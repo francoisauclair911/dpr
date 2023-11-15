@@ -1,16 +1,5 @@
 <template>
   <div>
-    <!-- <div class="d-flex">
-      <v-btn plain class="flex-grow-1" @click="destroy">destroy</v-btn>
-      <v-btn plain class="flex-grow-1" @click="initialize">Initialize</v-btn>
-      <v-btn plain class="flex-grow-1" @click="completeDonation()"
-        >confirm</v-btn
-      >
-      <v-btn plain class="flex-grow-1" @click="completeDonation()"
-        >confirmTrue</v-btn
-      >
-    </div> -->
-    <!-- <v-btn plain class="flex-grow-1" @click="clearVuex">clearVuex</v-btn> -->
     <v-skeleton-loader v-if="loading && !hasError" type="card" />
     <div v-show="!loading && !hasError" id="checkout"></div>
     <v-card v-if="hasError" class="mt-4">
@@ -37,6 +26,10 @@ export default {
     }
   },
   computed: {
+    returnUrl() {
+      const url = new URL(window.location.href)
+      return `${url.origin}${url.pathname}/confirm/{{DONATION_INTENT_ID}}`
+    },
     ...mapState('payment', [
       'amount',
       'donationType',
@@ -62,6 +55,7 @@ export default {
     },
     initializePayload() {
       return {
+        returnUrl: this.returnUrl,
         paymentProvider: {
           referenceId: this.checkoutSessionId,
           accountId: this.stripeAccountId,
@@ -106,9 +100,6 @@ export default {
         throw new Error('stripePublishableKey is required')
       }
     },
-    completeDonation(fake = false) {
-      this.$emit('success')
-    },
     destroy() {
       this.checkout.destroy()
     },
@@ -133,9 +124,6 @@ export default {
 
         const checkout = await stripe.initEmbeddedCheckout({
           clientSecret,
-          onComplete: () => {
-            this.completeDonation()
-          },
         })
         this.checkoutSessionId = checkoutSessionId
 
