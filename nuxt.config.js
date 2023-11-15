@@ -1,20 +1,11 @@
-import { defineNuxtConfig } from '@nuxt/bridge'
-
 const isProduction = process.env.NODE_ENV === 'production'
 
-export default defineNuxtConfig({
+export default {
   // Fix for using sentry and nuxt bridge
   alias: {
     tslib: 'tslib/tslib.es6.js',
   },
-  bridge: {
-    nitro: false,
-  },
-  // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
-  // nitro: {
-  //   preset: 'lambda',
-  // },
   ssr: false,
   generate: {
     cache: false,
@@ -166,4 +157,4 @@ export default defineNuxtConfig({
     },
   },
   privateRuntimeConfig: {},
-})
+}
