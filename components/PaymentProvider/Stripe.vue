@@ -1,10 +1,24 @@
 <template>
   <div>
-    <v-skeleton-loader v-if="loading && !hasError" type="card" />
-    <div v-show="!loading && !hasError" id="checkout"></div>
-    <v-card v-if="hasError" class="mt-4">
-      <v-alert outlined type="warning" color="primary" prominent>
-        {{ $t('error_loading_payment_provider') }}
+    <v-skeleton-loader v-if="loading && !error" type="card" />
+    <div v-show="!loading && !error" id="checkout"></div>
+    <v-card v-if="error" class="mt-4">
+      <v-alert
+        outlined
+        color="primary"
+        :icon="$vuetify.breakpoint.mdAndUp ? 'mdi-alert-circle-outline' : ''"
+        prominent
+      >
+        {{ error.message }}
+        <div
+          class="d-flex"
+          v-if="['amount_too_small', 'amount_too_large'].includes(error.code)"
+        >
+          <CustomAmount class="flex-1 flex-grow-1" autofocus />
+          <ButtonPrimary class="my-4 ml-4" small @click="reset">
+            {{ $t('update_amount') }}</ButtonPrimary
+          >
+        </div>
       </v-alert>
     </v-card>
   </div>
@@ -14,6 +28,7 @@
 import { mapGetters, mapState, mapMutations } from 'vuex'
 
 import { loadStripe } from '@stripe/stripe-js/pure'
+import DonateAmountStep from '../DonateAmountStep.vue'
 loadStripe.setLoadParameters({ advancedFraudSignals: false }) // https://github.com/stripe/stripe-js#disabling-advanced-fraud-detection-signals
 export default {
   data() {
@@ -22,7 +37,7 @@ export default {
       checkout: null,
       clientSecret: null,
       loading: true,
-      hasError: false,
+      error: null,
     }
   },
   computed: {
@@ -83,12 +98,15 @@ export default {
     this.$emit('loaded')
   },
   beforeDestroy() {
-    if (this.checkout) {
-      this.checkout.destroy()
-    }
+    this.destroy()
   },
-
   methods: {
+    async reset() {
+      this.error = null
+      this.loading = true
+      this.destroy()
+      await this.initialize()
+    },
     clearVuex() {
       localStorage.removeItem('vuex')
     },
@@ -101,7 +119,9 @@ export default {
       }
     },
     destroy() {
-      this.checkout.destroy()
+      if (this.checkout) {
+        this.checkout.destroy()
+      }
     },
     async initialize() {
       try {
@@ -115,29 +135,34 @@ export default {
           '/authorize/stripe/create',
           this.initializePayload
         )
-
         const {
           clientSecret,
           id: checkoutSessionId,
           donationIntentId = null,
         } = response.data.data
-
         const checkout = await stripe.initEmbeddedCheckout({
           clientSecret,
         })
         this.checkoutSessionId = checkoutSessionId
-
         // Store donationIntentId for reuse on the thank you page
         this.$store.commit('payment/SET_DONATION_INTENT_ID', donationIntentId)
         this.loading = false
-
         checkout.mount('#checkout')
         this.checkout = checkout
       } catch (error) {
-        console.log('🚀 ~ file: Stripe.vue:47 ~ initialize ~ error:', error)
-        this.hasError = true
+        if (error.response && error.response.data) {
+          this.error = {
+            code: error.response.data?.internal_code || null,
+            message: this.$t(
+              `invalid_payment_request_exceptions.${
+                error.response.data?.internal_code || 'generic'
+              }`
+            ),
+          }
+        }
       }
     },
   },
+  components: { DonateAmountStep },
 }
 </script>

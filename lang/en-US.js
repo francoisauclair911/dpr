@@ -1,7 +1,15 @@
 export default async ({ $axios }, locale) => {
   return await Promise.resolve({
-    error_loading_payment_provider:
-      'An error occured loading this payment provider, try again later or choose a different one',
+    update_amount: 'Update',
+    invalid_payment_request_exceptions: {
+      generic: 'Something went wrong, please try again later',
+      stripe_checkout_failed:
+        'An error occured loading this payment provider, try again later or choose a different one',
+      amount_too_small:
+        'Sorry, your donation amount is too small for this payment provider',
+      amount_too_large:
+        'Sorry, your donation amount is too large for this payment provider',
+    },
     pages: {
       error: {
         title: 'We are sorry',
