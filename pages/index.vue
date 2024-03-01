@@ -18,16 +18,17 @@ const route = useRoute()
 const error = useError()
 
 const pagesStore = usePagesStore()
+const settingsStore = useSettingsStore()
 
 onBeforeRouteLeave((_, __) => {
   pagesStore.setPage(null)
   pagesStore.setBgOverride()
 });
 
-await useAsyncData('page_index', async () => {
+onMounted(async () => {
   try {
     await pagesStore.index({
-      organizationId: store.state.settings.domain?.organization_id,
+      organizationId: settingsStore.domain?.organization_id,
     });
   } catch (e) {
     if (e instanceof NoFundraisingPagesException) {

@@ -25,12 +25,11 @@
       </v-container>
     </v-main>
 
-    <MainSnackbarNotification />
+    <!-- <MainSnackbarNotification /> -->
   </v-app>
 </template>
 
 <script setup>
-// const navigationsStore = useNavigationStore()
 const pagesStore = usePagesStore()
 
 
@@ -46,7 +45,7 @@ const cardStyle = computed(() => {
   if (pagesStore.backgroundSrc) {
     return {
       transition: `background-image 0.2s ease-in-out`,
-      backgroundImage: `url("${this.backgroundSrc}")`,
+      backgroundImage: `url("${pagesStore.backgroundSrc}")`,
       backgroundRepeat: `repeat`,
       backgroundSize: `cover`,
       backgroundPosition: `center`,

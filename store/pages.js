@@ -19,7 +19,7 @@ export const usePagesStore = defineStore('pages', {
     backgroundSrc(state) {
       return (
         state?.bgOverride ||
-        settings?.background_src ||
+        this.settings?.background_src ||
         '/bg-ts-v2-co.png'
       )
     },
