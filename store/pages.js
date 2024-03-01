@@ -10,11 +10,11 @@ import { usePaymentStore } from './payment';
 
 
 export const usePagesStore = defineStore('pages', {
-  state: {
+  state: () => ({
     page: null,
     list: [],
     bgOverride: null,
-  },
+  }),
   getters: {
     backgroundSrc(state) {
       return (
@@ -156,12 +156,12 @@ export const usePagesStore = defineStore('pages', {
     setPageContent(content) {
       this.page.attributes.content = content
     },
-    // SET_PAGE(state, page) {
-    //   state.page = page
-    // },
-    // SET_BG_OVERRIDE(state, bg = '/tile-bg.png') {
-    //   state.bgOverride = bg
-    // },
+    setPage(page) {
+      this.page = page
+    },
+    setBgOverride(bg = '/tile-bg.png') {
+      this.bgOverride = bg
+    },
     // SET_LIST(state, pages) {
     //   state.list = pages
     // },

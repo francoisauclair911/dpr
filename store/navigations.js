@@ -2,10 +2,10 @@ import { defineStore } from 'pinia'
 
 export const useNavigationStore = defineStore('navigation', {
 
-  state: {
+  state: () => ({
     primaryDrawer: true,
     secondaryDrawer: true,
-  },
+  }),
   actions: {
     // TOGGLE_PRIMARY_DRAWER(state) {
     //   state.primaryDrawer = !state.primaryDrawer

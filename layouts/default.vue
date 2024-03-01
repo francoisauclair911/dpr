@@ -1,12 +1,6 @@
 <template>
   <v-app id="donation-receiver" class="primary">
-    <MainAppBar
-      class="px-1 px-md-2"
-      color="white"
-      flat
-      app
-      :clipped-left="primaryDrawer"
-    >
+    <MainAppBar class="px-1 px-md-2" color="white" flat app :clipped-left="pagesStore.primaryDrawer">
       <template #prepend-title>
         <v-btn v-show="!$vuetify.breakpoint.xsOnly" nuxt to="/" icon plain text>
           <v-icon>mdi-home</v-icon>
@@ -21,16 +15,10 @@
     </MainAppBar>
     <v-main>
       <v-container class="h-full py-0 px-0 mx-0" fluid>
-        <v-card
-          class="fill-height p-0"
-          color="grey lighten-5"
-          flat
-          tile
-          :style="cardStyle"
-        >
+        <v-card class="fill-height p-0" color="grey lighten-5" flat tile :style="cardStyle">
           <v-row class="fill-height ma-0">
             <v-col class="py-0 px-0">
-              <Nuxt />
+              <slot />
             </v-col>
           </v-row>
         </v-card>
@@ -41,46 +29,43 @@
   </v-app>
 </template>
 
-<script>
-import { mapState, mapGetters } from 'vuex'
+<script setup>
+// const navigationsStore = useNavigationStore()
+const pagesStore = usePagesStore()
 
-export default {
-  name: 'DefaultLayout',
 
-  computed: {
-    ...mapState('navigations', ['primaryDrawer']),
-    ...mapGetters('pages', ['attributes', 'backgroundSrc']),
-    cardStyle() {
-      if (this.$nuxt.context.isDev) {
-        return {
-          transition: `background-image 0.2s ease-in-out`,
-          backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg width='250' height='250' viewBox='0 0 280 250' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3ctext x='30' y='40' transform='rotate(-12)' fill='%23007b5f'%3eLOCAL DEV%3c/text%3e%3c/svg%3e ")`,
-          backgroundRepeat: `repeat`,
-          backgroundPosition: `center`,
-        }
-      }
-      if (this.backgroundSrc) {
-        return {
-          transition: `background-image 0.2s ease-in-out`,
-          backgroundImage: `url("${this.backgroundSrc}")`,
-          backgroundRepeat: `repeat`,
-          backgroundSize: `cover`,
-          backgroundPosition: `center`,
-          minHeight: `100vh`,
-          maxHeight: '100vh',
-          overflowY: 'scroll',
-        }
-      }
-      return {}
-    },
-  },
-}
+const cardStyle = computed(() => {
+  // if (this.$nuxt.context.isDev) {
+  //   return {
+  //     transition: `background-image 0.2s ease-in-out`,
+  //     backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg width='250' height='250' viewBox='0 0 280 250' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3ctext x='30' y='40' transform='rotate(-12)' fill='%23007b5f'%3eLOCAL DEV%3c/text%3e%3c/svg%3e ")`,
+  //     backgroundRepeat: `repeat`,
+  //     backgroundPosition: `center`,
+  //   }
+  // }
+  if (pagesStore.backgroundSrc) {
+    return {
+      transition: `background-image 0.2s ease-in-out`,
+      backgroundImage: `url("${this.backgroundSrc}")`,
+      backgroundRepeat: `repeat`,
+      backgroundSize: `cover`,
+      backgroundPosition: `center`,
+      minHeight: `100vh`,
+      maxHeight: '100vh',
+      overflowY: 'scroll',
+    }
+  }
+  return {}
+});
+
 </script>
+
 <style>
 .h-full {
   height: 100%;
   min-height: 100%;
 }
+
 /* .row {
   margin: 0;
 }*/

@@ -2,11 +2,11 @@ import { defineStore } from "pinia"
 
 export const useNotificationsStore = defineStore('notifications', {
 
-  state: {
+  state: () => ({
     text: '',
     color: '',
     timeout: '',
-  },
+  }),
   actions: {
     show(payload) {
       this.showNotification(payload)

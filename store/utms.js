@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 
 export const useUtmsStore = defineStore('utms', {
-  state: {
+  state: () => ({
     utms: {
       medium: null,
       source: null,
@@ -9,7 +9,7 @@ export const useUtmsStore = defineStore('utms', {
       content: null,
       term: null,
     },
-  },
+  }),
   getters: {
 
   },

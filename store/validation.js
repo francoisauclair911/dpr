@@ -1,9 +1,9 @@
 import { defineStore } from "pinia"
 
 export const useValidationStore = defineStore('validation', {
-  state: {
+  state: () => ({
     errors: [],
-  },
+  }),
   getters: {
 
   },

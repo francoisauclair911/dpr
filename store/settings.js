@@ -3,10 +3,10 @@ import { DomainNotFound } from '~/exceptions'
 import { defineStore } from 'pinia'
 
 export const useSettingsStore = defineStore('settings', {
-  state: {
+  state: () => ({
     settings: null,
     domain: null,
-  },
+  }),
   getters: {
 
     stripeAccountId(state) {
