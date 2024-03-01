@@ -4,6 +4,9 @@ import {
 } from '~/exceptions'
 
 import { defineStore } from 'pinia'
+import { useSettingsStore } from './settings';
+import { useLanguageStore } from './languages';
+import { usePaymentStore } from './payment';
 
 
 export const usePagesStore = defineStore('pages', {
@@ -62,14 +65,19 @@ export const usePagesStore = defineStore('pages', {
   },
   actions: {
     async getPage(params) {
+
+      const settingsStore = useSettingsStore()
+      const languagesStore = useLanguageStore()
+      const paymentStore = usePaymentStore()
+
       let page
       const {
-        organizationId = rootState.settings.domain.organization_id,
+        organizationId = settingsStore.domain.organization_id,
         pageSlug,
         languageCode: lang = null,
       } = params
 
-      const languageCode = lang || rootState.languages.selected
+      const languageCode = lang || languagesStore.selected
 
       page = this.list.find((p) => {
         const isSlugMatch = p.attributes.slug === pageSlug
@@ -100,30 +108,33 @@ export const usePagesStore = defineStore('pages', {
           throw e
         }
       }
-      // commit(
-      //   'languages/SET_PAGE_LANGUAGES',
-      //   page.attributes.available_languages,
-      //   { root: true }
-      // )
-      // commit('payment/updateCurrency', page.attributes.settings.currency, {
-      //   root: true,
-      // })
+      languagesStore.setPageLanguages(
+        page.attributes.available_languages,
+        { root: true }
+      )
+      paymentStore.updateCurrency(page.attributes.settings.currency, {
+        root: true,
+      })
 
-      if (!state.page || page.attributes.id !== state.page.attributes.id) {
-        // commit('SET_PAGE', page)
+      if (!this.page || page.attributes.id !== this.page.attributes.id) {
+        this.page = page
 
         return page
       }
 
-      // commit('SET_PAGE_CONTENT', page.attributes.content)
+      setPageContent(page.attributes.content)
     },
-    async index({ commit, rootState, error }, params = {}) {
+
+    async index(params = {}) {
+      const settingsStore = useSettingsStore()
+      const languagesStore = useLanguageStore()
+
       try {
         const {
-          organizationId = rootState.settings.domain.organization_id,
+          organizationId = settingsStore.domain.organization_id,
           languageCode: lang = null,
         } = params
-        const languageCode = lang || rootState.languages.selected
+        const languageCode = lang || languagesStore.selected
         const response = await this.$api.campaign.get(
           `/organizations/${organizationId}/frontend-pages`,
           {
@@ -142,6 +153,9 @@ export const usePagesStore = defineStore('pages', {
       }
     },
 
+    setPageContent(content) {
+      this.page.attributes.content = content
+    },
     // SET_PAGE(state, page) {
     //   state.page = page
     // },
@@ -150,9 +164,6 @@ export const usePagesStore = defineStore('pages', {
     // },
     // SET_LIST(state, pages) {
     //   state.list = pages
-    // },
-    // SET_PAGE_CONTENT(state, content) {
-    //   state.page.attributes.content = content
     // },
   }
 

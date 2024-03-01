@@ -41,17 +41,17 @@ export const useSettingsStore = defineStore('settings', {
       this.setSettings(settings)
     },
 
-    async initialConfig({ commit, state, dispatch }) {
-      const domain = await dispatch('domainLookup')
+    async initialConfig() {
+      const domain = await this.domainLookup()
       this.domain = domain
 
       this.getOrganizationSettings()
 
       if (
-        state.settings.enable_gtm.value === true &&
-        state.settings.gtm_tag_id.value
+        this.settings.enable_gtm.value === true &&
+        this.settings.gtm_tag_id.value
       ) {
-        this.$gtm.init(state.settings.gtm_tag_id.value)
+        this.$gtm.init(this.settings.gtm_tag_id.value)
       }
     },
 

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 
-export const utmsStore = defineStore('utms', {
+export const useUtmsStore = defineStore('utms', {
   state: {
     utms: {
       medium: null,
@@ -15,7 +15,7 @@ export const utmsStore = defineStore('utms', {
   },
   actions: {
 
-    parseURL({ commit }, route) {
+    parseURL(route) {
       this.setUTM(['medium', route.query.utm_medium])
       this.setUTM(['source', route.query.utm_source])
       this.setUTM(['content', route.query.utm_content])
@@ -25,8 +25,8 @@ export const utmsStore = defineStore('utms', {
       }
     },
 
-    setUTM(state, [key, value = null]) {
-      state.utms[key] = value
+    setUTM([key, value = null]) {
+      this.utms[key] = value
     },
   },
 });

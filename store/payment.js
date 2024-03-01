@@ -1,4 +1,7 @@
 import { defineStore } from "pinia"
+import { usePagesStore } from "./pages"
+import { useUtmsStore } from "./utms"
+import { useValidationStore } from "./validation"
 
 export const usePaymentStore = defineStore('payment', {
   state: () => ({
@@ -96,13 +99,16 @@ export const usePaymentStore = defineStore('payment', {
     async preProcess(
       { paymentProvider, paymentProviderReferenceId = null }
     ) {
-      const currency = rootState.pages.page.attributes.settings.currency
+      const pagesStore = usePagesStore()
+
+
+      const currency = pagesStore.page.attributes.settings.currency
       const amount = convertedAmount(this.amount, currency)
       const payload = {
         amount,
         currency,
         organization_id:
-          rootState.pages.page.attributes.internal_ids.organization_id,
+          pagesStore.page.attributes.internal_ids.organization_id,
         payment_provider: paymentProvider,
         payment_provider_reference_id: paymentProviderReferenceId,
       }
@@ -118,8 +124,12 @@ export const usePaymentStore = defineStore('payment', {
       return response
     },
     async process(payload) {
+
+      const pagesStore = usePagesStore()
+      const utmsStore = useUtmsStore()
+
       const { paymentProvider: name, referenceId, returnUrl } = payload
-      const currency = rootState.pages.page.attributes.settings.currency
+      const currency = pagesStore.page.attributes.settings.currency
       const amount = convertedAmount(this.amount, currency)
       const dataPayload = {
         payment_provider: {
@@ -130,16 +140,16 @@ export const usePaymentStore = defineStore('payment', {
         donation: {
           amount,
           currency,
-          donation_page_id: rootState.pages.page.attributes.id,
+          donation_page_id: pagesStore.page.attributes.id,
           organization_id:
-            rootState.pages.page.attributes.internal_ids.organization_id,
-          appeal_id: rootState.pages.page.attributes.internal_ids.appeal_id,
-          campaign_id: rootState.pages.page.attributes.internal_ids.campaign_id,
+            pagesStore.page.attributes.internal_ids.organization_id,
+          appeal_id: pagesStore.page.attributes.internal_ids.appeal_id,
+          campaign_id: pagesStore.page.attributes.internal_ids.campaign_id,
         },
         donor: this.donor,
         fingerprint: {},
-        page: rootState.pages.page.attributes,
-        utms: rootState.utms.utms,
+        page: pagesStore.page.attributes,
+        utms: utmsStore.utms,
         donation_intent_id: sessionStorage.getItem('donationIntentId') || null,
       }
       // lets save donor info in session
@@ -166,7 +176,8 @@ export const usePaymentStore = defineStore('payment', {
     },
 
     validateDonorForm() {
-      // dispatch('validation/clearValidationErrors', null, { root: true })
+      const validationStore = useValidationStore()
+      validationStore.clearValidationErrors()
 
       return this.$api.payment.post(`/authorize/validate`, {
         ...this.donor,
@@ -184,6 +195,9 @@ export const usePaymentStore = defineStore('payment', {
       this.donationIntentId = donationIntentId
     },
 
+    updateCurrency(currency) {
+      this.currency = currency
+    },
     // SET_INTENT(state, intent) {
     //   state.intent = intent
     // },
@@ -191,9 +205,6 @@ export const usePaymentStore = defineStore('payment', {
     //   state.donor[field] = value
     // },
 
-    // updateCurrency(state, currency) {
-    //   state.currency = currency
-    // },
     // updateDonationType(state, type) {
     //   state.donationType = type
     // },

@@ -37,9 +37,9 @@ export const useLanguageStore = defineStore('language', {
     // SET_SELECTED(state, language = null) {
     //   state.selected = language
     // },
-    // SET_PAGE_LANGUAGES(state, languages = []) {
-    //   state.pageLanguages = languages
-    // },
+    setPageLanguages(languages = []) {
+      this.pageLanguages = languages
+    },
     // SET_I18N_LANGUAGES(state, languages = []) {
     //   state.i18nLanguages = languages
     // },
