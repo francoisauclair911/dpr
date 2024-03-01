@@ -1,59 +1,68 @@
-import { defineStore } from 'pinia'
 import { DomainNotFound } from '~/exceptions'
 
-export const useStore = defineStore('myStore', {
-    state: () => ({
-        settings: null,
-        domain: null,
-    }),
-    actions: {
-        async domainLookup() {
-            try {
-                const response = await this.$api.campaign.get(`/domains/lookup`, {
-                    params: {
-                        name: window.location.hostname,
-                    },
-                })
-                return response?.data?.data
-            } catch (error) {
-                if (error?.response?.status === 404) {
-                    throw new DomainNotFound()
-                }
-                throw error
-            }
-        },
-        async getOrganizationSettings(organizationId = null) {
-            organizationId = organizationId || this.domain.organization_id
-            const response = await this.$api.campaign.get(`/organizations/${organizationId}/settings`)
-            const settings = response?.data?.data
-            this.SET_SETTINGS(settings)
-        },
-        async initialConfig() {
-            const domain = await this.domainLookup()
-            this.SET_DOMAIN(domain)
+import { defineStore } from 'pinia'
 
-            await this.getOrganizationSettings()
+export const useSettingsStore = defineStore('settings', {
+  state: {
+    settings: null,
+    domain: null,
+  },
+  getters: {
 
-            if (this.settings.enable_gtm.value === true && this.settings.gtm_tag_id.value) {
-                this.$gtm.init(this.settings.gtm_tag_id.value)
-            }
-        },
-        // mutations
-        SET_SETTINGS(settings) {
-            this.settings = settings.reduce((carry, setting) => {
-                return {
-                    ...carry,
-                    [setting.name]: setting,
-                }
-            }, {})
-        },
-        SET_DOMAIN(domain) {
-            this.domain = domain
-        },
+    stripeAccountId(state) {
+      return state.settings?.stripe_account_id.value || null
     },
-    getters: {
-        stripeAccountId() {
-            return this.settings?.stripe_account_id.value || null
-        },
+  },
+  actions: {
+    domainLookup() {
+      return this.$api.campaign
+        .get(`/domains/lookup`, {
+          params: {
+            name: window.location.hostname,
+          },
+        })
+        .then((response) => {
+          return response?.data?.data
+        })
+        .catch((error) => {
+          if (error?.response?.status === 404) {
+            throw new DomainNotFound()
+          }
+          throw e
+        })
     },
-})
+
+    async getOrganizationSettings(organizationId = null) {
+      organizationId = organizationId || this.domain.organization_id
+      const response = await this.$api.campaign.get(
+        `/organizations/${organizationId}/settings`
+      )
+      const settings = response?.data?.data
+      this.setSettings(settings)
+    },
+
+    async initialConfig({ commit, state, dispatch }) {
+      const domain = await dispatch('domainLookup')
+      this.domain = domain
+
+      this.getOrganizationSettings()
+
+      if (
+        state.settings.enable_gtm.value === true &&
+        state.settings.gtm_tag_id.value
+      ) {
+        this.$gtm.init(state.settings.gtm_tag_id.value)
+      }
+    },
+
+
+    setSettings(settings) {
+      this.settings = settings.reduce((carry, setting) => {
+        return {
+          ...carry,
+          [setting.name]: setting,
+        }
+      }, {})
+    },
+  },
+});
