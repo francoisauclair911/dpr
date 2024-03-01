@@ -10,7 +10,7 @@
           md="4"
           lg="3"
         >
-          <DonationPageBox class="flex" :page="page"></DonationPageBox>
+          <!-- <DonationPageBox class="flex" :page="page"></DonationPageBox> -->
         </v-col>
       </v-row>
     </v-col>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'pinia'
 import NoFundraisingPagesException from '~/exceptions/NoFundraisingPagesException'
 export default {
   name: 'PageList',
