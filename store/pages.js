@@ -92,7 +92,7 @@ export const usePagesStore = defineStore('pages', {
       if (!page) {
         try {
           const {
-            data: { data },
+            data
           } = await $api.campaign(
             `/organizations/${organizationId}/frontend-pages/${pageSlug}`,
             {

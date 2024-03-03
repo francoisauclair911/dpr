@@ -7,11 +7,11 @@
         </v-btn>
       </template>
       <v-row class="pl-4" justify="start" justify-sm="end">
-        <v-col cols="auto" sm="auto">
+        <v-col cols="4" sm="auto">
           <LanguageSelector />
         </v-col>
       </v-row>
-      <LanguageSelector class="mx-4 flex-grow-1" />
+      <!-- <LanguageSelector class="mx-4 flex-grow-1" /> -->
     </MainAppBar>
     <v-main>
       <v-container class="h-full py-0 px-0 mx-0" fluid>

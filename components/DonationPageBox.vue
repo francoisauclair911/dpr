@@ -1,7 +1,8 @@
 <template>
   <v-card>
     <!-- <v-card max-height="200" tile flat> -->
-    <v-img class="text-white align-end" cover :src="page.attributes.settings.background_src" max-height="400" height="300">
+    <v-img class="text-white align-end" cover :src="page.attributes.settings.background_src" max-height="400"
+      height="300">
       <template #placeholder>
         <v-row class="fill-height grey" justify="center">
           <v-col cols="6">
@@ -28,12 +29,16 @@
 
 <script setup>
 
+import { provide } from 'vue';
+
 const props = defineProps({
   page: {
     type: Object,
     default: () => { },
   }
 })
+
+provide('page', props.page)
 
 </script>
 

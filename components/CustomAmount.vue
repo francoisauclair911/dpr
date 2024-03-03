@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapMutations } from 'vuex'
+// import { mapGetters, mapState, mapMutations } from 'vuex'
 export default {
   name: 'CustomAmount',
 
