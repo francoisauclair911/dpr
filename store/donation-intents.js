@@ -5,11 +5,12 @@ export const useDonationIntentsStore = defineStore('donation-intents', {
 
   actions: {
     async getConfirmation(id) {
-      const response = await this.$api.payment(`/confirmation/${id}`)
+
+      const { $api } = useNuxtApp()
+
+      const response = await $api.payment(`/confirmation/${id}`)
       // await new Promise((resolve) => setTimeout(resolve, 1500))
-      return response?.data?.data
-      return response?.data?.data || null
-      console.log('done waiting')
+      return response?.data || null
     },
   },
 });

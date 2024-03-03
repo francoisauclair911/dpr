@@ -2,7 +2,7 @@
   <v-app id="donation-receiver" class="primary">
     <MainAppBar class="px-1 px-md-2" color="white" flat app :clipped-left="pagesStore.primaryDrawer">
       <template #prepend-title>
-        <v-btn v-show="!display.xs.value" nuxt to="/" icon plain text>
+        <v-btn v-show="!display.xs.value" nuxt to="/" icon variant="plain">
           <v-icon>mdi-home</v-icon>
         </v-btn>
       </template>
@@ -15,7 +15,7 @@
     </MainAppBar>
     <v-main>
       <v-container class="h-full py-0 px-0 mx-0" fluid>
-        <v-card class="fill-height p-0" color="grey lighten-5" flat tile :style="cardStyle">
+        <v-card class="fill-height p-0" color="grey-lighten-5" flat tile :style="cardStyle">
           <v-row class="fill-height ma-0">
             <v-col class="py-0 px-0">
               <slot />

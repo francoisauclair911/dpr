@@ -1,9 +1,9 @@
 <template>
   <v-app-bar v-bind="$attrs" :extended="display.xs.value">
     <slot name="prepend-title"></slot>
-    <v-toolbar-title class="primary--text text-h6 flex-shrink-0 ml-0 px-0">
+    <v-toolbar-title class="text-secondary text-h6 flex-shrink-0 ml-0 px-0">
       <slot name="title">
-        <nuxt-link to="/" class="primary--text text-decoration-none">
+        <nuxt-link to="/" class="text-secondary text-decoration-none">
           {{ settings ? settings.site_title.value : 'ADRA' }}
         </nuxt-link>
       </slot>

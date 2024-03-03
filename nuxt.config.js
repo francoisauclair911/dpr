@@ -26,6 +26,25 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ['./store/**'],
   },
+  i18n: {
+    locales: [
+      {
+        code: 'en',
+        file: 'en-US.js'
+      },
+      {
+        code: 'es',
+        file: 'es-ES.js'
+      },
+      {
+        code: 'fr',
+        file: 'fr-FR.js'
+      }
+    ],
+    lazy: true,
+    langDir: 'lang',
+    defaultLocale: 'en'
+  },
   // sentry: {
   //   dsn: process.env.NUXT_SENTRY_DSN || '',
   //   // https://sentry.nuxtjs.org/sentry/options
@@ -35,6 +54,10 @@ export default defineNuxtConfig({
   //       'aws-frontend-donation-receiver@' + process.env.NUXT_CI_COMMIT_SHORT_SHA,
   //   },
   // },
+  vuetify: {
+    treeShake: true,
+    customVariables: ['~/assets/variables.scss'],
+  },
   vite: {
     vue: {
       template: {

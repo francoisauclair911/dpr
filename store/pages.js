@@ -65,6 +65,7 @@ export const usePagesStore = defineStore('pages', {
   },
   actions: {
     async getPage(params) {
+      const { $api } = useNuxtApp()
 
       const settingsStore = useSettingsStore()
       const languagesStore = useLanguageStore()
@@ -92,7 +93,7 @@ export const usePagesStore = defineStore('pages', {
         try {
           const {
             data: { data },
-          } = await this.$api.campaign.get(
+          } = await $api.campaign(
             `/organizations/${organizationId}/frontend-pages/${pageSlug}`,
             {
               params: {
@@ -129,13 +130,15 @@ export const usePagesStore = defineStore('pages', {
       const settingsStore = useSettingsStore()
       const languagesStore = useLanguageStore()
 
+      const { $api } = useNuxtApp()
+
       try {
         const {
           organizationId = settingsStore.domain.organization_id,
           languageCode: lang = null,
         } = params
         const languageCode = lang || languagesStore.selected
-        const response = await this.$api.campaign.get(
+        const response = await $api.campaign(
           `/organizations/${organizationId}/frontend-pages`,
           {
             params: {
@@ -143,7 +146,7 @@ export const usePagesStore = defineStore('pages', {
             },
           }
         )
-        const pages = response?.data?.data || []
+        const pages = response?.data || []
         this.list = pages
         return pages
       } catch (e) {

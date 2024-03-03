@@ -3,7 +3,7 @@
     <v-col>
       <v-row>
         <v-col v-for="page in pagesStore.list" :key="page.id" cols="12" sm="6" md="4" lg="3">
-          <!-- <DonationPageBox class="flex" :page="page"></DonationPageBox> -->
+          <DonationPageBox class="flex" :page="page"></DonationPageBox>
         </v-col>
       </v-row>
     </v-col>
@@ -25,18 +25,18 @@ onBeforeRouteLeave((_, __) => {
   pagesStore.setBgOverride()
 });
 
-onMounted(async () => {
+onBeforeMount(async () => {
   try {
     await pagesStore.index({
       organizationId: settingsStore.domain?.organization_id,
     });
   } catch (e) {
-    if (e instanceof NoFundraisingPagesException) {
-      throw error({
-        message: app.i18n.t('pages.error.no_fundraising_pages'),
-      })
-    }
-    throw e
+    // if (e instanceof NoFundraisingPagesException) {
+    //   throw error({
+    //     message: app.i18n.t('pages.error.no_fundraising_pages'),
+    //   })
+    // }
+    // throw e
   }
 })
 

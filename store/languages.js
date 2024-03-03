@@ -29,7 +29,7 @@ export const useLanguageStore = defineStore('language', {
       const router = useRouter()
 
       if (!languageCode) {
-        languageCode = $i18n.locale
+        languageCode = $i18n.locale.value
       }
 
       this.selected = languageCode

@@ -72,21 +72,25 @@ export const usePaymentStore = defineStore('payment', {
     },
 
     async getIntent(intentId = null) {
+
+      const { $api } = useNuxtApp()
+
       if (!intentId) {
         throw new Error('Intent is null')
       }
       const {
         data: { data: paymentIntent },
-      } = await this.$api.payment.get(`/intents/${intentId}`)
+      } = await $api.payment(`/intents/${intentId}`)
       this.intent = paymentIntent
     },
 
     async confirm(payload) {
+      const { $api } = useNuxtApp()
       const { paymentProvider, donationIntentId } = payload
       if (!donationIntentId) {
         throw new Error('No donation intent provided')
       }
-      return await this.$api.payment.post(
+      return await $api.payment.post(
         `/authorize/confirm/${paymentProvider}`,
         {
           data: {
@@ -99,6 +103,7 @@ export const usePaymentStore = defineStore('payment', {
     async preProcess(
       { paymentProvider, paymentProviderReferenceId = null }
     ) {
+      const { $api } = useNuxtApp()
       const pagesStore = usePagesStore()
 
 
@@ -114,7 +119,7 @@ export const usePaymentStore = defineStore('payment', {
       }
       const {
         data: { data: response },
-      } = await this.$api.payment.post(
+      } = await $api.payment.post(
         `/authorize/pre-process/${paymentProvider}`,
         {
           data: payload,
@@ -124,6 +129,7 @@ export const usePaymentStore = defineStore('payment', {
       return response
     },
     async process(payload) {
+      const { $api } = useNuxtApp()
 
       const pagesStore = usePagesStore()
       const utmsStore = useUtmsStore()
@@ -170,7 +176,7 @@ export const usePaymentStore = defineStore('payment', {
           },
         }
       }
-      return await this.$api.payment.post(`/authorize/process/${name}`, {
+      return await $api.payment.post(`/authorize/process/${name}`, {
         data: dataPayload,
       })
     },
@@ -179,7 +185,7 @@ export const usePaymentStore = defineStore('payment', {
       const validationStore = useValidationStore()
       validationStore.clearValidationErrors()
 
-      return this.$api.payment.post(`/authorize/validate`, {
+      return $api.payment.post(`/authorize/validate`, {
         ...this.donor,
         ...this.consents,
       })
