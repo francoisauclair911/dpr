@@ -14,8 +14,15 @@ export default defineNuxtConfig({
       })
     },
     '@pinia/nuxt',
+    // "@adra-network/i18n-module",
+    "@nuxtjs/i18n",
     // '@nuxtjs/sentry',
   ],
+  // adraI18n: {
+  //   enabled: true, // Enable or disable the i18n features
+  //   langDir: "lang", // Directory of language JSON files
+  //   apiKey: "adskglkasd", // Your API key for the translation service
+  // },
   pinia: {
     storesDirs: ['./store/**'],
   },
@@ -37,6 +44,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      isDev: process.env.NUXT_IS_DEVELOPMENT == 'true' || false,
       ADRA_DEBUG: process.env.NUXT_ADRA_DEBUG || false,
       STRIPE_PUBLISHABLE_KEY: process.env.NUXT_STRIPE_PUBLISHABLE_KEY,
       STRIPE_API_VERSION: process.env.NUXT_STRIPE_API_VERSION,

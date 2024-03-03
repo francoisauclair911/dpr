@@ -32,12 +32,10 @@ export const useHelpersStore = defineStore('helpers', {
         return
       }
 
-      // const {
-      //   data: { data: titles = [] },
-      // } = await $api.asset('/titles')
-      const data = await $api.asset('/titles')
-      console.log(data);
-      // this.titles = titles
+      const {
+        data: { data: titles = [] },
+      } = await $api.asset('/titles')
+      this.titles = titles
     },
     // setCountries(state, countries) {
     //   state.countries = countries

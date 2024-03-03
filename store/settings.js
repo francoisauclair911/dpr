@@ -14,15 +14,16 @@ export const useSettingsStore = defineStore('settings', {
     },
   },
   actions: {
-    domainLookup() {
-      return this.$api.campaign
-        .get(`/domains/lookup`, {
+    async domainLookup() {
+      const { $api } = useNuxtApp()
+      return $api.campaign
+        (`/domains/lookup`, {
           params: {
             name: window.location.hostname,
           },
         })
         .then((response) => {
-          return response?.data?.data
+          return response?.data
         })
         .catch((error) => {
           if (error?.response?.status === 404) {
@@ -33,11 +34,13 @@ export const useSettingsStore = defineStore('settings', {
     },
 
     async getOrganizationSettings(organizationId = null) {
+      const { $api } = useNuxtApp()
+
       organizationId = organizationId || this.domain.organization_id
-      const response = await this.$api.campaign.get(
+      const response = await $api.campaign(
         `/organizations/${organizationId}/settings`
       )
-      const settings = response?.data?.data
+      const settings = response?.data
       this.setSettings(settings)
     },
 
@@ -45,13 +48,13 @@ export const useSettingsStore = defineStore('settings', {
       const domain = await this.domainLookup()
       this.domain = domain
 
-      this.getOrganizationSettings()
+      await this.getOrganizationSettings()
 
       if (
         this.settings.enable_gtm.value === true &&
         this.settings.gtm_tag_id.value
       ) {
-        this.$gtm.init(this.settings.gtm_tag_id.value)
+        // this.$gtm.init(this.settings.gtm_tag_id.value)
       }
     },
 

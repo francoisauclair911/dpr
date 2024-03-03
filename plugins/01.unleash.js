@@ -1,8 +1,6 @@
 import { UnleashClient } from 'unleash-proxy-client'
 
-export default defineNuxtPlugin(({ $config }) => {
-
-  const nuxtApp = useNuxtApp()
+export default defineNuxtPlugin(({ $config, provide }) => {
 
   const unleash = new UnleashClient({
     url: $config.public.UNLEASH_URL,
@@ -11,13 +9,13 @@ export default defineNuxtPlugin(({ $config }) => {
   })
 
   unleash.start()
-  unleash.on('ready', () => {
-    inject('unleash', unleash)
-  })
+  // unleash.on('ready', () => {
+  // provide('unleash', unleash)
+  // })
 
   return {
     provide: {
-      unleash: unleash,
+      unleash,
     }
   }
 

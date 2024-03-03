@@ -19,10 +19,10 @@ export default defineNuxtPlugin(({ $config }) => {
   }
 
   const repositories = {
-    country: createAxiosInstance($config.NUXT_COUNTRY_BASE_URL),
-    asset: createAxiosInstance($config.NUXT_ASSET_BASE_URL),
-    campaign: createAxiosInstance($config.NUXT_CAMPAIGN_BASE_URL),
-    payment: createAxiosInstance($config.NUXT_PAYMENT_BASE_URL),
+    country: createAxiosInstance($config.public.COUNTRY_BASE_URL),
+    asset: createAxiosInstance($config.public.ASSET_BASE_URL),
+    campaign: createAxiosInstance($config.public.CAMPAIGN_BASE_URL),
+    payment: createAxiosInstance($config.public.PAYMENT_BASE_URL),
   }
   return {
     provide: {

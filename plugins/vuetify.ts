@@ -9,4 +9,10 @@ export default defineNuxtPlugin((app) => {
         // ... your configuration
     })
     app.vueApp.use(vuetify)
+
+    return {
+        provide: {
+            vuetify,
+        }
+    }
 })

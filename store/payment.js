@@ -161,7 +161,7 @@ export const usePaymentStore = defineStore('payment', {
           amount: this.amount,
         })
       )
-      if (this.$config.FEATURES.LIVE_PAYMENT === false) {
+      if (this.$config.public.FEATURES.LIVE_PAYMENT === false) {
         return {
           data: {
             data: {

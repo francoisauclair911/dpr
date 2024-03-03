@@ -25,14 +25,18 @@ export const useLanguageStore = defineStore('language', {
   actions: {
 
     switchLanguage(languageCode = null) {
+      const { $i18n } = useNuxtApp()
+      const router = useRouter()
+
       if (!languageCode) {
-        languageCode = this.$i18n.locale
+        languageCode = $i18n.locale
       }
 
       this.selected = languageCode
-      this.$i18n.setLocale(languageCode)
-      const query = { ...this.$router.currentRoute.query, lang: languageCode }
-      this.$router.replace({ query })
+      $i18n.locale = languageCode
+      // $i18n.setLocale(languageCode)
+      const query = { ...router.currentRoute.query, lang: languageCode }
+      router.replace({ query })
     },
     // SET_SELECTED(state, language = null) {
     //   state.selected = language
