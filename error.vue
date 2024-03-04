@@ -10,7 +10,7 @@
           {{ errorMessage }}
         </h2>
         <v-row class="mt-4" justify="center">
-          <ButtonPrimary class="mx-auto" @click="$router.back()">
+          <ButtonPrimary class="mx-auto" @click="clearAllErrors">
             {{ $t('pages.error.buttons.back') }}
           </ButtonPrimary>
         </v-row>
@@ -19,7 +19,32 @@
   </v-app>
 </template>
 
-<script>
+<script setup>
+const router = useRouter()
+const error = useError()
+const { $i18n } = useNuxtApp()
+
+const statusCode = computed(() => error.statusCode)
+const errorMessage = computed(() => {
+  if (error.message && typeof error.message === 'string') {
+    return error.message
+  }
+  const key = `pages.error.${statusCode.value || 500}.message`
+  const message = $i18n.t(key)
+  if (message === key) {
+    return $i18n.t('pages.error.500.message')
+  }
+  return message
+})
+
+const clearAllErrors = () => {
+  clearError()
+  router.back()
+}
+
+</script>
+
+<!-- <script>
 export default {
   name: 'ErrorPage',
   layout: 'empty',
@@ -40,19 +65,11 @@ export default {
       return this.error.statusCode
     },
     errorMessage() {
-      if (this.error.message && typeof this.error.message === 'string') {
-        return this.error.message
-      }
-      const key = `pages.error.${this.error.statusCode}.message`
-      const message = this.$t(key)
-      if (message === key) {
-        return this.$t('pages.error.500.message')
-      }
-      return message
     },
   },
 }
 </script>
+ -->
 
 <style scoped>
 h1 {

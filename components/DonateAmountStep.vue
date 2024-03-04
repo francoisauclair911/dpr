@@ -1,17 +1,7 @@
 <template>
-  <v-card
-    key="step1"
-    height="auto"
-    flat
-    class="d-flex flex-column align-content-space-between"
-  >
-    <v-card-title
-      class="black--text font-weight-bold"
-      v-text="content.title"
-    ></v-card-title>
-    <v-card-text
-      class="flex-grow-1 d-flex flex-column align-content-space-around"
-    >
+  <v-card key="step1" height="auto" flat class="d-flex flex-column align-content-space-between">
+    <v-card-title class="black--text font-weight-bold" v-text="content.title"></v-card-title>
+    <v-card-text class="flex-grow-1 d-flex flex-column align-content-space-around">
       <v-row>
         <v-col>
           <AdraMarkdownViewer :value="content.body" />
@@ -30,21 +20,13 @@
       </v-row>
       <v-row v-if="isCustomAmountEnabled">
         <v-col>
-          <CustomAmount
-            autofocus
-            :error="missingAmount"
-            :outlined="missingAmount"
-            @keyup.enter="submit"
-          />
+          <CustomAmount autofocus :error="missingAmount" :outlined="missingAmount" @keyup.enter="submit" />
         </v-col>
       </v-row>
 
       <v-row>
         <v-col>
-          <AdraMarkdownViewer
-            class="small"
-            :value="content.before_button_text"
-          />
+          <AdraMarkdownViewer class="small" :value="content.before_button_text" />
         </v-col>
       </v-row>
       <v-slide-x-transition>
@@ -67,17 +49,76 @@
       </v-row>
       <v-row>
         <v-col>
-          <AdraMarkdownViewer
-            class="small"
-            :value="content.after_button_text"
-          />
+          <AdraMarkdownViewer class="small" :value="content.after_button_text" />
         </v-col>
       </v-row>
     </v-card-text>
   </v-card>
 </template>
 
-<script>
+<script setup>
+
+import { inject } from 'vue'
+
+const { $i18n, $emit } = useNuxtApp()
+const route = useRoute()
+
+const pagesStore = usePagesStore()
+const paymentStore = usePaymentStore()
+
+const page = inject('page')
+const missingAmount = ref(false)
+
+const buttonText = computed(() => {
+  return (
+    pagesStore.content.submit_text || $i18n.t('components.button_donate.donate')
+  )
+})
+
+const isCustomAmountEnabled = computed(() => {
+  return pagesStore.settings.allow_custom_amount
+})
+
+const hasSelectedAmount = computed(() => {
+  return paymentStore.amount > 0
+})
+
+const hasMultiplier = computed(() => {
+  return page.attributes.settings.multiplier > 1
+})
+
+const showMultiplier = computed(() => {
+  return !paymentStore.isRecurring && hasMultiplier && hasSelectedAmount
+})
+
+const multipliedAmount = computed(() => {
+  return pagesStore.numberFormat.format(
+    paymentStore.amount * page.attributes.settings.multiplier
+  )
+})
+
+function submit() {
+  console.log('🚀 ~ file: DonateAmountStep.vue:140 ~ submit ~ submit:')
+  if (hasSelectedAmount) {
+    return $emit('submit')
+  }
+  missingAmount.value = true
+}
+
+watch(paymentStore.amount, (_, __) => {
+  missingAmount.value = false
+})
+
+
+onMounted(() => {
+  if (route.query.amount) {
+    paymentStore.updateAmount(route.query.amount)
+  }
+})
+
+</script>
+
+<!-- <script>
 // import { mapState, mapGetters } from 'vuex'
 
 export default {
@@ -114,42 +155,10 @@ export default {
     ...mapState('payment', ['amount']),
     ...mapGetters('payment', ['isRecurring']),
     ...mapGetters('pages', ['content', 'numberFormat', 'settings']),
-    buttonText() {
-      return (
-        this.content.submit_text || this.$t('components.button_donate.donate')
-      )
-    },
-    isCustomAmountEnabled() {
-      return this.settings.allow_custom_amount
-    },
-    hasSelectedAmount() {
-      return this.amount > 0
-    },
-    hasMultiplier() {
-      return this.page.attributes.settings.multiplier > 1
-    },
-    showMultiplier() {
-      return !this.isRecurring && this.hasMultiplier && this.hasSelectedAmount
-    },
-    multipliedAmount() {
-      return this.numberFormat.format(
-        this.amount * this.page.attributes.settings.multiplier
-      )
-    },
   },
   watch: {
-    amount() {
-      this.missingAmount = false
-    },
   },
   methods: {
-    submit() {
-      console.log('🚀 ~ file: DonateAmountStep.vue:140 ~ submit ~ submit:')
-      if (this.hasSelectedAmount) {
-        return this.$emit('submit')
-      }
-      this.missingAmount = true
-    },
   },
 }
-</script>
+</script> -->

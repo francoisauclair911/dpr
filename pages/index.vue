@@ -14,8 +14,8 @@
 
 import NoFundraisingPagesException from '~/exceptions/NoFundraisingPagesException'
 
+const { $i18n } = useNuxtApp()
 const route = useRoute()
-const error = useError()
 
 const pagesStore = usePagesStore()
 const settingsStore = useSettingsStore()
@@ -31,16 +31,18 @@ onBeforeMount(async () => {
       organizationId: settingsStore.domain?.organization_id,
     });
   } catch (e) {
-    // if (e instanceof NoFundraisingPagesException) {
-    //   throw error({
-    //     message: app.i18n.t('pages.error.no_fundraising_pages'),
-    //   })
-    // }
-    // throw e
+    if (e instanceof NoFundraisingPagesException) {
+      throw createError({
+        message: $i18n.t('pages.error.no_fundraising_pages'),
+        fatal: true,
+      })
+    }
+    throw e
   }
 })
 
-watch(route, (_, __) => {
+
+watch(() => route.query, (_, __) => {
   pagesStore.index()
 });
 

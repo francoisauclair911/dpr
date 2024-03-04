@@ -8,8 +8,8 @@
               <v-progress-circular indeterminate size="50" color="white" />
             </v-overlay>
             <v-slide-x-reverse-transition hide-on-leave>
-              <!-- <DonateAmountStep v-if="data.step === 1" @submit="goToDonorInfo" />
-              <DonateDonorInfoStep v-if="data.step === 2" v-model="data.formData" @back="data.step--"
+              <DonateAmountStep v-if="data.step === 1" @submit="goToDonorInfo" />
+              <!-- <DonateDonorInfoStep v-if="data.step === 2" v-model="data.formData" @back="data.step--"
                 @next="goToPaymentStep" />
               <DonatePaymentDetailsStep v-if="data.step === 3" :form-data="data.formData" @back="data.step--"
                 @next="goToConfirmationStep" />
