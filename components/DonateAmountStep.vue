@@ -1,10 +1,10 @@
 <template>
   <v-card key="step1" height="auto" flat class="d-flex flex-column align-content-space-between">
-    <v-card-title class="black--text font-weight-bold" v-text="content.title"></v-card-title>
+    <v-card-title class="black--text font-weight-bold" v-text="pagesStore.content.title"></v-card-title>
     <v-card-text class="flex-grow-1 d-flex flex-column align-content-space-around">
       <v-row>
         <v-col>
-          <AdraMarkdownViewer :value="content.body" />
+          <AdraMarkdownViewer :value="pagesStore.content.body" />
         </v-col>
       </v-row>
       <v-row class="mt-4">
@@ -26,7 +26,7 @@
 
       <v-row>
         <v-col>
-          <AdraMarkdownViewer class="small" :value="content.before_button_text" />
+          <AdraMarkdownViewer class="small" :value="pagesStore.content.before_button_text" />
         </v-col>
       </v-row>
       <v-slide-x-transition>
@@ -34,7 +34,7 @@
           <v-col class="d-flex">
             <p class="text-subtitle-1">
               {{
-                content.multiplier_text ||
+                pagesStore.content.multiplier_text ||
                 $t('components.donate_amount_step.multiplier_text')
               }}
               <b>{{ multipliedAmount }}</b>
@@ -49,7 +49,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <AdraMarkdownViewer class="small" :value="content.after_button_text" />
+          <AdraMarkdownViewer class="small" :value="pagesStore.content.after_button_text" />
         </v-col>
       </v-row>
     </v-card-text>

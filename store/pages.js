@@ -45,7 +45,7 @@ export const usePagesStore = defineStore('pages', {
     },
     currencySymbol() {
       return (
-        numberFormat
+        this.numberFormat
           .formatToParts()
           .find((part) => part.type === 'currency').value || ''
       )
