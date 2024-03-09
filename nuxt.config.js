@@ -14,14 +14,14 @@ export default defineNuxtConfig({
       })
     },
     '@pinia/nuxt',
-    // "@adra-network/i18n-module",
-    "@nuxtjs/i18n",
+    "@adra-network/i18n-module",
+    // "@nuxtjs/i18n",
     // '@nuxtjs/sentry',
   ],
   // adraI18n: {
   //   enabled: true, // Enable or disable the i18n features
   //   langDir: "lang", // Directory of language JSON files
-  //   apiKey: "adskglkasd", // Your API key for the translation service
+  //   apiKey: "", // Your API key for the translation service
   // },
   pinia: {
     storesDirs: ['./store/**'],

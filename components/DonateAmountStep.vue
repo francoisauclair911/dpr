@@ -34,9 +34,9 @@
           <v-col class="d-flex">
             <p class="text-subtitle-1">
               {{
-                pagesStore.content.multiplier_text ||
-                $t('components.donate_amount_step.multiplier_text')
-              }}
+      pagesStore.content.multiplier_text ||
+      $t('components.donate_amount_step.multiplier_text')
+    }}
               <b>{{ multipliedAmount }}</b>
             </p>
           </v-col>
@@ -105,7 +105,7 @@ function submit() {
   missingAmount.value = true
 }
 
-watch(paymentStore.amount, (_, __) => {
+watch(() => paymentStore.amount, (_, __) => {
   missingAmount.value = false
 })
 

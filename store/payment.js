@@ -204,6 +204,10 @@ export const usePaymentStore = defineStore('payment', {
     updateCurrency(currency) {
       this.currency = currency
     },
+
+    updateDonationType(type) {
+      this.donationType = type
+    },
     // SET_INTENT(state, intent) {
     //   state.intent = intent
     // },
@@ -211,9 +215,6 @@ export const usePaymentStore = defineStore('payment', {
     //   state.donor[field] = value
     // },
 
-    // updateDonationType(state, type) {
-    //   state.donationType = type
-    // },
   },
 
 })

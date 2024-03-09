@@ -1,11 +1,10 @@
 <template>
-  <viewer ref="toastuiViewer" class="adra-markdown-viewer" :initial-value="formattedValue" height="500px" />
+  <ToastUIViewer ref="toastuiViewer" class="adra-markdown-viewer" :initial-value="formattedValue" height="500px" />
 </template>
 
 <script setup>
 import { defineProps } from 'vue'
 import '@toast-ui/editor/dist/toastui-editor-viewer.css'
-// import { Viewer } from '@toast-ui/vue-editor'
 
 const props = defineProps({
   value: {
@@ -22,6 +21,7 @@ watch(() => props.value, (_, __) => {
     props.value
   )
 })
+
 </script>
 
 <style lang="css">

@@ -29,17 +29,33 @@ import { useDisplay } from 'vuetify';
 
 const route = useRoute()
 const display = useDisplay()
+const { $i18n } = useNuxtApp()
 
 const pagesStore = usePagesStore()
 const paymentStore = usePaymentStore()
 
+
 const data = reactive({
   requestState: 'idle',
-  step: route.query.step ? Number(route.query.step) : 0,
+  step: route.query.step ? Number(route.query.step) : 1,
   formData: {
     amount: -1,
     donorInfo: {},
   },
+})
+
+await useAsyncData('indexGetPage', async () => {
+  try {
+    await pagesStore.getPage({
+      pageSlug: route.params.page_slug,
+    })
+  } catch (e) {
+    if (e instanceof FundraisingPageNotFound) {
+      createError({
+        message: $i18n.t('pages.error.fundraising_page_not_found'),
+      })
+    }
+  }
 })
 
 provide('page', pagesStore.page)
@@ -49,17 +65,6 @@ provide('amount', data.formData.amount)
 
 onBeforeMount(async () => {
   pagesStore.setBgOverride(null)
-  try {
-    await pagesStore.getPage({
-      pageSlug: route.params.page_slug,
-    })
-  } catch (e) {
-    if (e instanceof FundraisingPageNotFound) {
-      // error({
-      //   message: app.i18n.t('pages.error.fundraising_page_not_found'),
-      // })
-    }
-  }
 })
 
 const rowJustification = computed(() => {

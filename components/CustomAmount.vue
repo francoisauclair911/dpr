@@ -1,8 +1,7 @@
 <template>
   <v-text-field v-bind="$attrs" type="number" elevation="0" oulined hide-details="auto" :value="displayedValue"
     :placeholder="$t('components.custom_amount.custom_amount_placeholder')" :prefix="pagesStore.currencySymbol"
-    :suffix="paymentStore.isRecurring ? '/ monthly' : ''" clearable @click:clear="$emit('clear')" @input="update"
-    v-on="$listeners">
+    :suffix="paymentStore.isRecurring ? '/ monthly' : ''" clearable @click:clear="$emit('clear')" @input="update">
   </v-text-field>
 </template>
 
