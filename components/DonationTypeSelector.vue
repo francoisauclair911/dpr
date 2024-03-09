@@ -1,11 +1,12 @@
 <template>
   <div class="d-flex">
-    <v-btn :color="!isRecurring ? 'primary' : 'secondary'" plain class="flex-grow-1"
+    <v-btn elevation="0" plain :class="['flex-grow-1', !isRecurring ? 'text-primary' : 'text-grey']"
       @click="paymentStore.updateDonationType('one_time')">
       <v-icon left>mdi-gift</v-icon>
       {{ $t('components.donation_type_selector.one_time') }}</v-btn>
-    <v-btn v-if="pagesStore.settings.recurring_donation_enabled" plain :color="isRecurring ? 'primary' : 'secondary'"
-      class="flex-grow-1" @click="updateDonationType('recurring')">
+    <v-btn elevation="0" v-if="pagesStore.settings.recurring_donation_enabled" plain
+      :class="['flex-grow-1', isRecurring ? 'text-primary' : 'text-gray']"
+      @click="paymentStore.updateDonationType('recurring')">
       <v-icon left>mdi-refresh</v-icon>
       {{ $t('components.donation_type_selector.monthly') }}</v-btn>
   </div>

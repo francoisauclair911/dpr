@@ -16,7 +16,7 @@ const toastuiViewer = ref(null)
 const formattedValue = ref(props.value)
 
 watch(() => props.value, (_, __) => {
-  formattedValue.value = toastuiViewer.invoke(
+  formattedValue.value = toastuiViewer.value.invoke(
     'setMarkdown',
     props.value
   )

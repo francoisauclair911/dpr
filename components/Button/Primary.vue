@@ -3,8 +3,8 @@
     <slot />
   </ButtonBase>
 </template>
-<script>
-export default {
-  name: 'ButtonPrimary',
-}
+
+<script setup>
+defineEmits(['click'])
+
 </script>

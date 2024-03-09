@@ -8,8 +8,8 @@
     </span>
   </ButtonPrimary>
 </template>
-<script>
-export default {
-  name: 'ButtonDonate',
-}
+
+<script setup>
+defineEmits(['click'])
+
 </script>

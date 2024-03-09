@@ -2,31 +2,33 @@
     <div ref="toastuiEditorViewer"></div>
 </template>
 
-<script setup>
+<script>
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
+import { toastUIMixin } from '~/mixins/toastUIMixin';
 
-const props = defineProps({
-    height: {
-        type: String,
+export default {
+    name: 'ToastuiEditorViewer',
+    mixins: [toastUIMixin],
+    props: {
+        height: {
+            type: String,
+        },
+        initialValue: {
+            type: String,
+        },
+        options: {
+            type: Object,
+        },
     },
-    initialValue: {
-        type: String,
+    mounted() {
+        const options = { ...this.computedOptions, el: this.$refs.toastuiEditorViewer };
+
+        this.editor = new Viewer(options);
     },
-    options: {
-        type: Object,
+    methods: {
+        getRootElement() {
+            return this.$refs.toastuiEditorViewer;
+        },
     },
-})
-
-const toastuiEditorViewer = ref(null)
-const { editor, computedOptions } = useToastUI(props)
-
-onMounted(() => {
-    const options = { ...computedOptions, el: toastuiEditorViewer.value };
-    editor.value = new Viewer(options)
-})
-
-function getRootElement() {
-    return toastuiEditorViewer.value;
-}
-
+};
 </script>

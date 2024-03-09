@@ -2,55 +2,13 @@
     <div ref="toastuiEditor"></div>
 </template>
 
-<script setup>
-
+<script>
 import Editor from '@toast-ui/editor';
-
-const props = defineProps({
-    height: {
-        type: String,
-    },
-    initialValue: {
-        type: String,
-    },
-    options: {
-        type: Object,
-    },
-    initialEditType: {
-        type: String,
-    },
-    previewStyle: {
-        type: String,
-    },
-})
-
-const toastuiEditor = ref(null)
-const { editor, computedOptions } = useToastUI(props)
-
-onMounted(() => {
-    const options = { ...this.computedOptions, el: toastuiEditor.value };
-    editor.value = new Editor(options);
-})
-
-watch(props.previewStyle, (newVal, _) => {
-    editor.changePreviewStyle(newVal)
-})
-watch(props.height, (newVal, _) => {
-    editor.height(newVal)
-})
-
-function getRootElement() {
-    return toastuiEditor.value;
-},
-
-</script>
-
-<!-- <script>
-import { optionsMixin } from './mixin/option';
+import { toastUIMixin } from '~/mixins/toastUIMixin';
 
 export default {
     name: 'ToastuiEditor',
-    mixins: [optionsMixin],
+    mixins: [toastUIMixin],
     props: {
         previewStyle: {
             type: String,
@@ -77,6 +35,9 @@ export default {
         },
     },
     mounted() {
+        const options = { ...this.computedOptions, el: this.$refs.toastuiEditor };
+
+        this.editor = new Editor(options);
     },
     methods: {
         getRootElement() {
@@ -84,4 +45,4 @@ export default {
         },
     },
 };
-</script> -->
+</script>

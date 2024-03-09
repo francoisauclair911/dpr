@@ -60,8 +60,9 @@
 
 import { inject } from 'vue'
 
-const { $i18n, $emit } = useNuxtApp()
+const { $i18n } = useNuxtApp()
 const route = useRoute()
+const emit = defineEmits(['submit'])
 
 const pagesStore = usePagesStore()
 const paymentStore = usePaymentStore()
@@ -88,7 +89,7 @@ const hasMultiplier = computed(() => {
 })
 
 const showMultiplier = computed(() => {
-  return !paymentStore.isRecurring && hasMultiplier && hasSelectedAmount
+  return !paymentStore.isRecurring && hasMultiplier.value && hasSelectedAmount.value
 })
 
 const multipliedAmount = computed(() => {
@@ -99,8 +100,8 @@ const multipliedAmount = computed(() => {
 
 function submit() {
   console.log('🚀 ~ file: DonateAmountStep.vue:140 ~ submit ~ submit:')
-  if (hasSelectedAmount) {
-    return $emit('submit')
+  if (hasSelectedAmount.value) {
+    return emit('submit')
   }
   missingAmount.value = true
 }

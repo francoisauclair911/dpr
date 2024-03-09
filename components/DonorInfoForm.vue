@@ -458,7 +458,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<!-- <style scoped>
 /deep/ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -487,4 +487,4 @@ input:-internal-autofill-selected {
 /deep/ .v-autocomplete input {
   text-transform: capitalize;
 }
-</style>
+</style> -->
