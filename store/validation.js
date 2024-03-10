@@ -17,6 +17,7 @@ export const useValidationStore = defineStore('validation', {
       }, {})
       this.errors = formattedError
     },
+
     clearValidationErrors() {
       if (Object.keys(this.errors).length) {
         this.errors = []

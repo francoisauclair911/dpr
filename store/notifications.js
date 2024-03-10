@@ -29,11 +29,10 @@ export const useNotificationsStore = defineStore('notifications', {
         color: 'red',
       })
     },
-  },
-
-  showNotification(payload) {
-    state.text = payload.text
-    state.color = payload.color
-    state.timeout = payload.timeout
+    showNotification(payload) {
+      this.text = payload.text
+      this.color = payload.color
+      this.timeout = payload.timeout
+    },
   },
 });

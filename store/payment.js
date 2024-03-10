@@ -50,7 +50,7 @@ export const usePaymentStore = defineStore('payment', {
       return convertedAmount(state.amount, state.currency)
     },
 
-    numberFormat(state, getters) {
+    numberFormat(state) {
       return new Intl.NumberFormat(window.navigator.language || 'en', {
         style: 'currency',
         roundingMode: 'halfCeil',
@@ -58,8 +58,8 @@ export const usePaymentStore = defineStore('payment', {
         currency: state.currency || 'usd',
       })
     },
-    formattedAmount(state, getters) {
-      return getters.numberFormat.format(state.amount)
+    formattedAmount(state) {
+      return this.numberFormat.format(state.amount)
     },
 
   },
@@ -129,7 +129,7 @@ export const usePaymentStore = defineStore('payment', {
       return response
     },
     async process(payload) {
-      const { $api } = useNuxtApp()
+      const { $api, $config } = useNuxtApp()
 
       const pagesStore = usePagesStore()
       const utmsStore = useUtmsStore()
@@ -167,7 +167,7 @@ export const usePaymentStore = defineStore('payment', {
           amount: this.amount,
         })
       )
-      if (this.$config.public.FEATURES.LIVE_PAYMENT === false) {
+      if ($config.public.NUXT_FEATURES.LIVE_PAYMENT === false) {
         return {
           data: {
             data: {
@@ -182,12 +182,16 @@ export const usePaymentStore = defineStore('payment', {
     },
 
     validateDonorForm() {
+      const { $api } = useNuxtApp()
       const validationStore = useValidationStore()
       validationStore.clearValidationErrors()
 
-      return $api.payment.post(`/authorize/validate`, {
-        ...this.donor,
-        ...this.consents,
+      return $api.payment(`/authorize/validate`, {
+        method: 'POST',
+        body: {
+          ...this.donor,
+          ...this.consents,
+        },
       })
     },
 

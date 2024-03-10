@@ -9,9 +9,9 @@
             </v-overlay>
             <v-slide-x-reverse-transition hide-on-leave>
               <DonateAmountStep v-if="data.step === 1" @submit="goToDonorInfo" />
-              <!-- <DonateDonorInfoStep v-if="data.step === 2" v-model="data.formData" @back="data.step--"
+              <DonateDonorInfoStep v-if="data.step === 2" :value="data.formData" @back="data.step--"
                 @next="goToPaymentStep" />
-              <DonatePaymentDetailsStep v-if="data.step === 3" :form-data="data.formData" @back="data.step--"
+              <!-- <DonatePaymentDetailsStep v-if="data.step === 3" :form-data="data.formData" @back="data.step--"
                 @next="goToConfirmationStep" />
               <DonateConfirmation v-if="data.step === 4" :donation-intent-id="paymentStore.donationIntentId" /> -->
             </v-slide-x-reverse-transition>

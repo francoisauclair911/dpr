@@ -41,6 +41,7 @@ export default defineNuxtConfig({
         file: 'fr-FR.js'
       }
     ],
+    strategy: 'no_prefix',
     lazy: true,
     langDir: 'lang',
     defaultLocale: 'en'
@@ -54,9 +55,25 @@ export default defineNuxtConfig({
   //       'aws-frontend-donation-receiver@' + process.env.NUXT_CI_COMMIT_SHORT_SHA,
   //   },
   // },
+  adra: {
+    fonts: {
+      montserrat: true,
+      zillaSlab: true,
+      kaushanScript: false,
+      authenia: false,
+    },
+    icons: {
+      mdi: true,
+      fa: false,
+    },
+    vuetify: {
+      treeShake: true,
+      customVariables: ['~/assets/variables.scss'],
+    },
+  },
   vuetify: {
-    treeShake: true,
-    customVariables: ['~/assets/variables.scss'],
+    // treeShake: true,
+    // customVariables: ['~/assets/variables.scss'],
   },
   vite: {
     vue: {

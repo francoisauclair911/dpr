@@ -9,7 +9,7 @@ const handleError = (error) => {
       //   'notifications/danger',
       //   'Some fields require your attention'
       // )
-      validationStore.handleValidation(error.response.data)
+      validationStore.handleValidation(error.response._data)
     }
   } else {
     notificationsStore.danger(

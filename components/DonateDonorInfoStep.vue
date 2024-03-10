@@ -11,12 +11,8 @@
       <v-card-text>
         <v-divider />
 
-        <DonorInfoForm
-          class="mb-2"
-          :donor-info="value.donorInfo"
-          @ready="loading = false"
-          @input="$emit('input', { ...value, donorInfo: $event })"
-        />
+        <DonorInfoForm class="mb-2" :donor-info="value.donorInfo" @ready="loading = false"
+          @input="$emit('input', { ...value, donorInfo: $event })" />
 
         <v-row>
           <v-col class="d-flex">
@@ -30,78 +26,70 @@
   </div>
 </template>
 
-<script>
-import { mapGetters, mapState } from 'vuex'
-export default {
-  name: 'DonateDonorInfoStep',
-  inject: ['page'],
-  props: {
-    value: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      loading: true,
-    }
-  },
-  computed: {
-    ...mapState('payment', ['amount', 'donor']),
-    ...mapGetters('payment', ['formattedAmount', 'isRecurring']),
-    displayedAmountText() {
-      return !this.isRecurring
-        ? this.formattedAmount
-        : `${this.formattedAmount}  ${this.$t(
-            'components.donor_info_step.monthly'
-          )}`
-    },
-  },
-  mounted() {
-    const currency = this.page.attributes.settings.currency.toUpperCase()
-    const gtmPayload = {
-      event: 'add_to_cart',
-      currency,
-      value: this.amount,
-      items: [
-        {
-          item_id: this.page.attributes.id,
-          item_name: this.page.attributes.slug,
-          affiliation: 'Donation Form',
-          currency,
-          item_category: 'One-time Donation',
-          price: 0,
-          quantity: 1,
-        },
-      ],
-    }
-    this.$gtm.push(gtmPayload)
-  },
+<script setup>
 
-  methods: {
-    next() {
-      this.$store
-        .dispatch('payment/validateDonorForm')
-        .then((result) => {
-          if (!result.error) {
-            sessionStorage.setItem('donor', JSON.stringify(this.donorInfo))
-            this.$emit('next')
-          }
-        })
-        .catch((error) => {
-          const code = parseInt(error.response && error.response.status)
-          if (code === 422) {
-            this.$store.dispatch(
-              'notifications/danger',
-              'Some fields require your attention'
-            )
-            this.$store.dispatch(
-              'validation/handleValidation',
-              error.response.data
-            )
-          }
-        })
-    },
+defineProps({
+  value: {
+    type: Object,
+    required: true,
   },
+})
+
+const emit = defineEmits([
+  'back',
+  'input',
+  'next',
+])
+
+const page = inject('page')
+const loading = ref(true)
+const paymentStore = usePaymentStore()
+const notificationsStore = useNotificationsStore()
+const validationStore = useValidationStore()
+const { $i18n } = useNuxtApp()
+
+const displayedAmountText = computed(() => {
+  return !paymentStore.isRecurring
+    ? paymentStore.formattedAmount
+    : `${paymentStore.formattedAmount}  ${$i18n.t(
+      'components.donor_info_step.monthly'
+    )}`
+})
+
+onMounted(() => {
+  const currency = page.attributes.settings.currency.toUpperCase()
+  // const gtmPayload = {
+  //   event: 'add_to_cart',
+  //   currency,
+  //   value: this.amount,
+  //   items: [
+  //     {
+  //       item_id: this.page.attributes.id,
+  //       item_name: this.page.attributes.slug,
+  //       affiliation: 'Donation Form',
+  //       currency,
+  //       item_category: 'One-time Donation',
+  //       price: 0,
+  //       quantity: 1,
+  //     },
+  //   ],
+  // }
+  // this.$gtm.push(gtmPayload)
+})
+function next() {
+  paymentStore.validateDonorForm().then((result) => {
+    if (!result.error) {
+      sessionStorage.setItem('donor', JSON.stringify(this.donorInfo))
+      emit('next')
+    }
+  })
+    .catch((error) => {
+      const code = parseInt(error.response && error.response.status)
+      if (code === 422) {
+        notificationsStore.danger('Some fields require your attention')
+        // validationStore.handleValidation(error.response.data)
+      }
+    })
 }
+
 </script>

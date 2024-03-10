@@ -10,8 +10,8 @@ export default defineNuxtPlugin(({ $config }) => {
       onRequest: (_) => {
 
       },
-      onResponseError: (_, __, error) => {
-        handleError(error, store, nuxtErrorThrower)
+      onResponseError: (error) => {
+        handleError(error)
       }
     })
 
