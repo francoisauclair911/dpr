@@ -25,7 +25,7 @@
       </v-container>
     </v-main>
 
-    <!-- <MainSnackbarNotification /> -->
+    <MainSnackbarNotification />
   </v-app>
 </template>
 

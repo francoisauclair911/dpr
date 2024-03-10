@@ -1,47 +1,59 @@
 <template>
   <div name="snackbars">
-    <v-snackbar
-      v-model="show"
-      :color="color"
-      :right="options.right"
-      :bottom="true"
-      app
-    >
-      {{ text }}
+    <!-- <v-snackbar v-model="data.show" :color="data.color" :right="options.right" :bottom="true" app>
+      {{ data.text }}
       <template #action="{ attrs }">
-        <v-btn dark text v-bind="attrs" @click="show = false"> Close </v-btn>
+        <v-btn dark text v-bind="attrs" @click=""> Close </v-btn>
+      </template>
+</v-snackbar> -->
+    <v-snackbar v-model="data.show" :color="data.color" location="bottom right">
+      {{ data.text }}
+
+      <template v-slot:actions>
+        <v-btn color="white" variant="text" @click="data.show = false">
+          Close
+        </v-btn>
       </template>
     </v-snackbar>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'SnackbarNotification',
-  data() {
-    return {
-      show: false,
-      color: '',
-      text: '',
-      timeout: -1,
-    }
-  },
-  computed: {
-    options() {
-      return {
-        right: this.$vuetify.breakpoint.name !== 'xs',
-      }
-    },
-  },
-  created() {
-    this.$store.subscribe((mutation, state) => {
-      if (mutation.type === 'notifications/SHOW_NOTIFICATION') {
-        this.text = state.notifications.text
-        this.color = state.notifications.color || 'primary'
-        this.timeout = state.notifications.timeout || 1000
-        this.show = true
-      }
-    })
-  },
-}
+<script setup>
+
+import { useDisplay } from 'vuetify'
+
+const display = useDisplay()
+const notificationsStore = useNotificationsStore()
+
+// const show = ref(false)
+
+const data = reactive({
+  show: false,
+  color: '',
+  text: '',
+  timeout: -1,
+})
+
+// const options = computed(() => {
+//   return {
+//     right: display.xs.value,
+//   }
+// })
+
+onBeforeMount(() => {
+  notificationsStore.$subscribe((mutation, state) => {
+    if (mutation.type == 'patch function') return
+    data.text = state.text
+    data.color = state.color || 'primary'
+    data.timeout = state.timeout || 1000
+    data.show = true
+  })
+})
+
+watch(data, (newVal, oldVal) => {
+  if (!newVal.show) {
+    notificationsStore.$reset()
+  }
+})
+
 </script>
