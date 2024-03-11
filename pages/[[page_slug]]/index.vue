@@ -37,7 +37,7 @@ const paymentStore = usePaymentStore()
 
 const data = reactive({
   requestState: 'idle',
-  step: route.query.step ? Number(route.query.step) : 4,
+  step: route.query.step ? Number(route.query.step) : 1,
   formData: {
     amount: -1,
     donorInfo: {},

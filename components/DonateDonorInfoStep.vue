@@ -62,7 +62,7 @@ onMounted(() => {
   const gtmPayload = {
     event: 'add_to_cart',
     currency,
-    value: this.amount,
+    value: paymentStore.amount,
     items: [
       {
         item_id: page.attributes.id,
