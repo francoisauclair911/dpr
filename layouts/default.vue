@@ -3,7 +3,7 @@
     <MainAppBar class="px-1 px-md-2" color="white" flat app :clipped-left="pagesStore.primaryDrawer">
       <template #prepend-title>
         <v-btn v-show="!display.xs.value" nuxt to="/" icon variant="plain">
-          <v-icon>mdi-home</v-icon>
+          <v-icon>{{ mdiHome }}</v-icon>
         </v-btn>
       </template>
       <v-row class="pl-4" justify="start" justify-sm="end">
@@ -30,6 +30,9 @@
 </template>
 
 <script setup>
+
+import { mdiHome } from '@mdi/js';
+
 import { useDisplay } from 'vuetify';
 
 const pagesStore = usePagesStore()

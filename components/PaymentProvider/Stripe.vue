@@ -3,7 +3,7 @@
     <v-skeleton-loader v-if="data.loading && !data.error" type="card" />
     <div v-show="!data.loading && !data.error" id="checkout"></div>
     <v-card v-if="data.error" class="mt-4">
-      <v-alert outlined color="primary" :icon="$vuetify.display.mdAndUp ? 'mdi-alert-circle-outline' : ''" prominent>
+      <v-alert outlined color="primary" :icon="$vuetify.display.mdAndUp ? mdiAlertCircleOutline : ''" prominent>
         {{ data.error.message }}
         <div class="d-flex" v-if="['amount_too_small', 'amount_too_large'].includes(data.error.code)">
           <CustomAmount class="flex-1 flex-grow-1" autofocus />
@@ -16,6 +16,8 @@
 </template>
 
 <script setup>
+import { mdiAlertCircleOutline } from '@mdi/js'
+
 import { loadStripe } from '@stripe/stripe-js/pure'
 loadStripe.setLoadParameters({ advancedFraudSignals: false }) // https://github.com/stripe/stripe-js#disabling-advanced-fraud-detection-signals
 

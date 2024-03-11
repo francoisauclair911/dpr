@@ -1,8 +1,10 @@
 <template>
-  <v-icon v-if="shareApiSupported" @click="share">mdi-share-variant</v-icon>
+  <v-icon v-if="shareApiSupported" @click="share">{{ mdiShareVariant }}</v-icon>
 </template>
 
 <script setup>
+
+import { mdiShareVariant } from '@mdi/js';
 
 const props = defineProps({
   title: {

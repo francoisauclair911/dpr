@@ -2,29 +2,25 @@
   <v-icon>{{ icon }}</v-icon>
 </template>
 
-<script>
-export default {
-  name: 'AdraDualStateIcon',
-  props: {
-    active: {
-      type: Boolean,
-      default: false,
-    },
-    iconActive: {
-      type: String,
-      required: true,
-    },
-    iconInactive: {
-      type: String,
-      required: true,
-    },
+<script setup>
+const props = defineProps({
+  active: {
+    type: Boolean,
+    default: false,
   },
-  computed: {
-    icon() {
-      return this.active ? this.iconActive : this.iconInactive
-    },
+  iconActive: {
+    type: String,
+    required: true,
   },
-}
+  iconInactive: {
+    type: String,
+    required: true,
+  },
+})
+
+const icon = computed(() => {
+  return props.active ? props.iconActive : props.iconInactive
+})
 </script>
 
 <style lang="scss" scoped></style>

@@ -1,5 +1,3 @@
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-
 const isProduction = process.env.NODE_ENV === 'production'
 
 export default defineNuxtConfig({
@@ -9,33 +7,26 @@ export default defineNuxtConfig({
     '@adra-network/favicon-layer',
   ],
   modules: [
-    (_options, nuxt) => {
-      nuxt.hooks.hook('vite:extendConfig', (config) => {
-        // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }))
-      })
-    },
+    '@zadigetvoltaire/nuxt-gtm',
     '@pinia/nuxt',
     "@adra-network/i18n-module",
     "@adra-network/feature-flag-module",
-    '@zadigetvoltaire/nuxt-gtm',
-    // "@adra-network/ui-library/nuxt",
-    // "@nuxtjs/i18n",
+    "@adra-network/ui-library/nuxt",
     // '@nuxtjs/sentry',
   ],
   adraFeatureFlag: {
     mock: true,
   },
   gtm: {
-    id: "GTM-GTM912341",
+    id: "GTM-GTM8952312",
     debug: !isProduction,
-    enabled: isProduction,
+    enabled: true,
   },
-  // adraI18n: {
-  //   enabled: true, // Enable or disable the i18n features
-  //   langDir: "lang", // Directory of language JSON files
-  //   apiKey: "", // Your API key for the translation service
-  // },
+  adraI18n: {
+    // enabled: true, // Enable or disable the i18n features
+    // langDir: "lang", // Directory of language JSON files
+    // apiKey: "", // Your API key for the translation service
+  },
   pinia: {
     storesDirs: ['./store/**'],
   },
@@ -84,17 +75,17 @@ export default defineNuxtConfig({
     //   customVariables: ['~/assets/variables.scss'],
     // },
   },
-  vuetify: {
-    treeShake: true,
-    customVariables: ['~/assets/variables.scss'],
-  },
-  vite: {
-    vue: {
-      template: {
-        transformAssetUrls,
-      },
-    },
-  },
+  // vuetify: {
+  //   treeShake: true,
+  //   customVariables: ['~/assets/variables.scss'],
+  // },
+  // vite: {
+  //   vue: {
+  //     template: {
+  //       transformAssetUrls,
+  //     },
+  //   },
+  // },
   runtimeConfig: {
     public: {
       isDev: process.env.NUXT_IS_DEVELOPMENT == 'true' || false,

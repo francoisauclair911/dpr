@@ -13,7 +13,7 @@
         class="adra-heart">
         <v-icon size="32" :color="pending ? 'primary' : 'red'" :class="{ 'adra-heart-animated': !pending }"
           class="adra-heart">
-          {{ isFailed || error ? 'mdi-exclamation' : 'mdi-heart' }}
+          {{ isFailed || error ? mdiExclamation : mdiHeart }}
         </v-icon>
       </v-avatar>
 
@@ -49,7 +49,7 @@
                 <v-col class="d-flex">
                   <ButtonDonate @click="$router.push('/')">
                     <template #icon>
-                      <v-icon left>mdi-hand-heart </v-icon>
+                      <v-icon left>{{ mdiHandHeart }}</v-icon>
                     </template>
                     <template #default>
                       {{
@@ -76,6 +76,7 @@
 </template>
 
 <script setup>
+import { mdiHandHeart, mdiHeart, mdiExclamation } from '@mdi/js';
 
 const props = defineProps({
   donationIntentId: {

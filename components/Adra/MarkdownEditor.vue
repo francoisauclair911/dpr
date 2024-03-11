@@ -2,67 +2,47 @@
   <v-input v-bind="$attrs">
     <v-row>
       <v-col>
-        <editor
-          ref="toastuiEditor"
-          class="markdown-editor"
-          :initial-value="value"
-          :options="options"
-          height="200px"
-          initial-edit-type="wysiwyg"
-          preview-style="vertical"
-          @change="changed"
-        />
+        <ToastUIEditor ref="toastuiEditor" class="markdown-editor" :initial-value="value" :options="options"
+          height="200px" initial-edit-type="wysiwyg" preview-style="vertical" @change="changed" />
       </v-col>
     </v-row>
   </v-input>
 </template>
 
-<script>
-import '@toast-ui/editor/dist/toastui-editor.css'
+<script setup>
+const props = defineProps({
+  value: {
+    type: String,
+    default: '',
+  },
+  toolbarItems: {
+    type: Array,
+    default: () => [
+      ['heading', 'bold', 'italic', 'strike'],
+      ['hr', 'quote'],
+      ['ul', 'ol', 'task', 'indent', 'outdent'],
+      ['table', 'link'],
+      ['scrollSync'],
+    ],
+  },
+  hideModeSwitch: {
+    type: Boolean,
+    default: true,
+  },
+})
 
-import { Editor } from '@toast-ui/vue-editor'
+const emit = defineEmits([
+  'input'
+])
 
-export default {
-  name: 'AdraMarkdownEditor',
-  components: {
-    editor: Editor,
-  },
-  props: {
-    value: {
-      type: String,
-      default: '',
-    },
-    toolbarItems: {
-      type: Array,
-      default: () => [
-        ['heading', 'bold', 'italic', 'strike'],
-        ['hr', 'quote'],
-        ['ul', 'ol', 'task', 'indent', 'outdent'],
-        ['table', 'link'],
-        ['scrollSync'],
-      ],
-    },
-    hideModeSwitch: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  data() {
-    return {}
-  },
-  computed: {
-    options() {
-      return {
-        toolbarItems: this.toolbarItems,
-        hideModeSwitch: this.hideModeSwitch,
-      }
-    },
-  },
-  methods: {
-    changed() {
-      this.$emit('input', this.$refs.toastuiEditor.invoke('getMarkdown'))
-    },
-  },
+const options = computed(() => {
+  return {
+    toolbarItems: props.toolbarItems,
+    hideModeSwitch: props.hideModeSwitch,
+  }
+})
+function changed() {
+  emit('input', this.$refs.toastuiEditor.invoke('getMarkdown'))
 }
 </script>
 

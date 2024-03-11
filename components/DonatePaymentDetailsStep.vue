@@ -10,7 +10,7 @@
             <!-- <v-tabs-slider color="primary"></v-tabs-slider> -->
             <v-tab v-for="provider in paymentProviders" :key="provider">
               {{ $t('components.payment_provider_list.payment_information') }}
-              <v-icon>mdi-credit-card-multiple-outline</v-icon>
+              <v-icon>{{ mdiCreditCardMultipleOutline }}</v-icon>
             </v-tab>
           </v-tabs>
           <v-window v-model="data.tab">
@@ -29,6 +29,9 @@
 </template>
 
 <script setup>
+import { mdiCreditCardMultipleOutline } from '@mdi/js';
+
+
 const emit = defineEmits([
   'next',
   'back',
@@ -37,7 +40,7 @@ const emit = defineEmits([
 const paymentProviderStripe = resolveComponent('PaymentProviderStripe')
 
 const { $config } = useNuxtApp()
-
+const gtm = useGtm()
 const pagesStore = usePagesStore()
 const paymentStore = usePaymentStore()
 
