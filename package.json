@@ -21,6 +21,7 @@
     "@stripe/stripe-js": "^1.54.2",
     "@toast-ui/editor": "^3.2.2",
     "@vue-stripe/vue-stripe": "^4.4.2",
+    "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
     "iso-639-1": "^3.1.2",
     "nuxt": "^3.10.3",
     "pinia": "^2.1.7",

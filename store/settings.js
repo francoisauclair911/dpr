@@ -54,7 +54,7 @@ export const useSettingsStore = defineStore('settings', {
         this.settings.enable_gtm.value === true &&
         this.settings.gtm_tag_id.value
       ) {
-        // this.$gtm.init(this.settings.gtm_tag_id.value)
+        useGtm().init(this.settings.gtm_tag_id.value)
       }
     },
 

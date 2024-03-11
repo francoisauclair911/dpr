@@ -61,6 +61,7 @@
 import { inject } from 'vue'
 
 const { $i18n } = useNuxtApp()
+const gtm = useGtm()
 const route = useRoute()
 const emit = defineEmits(['submit'])
 
@@ -115,6 +116,24 @@ onMounted(() => {
   if (route.query.amount) {
     paymentStore.updateAmount(route.query.amount)
   }
+
+  gtm.push({ event: 'start_donation' })
+
+  const gtmPayload = {
+    event: 'view_item',
+    items: [
+      {
+        item_id: page.attributes.id,
+        item_name: page.attributes.slug,
+        affiliation: 'Donation Form',
+        currency: page.attributes.settings.currency.toUpperCase(),
+        item_category: 'One-time Donation',
+        price: paymentStore.amount,
+        quantity: 1,
+      },
+    ],
+  }
+  gtm.push(gtmPayload)
 })
 
 </script>
@@ -134,23 +153,6 @@ export default {
     if (this.$route.query.amount) {
       this.$store.commit('payment/updateAmount', this.$route.query.amount)
     }
-    this.$gtm.push({ event: 'start_donation' })
-
-    const gtmPayload = {
-      event: 'view_item',
-      items: [
-        {
-          item_id: this.page.attributes.id,
-          item_name: this.page.attributes.slug,
-          affiliation: 'Donation Form',
-          currency: this.page.attributes.settings.currency.toUpperCase(),
-          item_category: 'One-time Donation',
-          price: this.amount,
-          quantity: 1,
-        },
-      ],
-    }
-    this.$gtm.push(gtmPayload)
   },
   computed: {
     ...mapState('payment', ['amount']),

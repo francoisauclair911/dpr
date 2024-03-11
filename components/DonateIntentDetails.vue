@@ -31,6 +31,9 @@ const props = defineProps({
   },
 })
 
+const gtm = useGtm()
+const route = useRoute()
+
 const isSuccessful = computed(() => {
   return props.donationIntent?.status === 'succeeded'
 })
@@ -68,25 +71,25 @@ const donation = computed(() => {
 onMounted(() => {
   // NEED TO BE UNCOMMENTED FOR PROD
   const currency = props.donationIntent.donation.currency.toUpperCase()
-  // const gtmPayload = {
-  //   event: 'purchase',
-  //   currency,
-  //   value: this.donationIntent.donation.amount,
-  //   affiliation: 'Donation form', //  how the transaction should be affiliated
-  //   transaction_id: this.donationIntent.id,
-  //   items: [
-  //     {
-  //       item_id: this.donationIntent.internalReferences.donationPageId,
-  //       item_name: this.$route.params.page_slug,
-  //       affiliation: 'Donation Form',
-  //       currency,
-  //       item_category: this.donationIntent.donation.donationType,
-  //       price: 0,
-  //       quantity: 1,
-  //     },
-  //   ],
-  // }
-  // this.$gtm.push(gtmPayload)
+  const gtmPayload = {
+    event: 'purchase',
+    currency,
+    value: props.donationIntent.donation.amount,
+    affiliation: 'Donation form', //  how the transaction should be affiliated
+    transaction_id: props.donationIntent.id,
+    items: [
+      {
+        item_id: props.donationIntent.internalReferences.donationPageId,
+        item_name: route.params.page_slug,
+        affiliation: 'Donation Form',
+        currency,
+        item_category: props.donationIntent.donation.donationType,
+        price: 0,
+        quantity: 1,
+      },
+    ],
+  }
+  gtm.push(gtmPayload)
 })
 
 </script>

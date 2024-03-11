@@ -62,23 +62,23 @@ function getPaymentProviderComponent(providerName) {
 
 onMounted(() => {
   const currency = pagesStore.page.attributes.settings.currency.toUpperCase()
-  // const gtmPayload = {
-  //   event: 'add_shipping_info',
-  //   currency,
-  //   value: this.amount,
-  //   items: [
-  //     {
-  //       item_id: this.page.attributes.id,
-  //       item_name: this.page.attributes.slug,
-  //       affiliation: 'Donation Form',
-  //       currency,
-  //       item_category: this.donationType,
-  //       price: 0,
-  //       quantity: 1,
-  //     },
-  //   ],
-  // }
-  // this.$gtm.push(gtmPayload)
+  const gtmPayload = {
+    event: 'add_shipping_info',
+    currency,
+    value: paymentStore.amount,
+    items: [
+      {
+        item_id: pagesStore.page.attributes.id,
+        item_name: pagesStore.page.attributes.slug,
+        affiliation: 'Donation Form',
+        currency,
+        item_category: paymentStore.donationType,
+        price: 0,
+        quantity: 1,
+      },
+    ],
+  }
+  gtm.push(gtmPayload)
 })
 
 function back() {

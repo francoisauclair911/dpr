@@ -47,6 +47,7 @@ const paymentStore = usePaymentStore()
 const notificationsStore = useNotificationsStore()
 const validationStore = useValidationStore()
 const { $i18n } = useNuxtApp()
+const gtm = useGtm()
 
 const displayedAmountText = computed(() => {
   return !paymentStore.isRecurring
@@ -58,23 +59,23 @@ const displayedAmountText = computed(() => {
 
 onMounted(() => {
   const currency = page.attributes.settings.currency.toUpperCase()
-  // const gtmPayload = {
-  //   event: 'add_to_cart',
-  //   currency,
-  //   value: this.amount,
-  //   items: [
-  //     {
-  //       item_id: this.page.attributes.id,
-  //       item_name: this.page.attributes.slug,
-  //       affiliation: 'Donation Form',
-  //       currency,
-  //       item_category: 'One-time Donation',
-  //       price: 0,
-  //       quantity: 1,
-  //     },
-  //   ],
-  // }
-  // this.$gtm.push(gtmPayload)
+  const gtmPayload = {
+    event: 'add_to_cart',
+    currency,
+    value: this.amount,
+    items: [
+      {
+        item_id: page.attributes.id,
+        item_name: page.attributes.slug,
+        affiliation: 'Donation Form',
+        currency,
+        item_category: 'One-time Donation',
+        price: 0,
+        quantity: 1,
+      },
+    ],
+  }
+  gtm.push(gtmPayload)
 })
 function next() {
   paymentStore.validateDonorForm().then((result) => {

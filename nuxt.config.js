@@ -1,5 +1,7 @@
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
@@ -16,12 +18,18 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     "@adra-network/i18n-module",
     "@adra-network/feature-flag-module",
+    '@zadigetvoltaire/nuxt-gtm',
     // "@adra-network/ui-library/nuxt",
     // "@nuxtjs/i18n",
     // '@nuxtjs/sentry',
   ],
   adraFeatureFlag: {
     mock: true,
+  },
+  gtm: {
+    id: "GTM-GTM912341",
+    debug: !isProduction,
+    enabled: isProduction,
   },
   // adraI18n: {
   //   enabled: true, // Enable or disable the i18n features
