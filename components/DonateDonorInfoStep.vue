@@ -5,7 +5,7 @@
     <v-card v-show="!loading" flat>
       <!-- <v-card-text> -->
 
-      <v-card-title class="black--text font-weight-bold">
+      <v-card-title class="text-black font-weight-bold">
         <DonateTopBar @back="$emit('back')"></DonateTopBar>
       </v-card-title>
       <v-card-text>
@@ -79,11 +79,12 @@ onMounted(() => {
 function next() {
   paymentStore.validateDonorForm().then((result) => {
     if (!result.error) {
-      sessionStorage.setItem('donor', JSON.stringify(this.donorInfo))
+      // sessionStorage.setItem('donor', JSON.stringify(donorInfo))
       emit('next')
     }
   })
     .catch((error) => {
+      console.log(error);
       const code = parseInt(error.response && error.response.status)
       if (code === 422) {
         notificationsStore.danger('Some fields require your attention')

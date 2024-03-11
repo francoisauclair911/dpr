@@ -3,9 +3,9 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
-  build: {
-    transpile: ['vuetify'],
-  },
+  extends: [
+    '@adra-network/favicon-layer',
+  ],
   modules: [
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
@@ -15,9 +15,14 @@ export default defineNuxtConfig({
     },
     '@pinia/nuxt',
     "@adra-network/i18n-module",
+    "@adra-network/feature-flag-module",
+    // "@adra-network/ui-library/nuxt",
     // "@nuxtjs/i18n",
     // '@nuxtjs/sentry',
   ],
+  adraFeatureFlag: {
+    mock: true,
+  },
   // adraI18n: {
   //   enabled: true, // Enable or disable the i18n features
   //   langDir: "lang", // Directory of language JSON files
@@ -66,14 +71,14 @@ export default defineNuxtConfig({
       mdi: true,
       fa: false,
     },
-    vuetify: {
-      treeShake: true,
-      customVariables: ['~/assets/variables.scss'],
-    },
+    // vuetify: {
+    //   treeShake: true,
+    //   customVariables: ['~/assets/variables.scss'],
+    // },
   },
   vuetify: {
-    // treeShake: true,
-    // customVariables: ['~/assets/variables.scss'],
+    treeShake: true,
+    customVariables: ['~/assets/variables.scss'],
   },
   vite: {
     vue: {
@@ -85,7 +90,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       isDev: process.env.NUXT_IS_DEVELOPMENT == 'true' || false,
-      ADRA_DEBUG: process.env.NUXT_ADRA_DEBUG || false,
+      ADRA_DEBUG: process.env.NUXT_ADRA_DEBUG == 'true' || false,
       STRIPE_PUBLISHABLE_KEY: process.env.NUXT_STRIPE_PUBLISHABLE_KEY,
       STRIPE_API_VERSION: process.env.NUXT_STRIPE_API_VERSION,
       STRIPE_API_BETAS: process.env.NUXT_STRIPE_API_BETAS,

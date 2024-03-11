@@ -10,12 +10,17 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@adra-network/favicon-layer": "^0.0.4",
+    "@adra-network/feature-flag-module": "^0.1.0",
     "@adra-network/i18n-module": "^0.0.8",
+    "@adra-network/ui-library": "^0.0.10",
     "@fingerprintjs/fingerprintjs-pro": "^3.5.5",
     "@mdi/font": "^7.4.47",
     "@nuxtjs/sentry": "^8.0.7",
     "@pinia/nuxt": "^0.5.1",
+    "@stripe/stripe-js": "^1.54.2",
     "@toast-ui/editor": "^3.2.2",
+    "@vue-stripe/vue-stripe": "^4.4.2",
     "iso-639-1": "^3.1.2",
     "nuxt": "^3.10.3",
     "pinia": "^2.1.7",

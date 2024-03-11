@@ -167,7 +167,7 @@ export const usePaymentStore = defineStore('payment', {
           amount: this.amount,
         })
       )
-      if ($config.public.NUXT_FEATURES.LIVE_PAYMENT === false) {
+      if ($config.public.FEATURES.LIVE_PAYMENT === false) {
         return {
           data: {
             data: {
