@@ -137,31 +137,3 @@ onMounted(() => {
 })
 
 </script>
-
-<!-- <script>
-// import { mapState, mapGetters } from 'vuex'
-
-export default {
-  name: 'DonateAmountStep',
-  inject: ['page'],
-  data() {
-    return {
-      missingAmount: false,
-    }
-  },
-  mounted() {
-    if (this.$route.query.amount) {
-      this.$store.commit('payment/updateAmount', this.$route.query.amount)
-    }
-  },
-  computed: {
-    ...mapState('payment', ['amount']),
-    ...mapGetters('payment', ['isRecurring']),
-    ...mapGetters('pages', ['content', 'numberFormat', 'settings']),
-  },
-  watch: {
-  },
-  methods: {
-  },
-}
-</script> -->

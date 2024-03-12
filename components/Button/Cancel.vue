@@ -4,8 +4,7 @@
   </ButtonBase>
 </template>
 
-<script>
-export default {
-  name: 'ButtonCancel',
-}
+<script setup>
+defineEmits(['click'])
+
 </script>

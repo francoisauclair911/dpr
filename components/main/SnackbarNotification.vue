@@ -1,11 +1,5 @@
 <template>
   <div name="snackbars">
-    <!-- <v-snackbar v-model="data.show" :color="data.color" :right="options.right" :bottom="true" app>
-      {{ data.text }}
-      <template #action="{ attrs }">
-        <v-btn dark text v-bind="attrs" @click=""> Close </v-btn>
-      </template>
-</v-snackbar> -->
     <v-snackbar v-model="data.show" :color="data.color" location="bottom right">
       {{ data.text }}
 

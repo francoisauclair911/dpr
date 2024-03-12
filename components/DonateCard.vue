@@ -6,13 +6,11 @@
   </v-card>
 </template>
 
-<script>
-export default {
-  props: {
-    elevation: {
-      type: Number,
-      default: 10,
-    },
+<script setup>
+const props = defineProps({
+  elevation: {
+    type: Number,
+    default: 10,
   },
-}
+})
 </script>
