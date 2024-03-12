@@ -1,31 +1,28 @@
 import { DomainNotFound } from '~/exceptions'
-export default async function ({
-  store,
-  route,
-  app,
-  $api,
-  $sentry,
-  redirect,
-  $gtm,
-  error,
-}) {
-  const $i18n = app.i18n
-  store.dispatch('utms/parseURL', route)
 
-  store.commit('languages/SET_I18N_LANGUAGES', $i18n.locales)
-  store.dispatch('languages/switchLanguage', route.query.lang)
+export default defineNuxtPlugin(async (nuxtApp) => {
+
+  const route = useRoute()
+  const utmsStore = useUtmsStore()
+  const languagesStore = useLanguageStore()
+  const settingsStore = useSettingsStore()
+
+  const $i18n = nuxtApp.$i18n
+
+  utmsStore.parseURL(route)
+
+  languagesStore.i18nLanguages = $i18n.locales
+  languagesStore.switchLanguage(route.query.lang)
 
   try {
-    await await store.dispatch('settings/initialConfig')
+    await settingsStore.initialConfig()
   } catch (e) {
-    $sentry.captureException(e)
+    // $sentry.captureException(e)
     if (e instanceof DomainNotFound) {
-      window.onNuxtReady(() => {
-        window.$nuxt.error({
-          statusCode: 404,
-          message: $i18n.t('pages.error.domain_not_found'),
-        })
+      createError({
+        statusCode: 404,
+        message: $i18n.t('pages.error.domain_not_found'),
       })
     }
   }
-}
+});

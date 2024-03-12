@@ -1,5 +1,9 @@
 import ISO6391 from 'iso-639-1'
 
-export default function ({ $config }, inject) {
-  inject('iso', ISO6391)
-}
+export default defineNuxtPlugin((nuxtApp) => {
+  return {
+    provide: {
+      iso: ISO6391,
+    }
+  }
+});

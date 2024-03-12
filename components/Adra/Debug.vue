@@ -1,9 +1,5 @@
 <template>
-  <div v-if="$config.ADRA_DEBUG">
+  <div v-if="$config.public.ADRA_DEBUG">
     <slot />
   </div>
 </template>
-
-<script>
-export default {}
-</script>

@@ -1,36 +1,18 @@
 <template>
   <div>
-    <v-select
-      v-show="languages.length > 1"
-      prepend-inner-icon="mdi-translate"
-      :items="languages"
-      hide-details
-      item-value="code"
-      item-text="nativeName"
-      :placeholder="$t('components.language_selector.placeholder')"
-      :value="lang"
-      no-data-text="No languages available"
-      @change="switchLanguage"
-    ></v-select>
+    <v-select v-show="languagesStore.languages.length > 1" color="success" bg-color="transparent"
+      :prepend-inner-icon="mdiTranslate" :items="languagesStore.languages" hide-details item-value="code"
+      item-title="nativeName" :placeholder="$t('components.language_selector.placeholder')" :model-value="lang"
+      no-data-text="No languages available" @update:model-value="languagesStore.switchLanguage"></v-select>
   </div>
 </template>
 
-<script>
-import { mapGetters, mapState, mapActions } from 'vuex'
-export default {
-  name: 'LanguageSelector',
+<script setup>
 
-  computed: {
-    ...mapState('languages', {
-      lang: 'selected',
-    }),
-    ...mapGetters('languages', {
-      languages: 'languages',
-    }),
-    ...mapGetters('pages', ['attributes']),
-  },
-  methods: {
-    ...mapActions('languages', ['switchLanguage']),
-  },
-}
+import { mdiTranslate } from '@mdi/js';
+
+const languagesStore = useLanguageStore()
+
+const lang = computed(() => languagesStore.selected)
+
 </script>

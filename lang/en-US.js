@@ -1,5 +1,5 @@
-export default async ({ $axios }, locale) => {
-  return await Promise.resolve({
+export default defineI18nLocale(async locale => {
+  return {
     update_amount: 'Update',
     invalid_payment_request_exceptions: {
       generic: 'Something went wrong, please try again later',
@@ -161,5 +161,5 @@ export default async ({ $axios }, locale) => {
         },
       },
     },
-  })
-}
+  }
+})

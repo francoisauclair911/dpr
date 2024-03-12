@@ -1,40 +1,32 @@
 <template>
-  <VueTelInputVuetify
-    :error="!isValid"
-    :value="value.number"
-    @input="inputPhone"
-    mode="national"
-    defaultCountry="CA"
-    v-bind="$attrs"
-  />
+  <VueTelInputVuetify :error="!data.isValid" :value="value.number" @input="inputPhone" mode="national"
+    defaultCountry="CA" v-bind="$attrs" />
 </template>
 
-<script>
+<script setup>
 import VueTelInputVuetify from 'vue-tel-input-vuetify/lib/vue-tel-input-vuetify.vue'
 
-export default {
-  name: 'AdraPhoneInput',
-  props: {
-    value: {
-      type: Object,
-      default: () => ({
-        number: '',
-      }),
-    },
-  },
-  components: { VueTelInputVuetify },
-  data() {
-    return {
-      isValid: true,
-    }
-  },
+const props = defineProps({
+  value: {
+    type: Object,
+    default: () => ({
+      number: '',
+    }),
+  }
+})
 
-  methods: {
-    inputPhone(formattedNumber, { number, valid, country }) {
-      this.isValid = valid
-      this.$emit('input:country_code', country.dialCode)
-      this.$emit('input:number', number.significant)
-    },
-  },
+const emit = defineEmits([
+  'input:country_code',
+  'input:number',
+])
+
+const data = reactive({
+  isValid: true,
+})
+
+function inputPhone(formattedNumber, { number, valid, country }) {
+  data.isValid = valid
+  emit('input:country_code', country.dialCode)
+  emit('input:number', number.significant)
 }
 </script>

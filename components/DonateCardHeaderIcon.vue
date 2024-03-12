@@ -1,9 +1,5 @@
 <template>
-  <v-card
-    color="primary"
-    tile
-    class="py-6 d-flex flex-column justify-center align-center white--text"
-  >
+  <v-card color="primary" tile class="py-6 d-flex flex-column justify-center align-center text-white">
     <v-avatar color="white" size="60">
       <slot name="icon">
         <v-icon size="32" color="primary" v-text="icon" />
@@ -19,13 +15,11 @@
   </v-card>
 </template>
 
-<script>
-export default {
-  props: {
-    icon: {
-      type: String,
-      default: 'mdi-heart',
-    },
+<script setup>
+const props = defineProps({
+  icon: {
+    type: String,
+    default: 'mdi-heart',
   },
-}
+})
 </script>

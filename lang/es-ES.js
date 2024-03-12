@@ -1,5 +1,5 @@
-export default async ({ $axios }, locale) => {
-  return await Promise.resolve({
+export default defineI18nLocale(async locale => {
+  return {
     pages: {
       error: {
         title: 'Lo sentimos',
@@ -139,5 +139,5 @@ export default async ({ $axios }, locale) => {
         },
       },
     },
-  })
-}
+  }
+})

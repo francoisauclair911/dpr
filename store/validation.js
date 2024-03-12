@@ -1,28 +1,28 @@
-export const state = () => ({
-  errors: [],
-})
+import { defineStore } from "pinia"
 
-export const mutations = {
-  SET_ERRORS(state, errors) {
-    state.errors = errors
+export const useValidationStore = defineStore('validation', {
+  state: () => ({
+    errors: [],
+  }),
+  getters: {
+
   },
-  CLEAR_ERRORS(state) {
-    state.errors = []
+  actions: {
+    handleValidation(payload) {
+      const { errors } = payload
+      const formattedError = Object.keys(errors).reduce((carry, error) => {
+        const key = error
+        const value = [errors[error].join(' ')]
+        return { ...carry, [key]: value }
+      }, {})
+      this.errors = formattedError
+    },
+
+    clearValidationErrors() {
+      if (Object.keys(this.errors).length) {
+        this.errors = []
+      }
+    },
+
   },
-}
-export const actions = {
-  handleValidation({ commit }, payload) {
-    const { errors } = payload
-    const formattedError = Object.keys(errors).reduce((carry, error) => {
-      const key = error
-      const value = [errors[error].join(' ')]
-      return { ...carry, [key]: value }
-    }, {})
-    commit('SET_ERRORS', formattedError)
-  },
-  clearValidationErrors({ commit, state }) {
-    if (Object.keys(state.errors).length) {
-      commit('CLEAR_ERRORS')
-    }
-  },
-}
+});

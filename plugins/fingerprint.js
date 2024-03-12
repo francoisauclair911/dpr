@@ -1,11 +1,19 @@
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
 
-export default function ({ $config, $unleash }, inject) {
-  if ($unleash.isEnabled('dpr.load.fingerprintjs')) {
+export default defineNuxtPlugin(({ $config }) => {
+
+  const dprLoadFingerprint = useFlag('dpr.load.fingerprintjs')
+
+  if (dprLoadFingerprint.value) {
     const fpPromise = FingerprintJS.load({
-      token: $config.FINGERPRINT_JS_PK,
+      token: $config.public.FINGERPRINT_JS_PK,
     })
 
-    inject('fingerprint', fpPromise)
+    return {
+      provide: {
+        fingerprint: fpPromise,
+      }
+    }
+
   }
-}
+})

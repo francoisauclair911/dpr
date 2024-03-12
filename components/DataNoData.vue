@@ -6,16 +6,13 @@
   </p>
 </template>
 
-<script>
-export default {
-  name: 'DataNoData',
-  props: {
-    icon: {
-      type: String,
-      default: '',
-    },
+<script setup>
+const props = defineProps({
+  icon: {
+    type: String,
+    default: '',
   },
-}
+})
 </script>
 
 <style lang="scss" scoped></style>

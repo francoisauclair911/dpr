@@ -4,11 +4,11 @@
   </v-btn>
 </template>
 
-<script>
-export default {
-  name: 'ButtonBase',
-}
+<script setup>
+defineEmits(['click'])
+
 </script>
+
 <style lang="css">
 .adra-btn {
   transition: all 0.1s ease-in-out;

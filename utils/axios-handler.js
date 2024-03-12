@@ -1,4 +1,7 @@
-const handleError = (error, store, nuxtErrorThrower = null) => {
+const handleError = (error) => {
+  const validationStore = useValidationStore()
+  const notificationsStore = useNotificationsStore()
+
   if (error.response) {
     const code = parseInt(error.response && error.response.status)
     if (code === 422) {
@@ -6,14 +9,13 @@ const handleError = (error, store, nuxtErrorThrower = null) => {
       //   'notifications/danger',
       //   'Some fields require your attention'
       // )
-      store.dispatch('validation/handleValidation', error.response.data)
+      validationStore.handleValidation(error.response._data)
     }
   } else {
-    return store.dispatch(
-      'notifications/danger',
+    notificationsStore.danger(
       'Could not contact the server, please try again later'
     )
   }
 }
-const handleRequest = (config, store) => {}
+const handleRequest = (config, store) => { }
 export { handleError, handleRequest }

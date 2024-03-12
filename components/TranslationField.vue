@@ -1,22 +1,21 @@
 <template>
-  <div><slot :field="field" /></div>
+  <div>
+    <slot :field="field" />
+  </div>
 </template>
 
-<script>
-export default {
-  name: 'TranslationField',
-  props: {
-    field: {
-      type: Object,
-      required: true,
-    },
-  },
-  computed: {
-    trans() {
-      return this.field
-    },
-  },
-}
-</script>
+<script setup>
 
-<style lang="scss" scoped></style>
+const props = defineProps({
+  field: {
+    type: Object,
+    required: true,
+  },
+})
+
+const trans = computed(() => {
+  return props.field
+})
+
+
+</script>

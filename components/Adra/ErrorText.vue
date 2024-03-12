@@ -1,11 +1,8 @@
 <template>
-  <span class="red--text text--darken-4 text--caption">
+  <span class="text-red-darken-4 text-caption">
     <slot />
   </span>
 </template>
 
-<script>
-export default {
-  name: 'AdraErrorText',
-}
+<script setup>
 </script>

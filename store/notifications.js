@@ -1,37 +1,38 @@
-export const state = () => ({
-  text: '',
-  color: '',
-  timeout: '',
-})
+import { defineStore } from "pinia"
 
-export const mutations = {
-  SHOW_NOTIFICATION(state, payload) {
-    state.text = payload.text
-    state.color = payload.color
-    state.timeout = payload.timeout
-  },
-}
+export const useNotificationsStore = defineStore('notifications', {
 
-export const actions = {
-  show({ commit }, payload) {
-    commit('SHOW_NOTIFICATION', payload)
+  state: () => ({
+    text: '',
+    color: '',
+    timeout: '',
+  }),
+  actions: {
+    show(payload) {
+      this.showNotification(payload)
+    },
+    info(text) {
+      this.showNotification({
+        text,
+        color: 'secondary',
+      })
+    },
+    success(text) {
+      this.showNotification({
+        text,
+        color: 'primary',
+      })
+    },
+    danger(text) {
+      this.showNotification({
+        text,
+        color: 'red',
+      })
+    },
+    showNotification(payload) {
+      this.text = payload.text
+      this.color = payload.color
+      this.timeout = payload.timeout
+    },
   },
-  info({ commit }, text) {
-    commit('SHOW_NOTIFICATION', {
-      text,
-      color: 'secondary',
-    })
-  },
-  success({ commit }, text) {
-    commit('SHOW_NOTIFICATION', {
-      text,
-      color: 'primary',
-    })
-  },
-  danger({ commit }, text) {
-    commit('SHOW_NOTIFICATION', {
-      text,
-      color: 'red',
-    })
-  },
-}
+});
