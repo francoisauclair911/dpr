@@ -1,0 +1,8 @@
+include:
+  - project: 'adra-network/aws-core-deployment-roles'
+    ref: main
+    file: '/gitlab-templates/frontend/cloudflare-deployment.yml'
+
+variables:
+  MULTIPLE_CLOUDFRONT_DISTRIBUTION: 'true'
+  CLOUDFLARE_PROJECT_NAME: 'donations'

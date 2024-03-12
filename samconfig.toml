@@ -1,0 +1,30 @@
+version = 0.1
+[dev]
+[dev.deploy]
+[dev.deploy.parameters]
+stack_name = "dev-aws-frontend-donation-receiver"
+s3_prefix = "dev-aws-frontend-donation-receiver"
+region = "eu-west-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "FrontendName=\"donation-page-receiver\" Stage=\"dev\""
+image_repositories = []
+
+[staging]
+[staging.deploy]
+[staging.deploy.parameters]
+stack_name = "staging-aws-frontend-donation-receiver"
+s3_prefix = "staging-aws-frontend-donation-receiver"
+region = "eu-west-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "FrontendName=\"donation-page-receiver\" Stage=\"staging\""
+image_repositories = []
+
+[production]
+[production.deploy]
+[production.deploy.parameters]
+stack_name = "production-aws-frontend-donation-receiver"
+s3_prefix = "production-aws-frontend-donation-receiver"
+region = "eu-west-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "FrontendName=\"donation-page-receiver\" Stage=\"production\""
+image_repositories = []
