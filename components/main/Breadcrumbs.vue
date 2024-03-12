@@ -7,7 +7,7 @@
       <v-btn v-if="item.icon" nuxt exact :to="item.path" icon>
         <v-icon color="blue-grey darken-4">{{ item.icon }}</v-icon>
       </v-btn>
-      <v-breadcrumbs-item v-else class="text-capitalize" nuxt exact exact-active-class="grey--text" :to="item.path">
+      <v-breadcrumbs-item v-else class="text-capitalize" nuxt exact exact-active-class="text-grey" :to="item.path">
         {{ item.title }}
       </v-breadcrumbs-item>
     </template>

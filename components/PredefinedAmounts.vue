@@ -4,7 +4,7 @@
       <v-hover v-slot="{ hover }">
         <ButtonBase block large style="transition: all 0.2s ease-in-out"
           :color="clickedAmount === index || hover ? '#C09337' : 'primary'" elevation="2" @click="selectAmount(index)">
-          <span class="white--text text-h6 font-weight-medium" v-text="predefinedAmount.label" />
+          <span class="text-white text-h6 font-weight-medium" v-text="predefinedAmount.label" />
         </ButtonBase>
       </v-hover>
     </v-col>

@@ -7,8 +7,8 @@
       :value="value">
       <v-fab-transition>
         <slot name="icon">
-          <v-icon v-if="success" :color="iconColor" :size="iconSize">mdi-check</v-icon>
-          <v-icon v-else-if="hasError" color="red" :size="iconSize">mdi-exclamation</v-icon>
+          <v-icon v-if="success" :color="iconColor" :size="iconSize">{{ mdiCheck }}</v-icon>
+          <v-icon v-else-if="hasError" color="red" :size="iconSize">{{ mdiExclamation }}</v-icon>
         </slot>
       </v-fab-transition>
     </v-progress-circular>
@@ -16,6 +16,9 @@
 </template>
 
 <script setup>
+
+import { mdiCheck, mdiExclamation } from '@mdi/js';
+
 const props = defineProps({
   loading: {
     type: [Boolean, String],

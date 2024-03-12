@@ -16,12 +16,12 @@
       <v-row v-if="!hideFooter" class="pb-4">
         <v-col>
           <v-row class="mt-2 mx-6" align="center" justify="center">
-            <span class="grey--text">Items per page</span>
+            <span class="text-grey">Items per page</span>
             <v-menu offset-y>
               <template #activator="{ on, attrs }">
                 <v-btn dark text color="primary" class="ml-2" v-bind="attrs" v-on="on">
                   {{ perPage }}
-                  <v-icon>mdi-chevron-down</v-icon>
+                  <v-icon>{{ mdiChevronDown }}</v-icon>
                 </v-btn>
               </template>
               <v-list>
@@ -30,10 +30,10 @@
                 </v-list-item>
               </v-list>
             </v-menu>
-            <span class="grey--text">Total <span class="primary--text">{{ total }}</span></span>
+            <span class="text-grey">Total <span class="text-primary">{{ total }}</span></span>
             <v-spacer></v-spacer>
 
-            <span class="mr-4 grey--text">
+            <span class="mr-4 text-grey">
               Page {{ currentPage }} of {{ totalPage }}
             </span>
             <v-btn fab x-small color="primary" class="mr-1" :disabled="currentPage < 2" @click="currentPage--">
@@ -41,7 +41,7 @@
             </v-btn>
             <v-btn fab x-small color="primary" class="ml-1" :disabled="currentPage === totalPage"
               @click="currentPage++">
-              <v-icon>mdi-chevron-right</v-icon>
+              <v-icon>{{ mdiChevronRight }}</v-icon>
             </v-btn>
           </v-row>
         </v-col>
@@ -51,6 +51,8 @@
 </template>
 
 <script setup>
+
+import { mdiChevronDown, mdiChevronRight } from '@mdi/js';
 
 const props = defineProps({
   filterItems: {

@@ -19,8 +19,6 @@ import { useDisplay } from 'vuetify'
 const display = useDisplay()
 const notificationsStore = useNotificationsStore()
 
-// const show = ref(false)
-
 const data = reactive({
   show: false,
   color: '',

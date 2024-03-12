@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-chip-group :value="data.selectedIndex" active-class="text-primary" column @change="change">
+    <v-chip-group :model-value="data.selectedIndex" active-class="text-primary" column @update:model-value="change">
       <v-chip v-for="item in items" :key="item" small color="primary">
         {{ item.attributes.name }}</v-chip>
     </v-chip-group>

@@ -1,6 +1,6 @@
 <template>
   <v-card key="step1" height="auto" flat class="d-flex flex-column align-content-space-between">
-    <v-card-title class="black--text font-weight-bold" v-text="pagesStore.content.title"></v-card-title>
+    <v-card-title class="text-black font-weight-bold" v-text="pagesStore.content.title"></v-card-title>
     <v-card-text class="flex-grow-1 d-flex flex-column align-content-space-around">
       <v-row>
         <v-col>

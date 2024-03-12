@@ -8,7 +8,7 @@
       <v-btn @click="resetError">reset error</v-btn>
     </AdraDebug>
     <v-card tile min-height="200px" color="primary"
-      class="py-6 d-flex flex-column justify-center align-center white--text px-2">
+      class="py-6 d-flex flex-column justify-center align-center text-white px-2">
       <v-avatar size="60" :color="pending ? 'white' : 'white'" :class="{ 'adra-heart-container': pending }"
         class="adra-heart">
         <v-icon size="32" :color="pending ? 'primary' : 'red'" :class="{ 'adra-heart-animated': !pending }"

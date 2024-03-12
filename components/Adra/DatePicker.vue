@@ -2,10 +2,10 @@
   <v-menu v-model="data.visibility" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
     offset-y min-width="auto">
     <template #activator="{ on, attrs }">
-      <v-text-field :value="value" outlined prepend-inner-icon="" v-bind="{ ...attrs, ...$attrs }" clearable
-        @input="$emit('input', $event)" v-on="on"></v-text-field>
+      <v-text-field :model-value="value" outlined prepend-inner-icon="" v-bind="{ ...attrs, ...$attrs }" clearable
+        @update:model-value="$emit('input', $event)" v-on="on"></v-text-field>
     </template>
-    <v-date-picker clearable @input="changed" v-bind="$attrs"></v-date-picker>
+    <v-date-picker clearable @update:model-value="changed" v-bind="$attrs"></v-date-picker>
   </v-menu>
 </template>
 

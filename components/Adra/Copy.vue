@@ -38,7 +38,7 @@ function copy(target) {
     .catch(() => {
       notificationsStore.danger('Cannot copy the text')
     })
-},
+}
 </script>
 
 <style lang="scss" scoped></style>
