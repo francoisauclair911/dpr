@@ -79,15 +79,6 @@ export default defineNuxtConfig({
     langDir: 'lang',
     defaultLocale: 'en'
   },
-  // sentry: {
-  //   dsn: process.env.NUXT_SENTRY_DSN || '',
-  //   // https://sentry.nuxtjs.org/sentry/options
-  //   config: {
-  //     environment: process.env.NUXT_ENV || 'local',
-  //     release:
-  //       'aws-frontend-donation-receiver@' + process.env.NUXT_CI_COMMIT_SHORT_SHA,
-  //   },
-  // },
   adra: {
     fonts: {
       montserrat: true,
