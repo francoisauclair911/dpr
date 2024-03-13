@@ -1,4 +1,5 @@
 import { DomainNotFound } from '~/exceptions'
+import * as Sentry from '@sentry/vue'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
 
@@ -17,7 +18,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   try {
     await settingsStore.initialConfig()
   } catch (e) {
-    // $sentry.captureException(e)
+    Sentry.captureException(e)
     if (e instanceof DomainNotFound) {
       createError({
         statusCode: 404,
