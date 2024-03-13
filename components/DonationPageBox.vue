@@ -13,7 +13,7 @@
       </template>
       <template #default>
         <div class="fill-height bottom-gradient">
-          <v-card-title class="">
+          <v-card-title class="d-flex flex-wrap">
             <!-- <v-overlay :absolute="true" :value="true"> -->
             {{ page.attributes.content.title }}
             <v-spacer />

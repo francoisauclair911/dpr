@@ -3,6 +3,27 @@ const isProduction = process.env.NODE_ENV === 'production'
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
+  app: {
+    head: {
+      titleTemplate: '%s - ADRA Donations',
+      title: 'ADRA Donations',
+      htmlAttrs: {
+        lang: 'en',
+      },
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'description', name: 'description', content: '' },
+        { name: 'format-detection', content: 'telephone=no' },
+      ],
+      // async false for now
+      script: [{ src: 'https://js.stripe.com/v3', async: false }],
+      link: [
+        // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
+      ],
+    },
+  },
   extends: [
     '@adra-network/favicon-layer',
   ],
@@ -19,8 +40,16 @@ export default defineNuxtConfig({
   },
   gtm: {
     id: "GTM-GTM8952312",
+    queryParams: {
+      gtm_auth: 'AB7cDEf3GHIjkl-MnOP8qr',
+      gtm_preview: 'env-4',
+      gtm_cookies_win: 'x',
+    },
     debug: !isProduction,
     enabled: true,
+    trackOnNextTick: false,
+    compatibility: false,
+    defer: false,
   },
   adraI18n: {
     // enabled: true, // Enable or disable the i18n features

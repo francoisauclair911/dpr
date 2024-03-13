@@ -1,13 +1,13 @@
 <template>
   <v-app id="donation-receiver" class="primary">
-    <MainAppBar class="px-1 px-md-2" color="white" flat app :clipped-left="pagesStore.primaryDrawer">
+    <MainAppBar class="px-4 px-md-2" color="white" flat app :clipped-left="pagesStore.primaryDrawer">
       <template #prepend-title>
         <v-btn v-show="!display.xs.value" nuxt to="/" icon variant="plain">
           <v-icon>{{ mdiHome }}</v-icon>
         </v-btn>
       </template>
       <v-row class="pl-4" justify="start" justify-sm="end">
-        <v-col cols="4" sm="auto">
+        <v-col cols="auto" sm="8">
           <LanguageSelector />
         </v-col>
       </v-row>
