@@ -37,6 +37,5 @@
     "vue-tel-input-vuetify": "^1.5.3"
   },
   "devDependencies": {
-    "vue-jest": "^3.0.4"
   }
 }
